@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/praveen001/ds/stack"
+	"github.com/praveen001/ds/tree/binarytree"
 )
 
 func main() {
@@ -33,8 +33,20 @@ func main() {
 
 	// var l list.List
 
-	s := stack.New()
-	s.Push(10)
+	// s := stack.New()
+	// s.Push(10)
 
-	fmt.Println(s.Pop())
+	// fmt.Println(s.Pop())
+
+	bt := binarytree.New()
+
+	bt.Insert(10)
+
+	bt.Insert(5)
+
+	bt.Insert(2)
+
+	bt.Insert(20)
+
+	fmt.Println(bt.InOrder())
 }
