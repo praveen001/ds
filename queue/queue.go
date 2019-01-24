@@ -1,9 +1,6 @@
 package queue
 
 import (
-	"errors"
-
-	"github.com/praveen001/ds/dserrors"
 	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
 )
@@ -26,19 +23,13 @@ func (q *Queue) Enqueue(value interface{}) {
 }
 
 // Dequeue removes and returns the first value from the queue
-func (q *Queue) Dequeue(value interface{}) (interface{}, error) {
-	val, err := q.list.Remove(0)
-	if err != nil {
-		return val, errors.New(dserrors.QueueIsEmpty)
-	}
-
-	return val, err
+func (q *Queue) Dequeue(value interface{}) (interface{}, bool) {
+	return q.list.Remove(0)
 }
 
 // Peek returns the first value without remove it from the queue
-func (q *Queue) Peek() interface{} {
-	val, _ := q.list.Get(q.list.Size() - 1)
-	return val
+func (q *Queue) Peek() (interface{}, bool) {
+	return q.list.Get(q.list.Size() - 1)
 }
 
 // Size returns the total number of values in queue

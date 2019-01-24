@@ -8,14 +8,14 @@ type List interface {
 	// Prepend adds new values to the beginning of the list
 	Prepend(values ...interface{})
 
-	// Get returns the value at the given index, if index is not in range, it returns IndexOutOfBound error
-	Get(index int) (interface{}, error)
+	// Get returns the value at the given index
+	Get(index int) (interface{}, bool)
 
-	// Set assigns a value at the given index, if index is not in range, it returns IndexOutOfBound error
-	Set(index int, value interface{}) error
+	// Set assigns a value at the given index
+	Set(index int, value interface{}) bool
 
-	// Remove removes the value at the given index, if index is not in range, it returns IndexOutOfBound error
-	Remove(index int) (interface{}, error)
+	// Remove removes the value at the given index
+	Remove(index int) (interface{}, bool)
 
 	// Contains returns true if the given value exists in the list, otherwise false
 	Contains(value int) bool

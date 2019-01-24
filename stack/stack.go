@@ -1,9 +1,6 @@
 package stack
 
 import (
-	"errors"
-
-	"github.com/praveen001/ds/dserrors"
 	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
 )
@@ -27,19 +24,13 @@ func (s *Stack) Push(value interface{}) *Stack {
 }
 
 // Pop removes the element from the top of the stack, and returns it
-func (s *Stack) Pop() (interface{}, error) {
-	val, err := s.list.Remove(s.list.Size() - 1)
-	if err != nil {
-		return val, errors.New(dserrors.StackIsEmpty)
-	}
-
-	return val, nil
+func (s *Stack) Pop() (interface{}, bool) {
+	return s.list.Remove(s.list.Size() - 1)
 }
 
 // Peek returns the top element without removing it
-func (s *Stack) Peek() interface{} {
-	val, _ := s.list.Get(s.list.Size() - 1)
-	return val
+func (s *Stack) Peek() (interface{}, bool) {
+	return s.list.Get(s.list.Size() - 1)
 }
 
 // Size returns the total values in the stack

@@ -1,10 +1,7 @@
 package linkedlist
 
 import (
-	"errors"
 	"fmt"
-
-	"github.com/praveen001/ds/dserrors"
 )
 
 // LinkedList ..
@@ -51,28 +48,28 @@ func (ll *LinkedList) Prepend(values ...interface{}) {
 }
 
 // Get returns the value at the given index, if index is not in range, it returns IndexOutOfBound error
-func (ll *LinkedList) Get(index int) (interface{}, error) {
+func (ll *LinkedList) Get(index int) (interface{}, bool) {
 	if ll.WithInRange(index) {
 		elem := ll.getElemByIdx(index)
-		return elem.value, nil
+		return elem.value, true
 	}
 
-	return nil, errors.New(dserrors.IndexOutOfBound)
+	return nil, false
 }
 
 // Set assigns a value at the given index, if index is not in range, it returns IndexOutOfBound error
-func (ll *LinkedList) Set(index int, value interface{}) error {
+func (ll *LinkedList) Set(index int, value interface{}) bool {
 	if ll.WithInRange(index) {
 		elem := ll.getElemByIdx(index)
 		elem.value = value
-		return nil
+		return true
 	}
 
-	return errors.New(dserrors.IndexOutOfBound)
+	return false
 }
 
 // Remove removes the value at the given index, if index is not in range, it returns IndexOutOfBound error
-func (ll *LinkedList) Remove(index int) (interface{}, error) {
+func (ll *LinkedList) Remove(index int) (interface{}, bool) {
 	if ll.WithInRange(index) {
 		var value interface{}
 		if index == 0 {
@@ -97,10 +94,10 @@ func (ll *LinkedList) Remove(index int) (interface{}, error) {
 
 		ll.size--
 
-		return value, nil
+		return value, true
 	}
 
-	return nil, errors.New(dserrors.IndexOutOfBound)
+	return nil, false
 }
 
 // Contains returns true if the given value exists in the list, otherwise false

@@ -1,10 +1,7 @@
 package arraylist
 
 import (
-	"errors"
 	"fmt"
-
-	"github.com/praveen001/ds/dserrors"
 )
 
 // ArrayList holds the elements in the list
@@ -38,27 +35,27 @@ func (al *ArrayList) Prepend(values ...interface{}) {
 	al.size += len(values)
 }
 
-// Get returns the value at the given index, if index is not in range, it returns IndexOutOfBound error
-func (al *ArrayList) Get(index int) (interface{}, error) {
+// Get returns the value at the given index
+func (al *ArrayList) Get(index int) (interface{}, bool) {
 	if al.WithInRange(index) {
-		return al.elements[index], nil
+		return al.elements[index], true
 	}
 
-	return nil, errors.New(dserrors.IndexOutOfBound)
+	return nil, false
 }
 
-// Set assigns a value at the given index, if index is not in range, it returns IndexOutOfBound error
-func (al *ArrayList) Set(index int, value interface{}) error {
+// Set assigns a value at the given index
+func (al *ArrayList) Set(index int, value interface{}) bool {
 	if al.WithInRange(index) {
 		al.elements[index] = value
-		return nil
+		return true
 	}
 
-	return errors.New(dserrors.IndexOutOfBound)
+	return false
 }
 
-// Remove removes the value at the given index, if index is not in range, it returns IndexOutOfBound error
-func (al *ArrayList) Remove(index int) (interface{}, error) {
+// Remove removes the value at the given index
+func (al *ArrayList) Remove(index int) (interface{}, bool) {
 	if al.WithInRange(index) {
 		value := al.elements[index]
 
@@ -70,10 +67,10 @@ func (al *ArrayList) Remove(index int) (interface{}, error) {
 		al.elements = newElems
 		al.size--
 
-		return value, nil
+		return value, true
 	}
 
-	return nil, errors.New(dserrors.IndexOutOfBound)
+	return nil, false
 }
 
 // Contains returns true if the given value exists in the list, otherwise false
