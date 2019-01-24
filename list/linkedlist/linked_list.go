@@ -25,7 +25,7 @@ func New() *LinkedList {
 }
 
 // Append new values to the ending of the list
-func (ll *LinkedList) Append(values ...interface{}) *LinkedList {
+func (ll *LinkedList) Append(values ...interface{}) {
 	for _, value := range values {
 		newElem := &element{value: value}
 
@@ -38,23 +38,19 @@ func (ll *LinkedList) Append(values ...interface{}) *LinkedList {
 		ll.tail = newElem
 		ll.size++
 	}
-
-	return ll
 }
 
 // Prepend adds new values to the beginning of the list
-func (ll *LinkedList) Prepend(values ...interface{}) *LinkedList {
+func (ll *LinkedList) Prepend(values ...interface{}) {
 	for _, value := range values {
 		h := &element{value: value}
 		h.next = ll.head
 		ll.head = h
 	}
 	ll.size += len(values)
-
-	return ll
 }
 
-// Get returns the element at the given index
+// Get returns the value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (ll *LinkedList) Get(index int) (interface{}, error) {
 	if ll.WithInRange(index) {
 		elem := ll.getElemByIdx(index)
@@ -64,7 +60,7 @@ func (ll *LinkedList) Get(index int) (interface{}, error) {
 	return nil, errors.New(dserrors.IndexOutOfBound)
 }
 
-// Set assigns the given value at the given index
+// Set assigns a value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (ll *LinkedList) Set(index int, value interface{}) error {
 	if ll.WithInRange(index) {
 		elem := ll.getElemByIdx(index)
@@ -75,7 +71,7 @@ func (ll *LinkedList) Set(index int, value interface{}) error {
 	return errors.New(dserrors.IndexOutOfBound)
 }
 
-// Remove removes the element at the given index
+// Remove removes the value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (ll *LinkedList) Remove(index int) (interface{}, error) {
 	if ll.WithInRange(index) {
 		var value interface{}
@@ -107,7 +103,7 @@ func (ll *LinkedList) Remove(index int) (interface{}, error) {
 	return nil, errors.New(dserrors.IndexOutOfBound)
 }
 
-// Contains returns true if given value exists in the list, otherwise false
+// Contains returns true if the given value exists in the list, otherwise false
 func (ll *LinkedList) Contains(x int) bool {
 	for elem := ll.head; elem != nil; elem = elem.next {
 		if elem.value == x {
@@ -118,7 +114,7 @@ func (ll *LinkedList) Contains(x int) bool {
 	return false
 }
 
-// IndexOf returns the index of the given value if it exists, otherwise -1
+// IndexOf returns the index of the given value if it exists, otherwise it returns -1
 func (ll *LinkedList) IndexOf(x int) int {
 	elem := ll.head
 	for i := 0; i < ll.size; i++ {
@@ -131,24 +127,21 @@ func (ll *LinkedList) IndexOf(x int) int {
 	return -1
 }
 
-// Size returns the number of elements stored in the list
+// Size returns the total number of elements in the list
 func (ll *LinkedList) Size() int {
 	return ll.size
 }
 
-// WithInRange returns true if the given index is a valid index
-func (ll *LinkedList) WithInRange(index int) bool {
-	return index > -1 && index < ll.size
+// Empty clears the list
+func (ll *LinkedList) Empty() {
+	ll.head = nil
+	ll.tail = nil
+	ll.size = 0
 }
 
-// getElemByIdx returns the element at the given index
-func (ll *LinkedList) getElemByIdx(index int) *element {
-	elem := ll.head
-	for i := 0; i < index; i++ {
-		elem = elem.next
-	}
-
-	return elem
+// WithInRange returns true if the given index is valid, otherwise false
+func (ll *LinkedList) WithInRange(index int) bool {
+	return index > -1 && index < ll.size
 }
 
 // String returns the string representation of the list
@@ -159,4 +152,14 @@ func (ll *LinkedList) String() string {
 	}
 
 	return str
+}
+
+// getElemByIdx returns the element at the given index
+func (ll *LinkedList) getElemByIdx(index int) *element {
+	elem := ll.head
+	for i := 0; i < index; i++ {
+		elem = elem.next
+	}
+
+	return elem
 }

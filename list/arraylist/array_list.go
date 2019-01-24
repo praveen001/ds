@@ -19,15 +19,14 @@ func New() *ArrayList {
 }
 
 // Append new values to the ending of the list
-func (al *ArrayList) Append(values ...interface{}) *ArrayList {
+func (al *ArrayList) Append(values ...interface{}) {
 	al.elements = append(al.elements, values...)
 	al.size += len(values)
 
-	return al
 }
 
 // Prepend adds new values to the beginning of the list
-func (al *ArrayList) Prepend(values ...interface{}) *ArrayList {
+func (al *ArrayList) Prepend(values ...interface{}) {
 	length := len(values)
 
 	newSubArr := make([]interface{}, length)
@@ -37,11 +36,9 @@ func (al *ArrayList) Prepend(values ...interface{}) *ArrayList {
 
 	al.elements = append(newSubArr, al.elements...)
 	al.size += len(values)
-
-	return al
 }
 
-// Get returns the element at the given index
+// Get returns the value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (al *ArrayList) Get(index int) (interface{}, error) {
 	if al.WithInRange(index) {
 		return al.elements[index], nil
@@ -50,7 +47,7 @@ func (al *ArrayList) Get(index int) (interface{}, error) {
 	return nil, errors.New(dserrors.IndexOutOfBound)
 }
 
-// Set assigns the given value at the given index
+// Set assigns a value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (al *ArrayList) Set(index int, value interface{}) error {
 	if al.WithInRange(index) {
 		al.elements[index] = value
@@ -60,7 +57,7 @@ func (al *ArrayList) Set(index int, value interface{}) error {
 	return errors.New(dserrors.IndexOutOfBound)
 }
 
-// Remove removes the element at the given index
+// Remove removes the value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (al *ArrayList) Remove(index int) (interface{}, error) {
 	if al.WithInRange(index) {
 		value := al.elements[index]
@@ -79,7 +76,7 @@ func (al *ArrayList) Remove(index int) (interface{}, error) {
 	return nil, errors.New(dserrors.IndexOutOfBound)
 }
 
-// Contains returns true if given value exists in the list, otherwise false
+// Contains returns true if the given value exists in the list, otherwise false
 func (al *ArrayList) Contains(x int) bool {
 	if al.IndexOf(x) == -1 {
 		return false
@@ -88,7 +85,7 @@ func (al *ArrayList) Contains(x int) bool {
 	return true
 }
 
-// IndexOf returns the index of the given value if it exists, otherwise -1
+// IndexOf returns the index of the given value if it exists, otherwise it returns -1
 func (al *ArrayList) IndexOf(x int) int {
 	for i, element := range al.elements {
 		if element == x {
@@ -99,12 +96,18 @@ func (al *ArrayList) IndexOf(x int) int {
 	return -1
 }
 
-// Size returns the number of elements stored in the list
+// Size returns the total number of elements in the list
 func (al *ArrayList) Size() int {
 	return al.size
 }
 
-// WithInRange returns true if the given index is a valid index
+// Empty clears the list
+func (al *ArrayList) Empty() {
+	al.elements = make([]interface{}, 0)
+	al.size = 0
+}
+
+// WithInRange returns true if the given index is valid, otherwise false
 func (al *ArrayList) WithInRange(index int) bool {
 	return index > -1 && index < al.size
 }
