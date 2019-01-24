@@ -23,6 +23,9 @@ type List interface {
 	// IndexOf returns the index of the given value if it exists, otherwise it returns -1
 	IndexOf(value int) int
 
+	// Values returns all the values in the list as an array
+	Values() []interface{}
+
 	// Size returns the total number of elements in the list
 	Size() int
 

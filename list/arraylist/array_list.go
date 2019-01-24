@@ -93,6 +93,11 @@ func (al *ArrayList) IndexOf(x int) int {
 	return -1
 }
 
+// Values returns all the values in the list as an array
+func (al *ArrayList) Values() []interface{} {
+	return al.elements
+}
+
 // Size returns the total number of elements in the list
 func (al *ArrayList) Size() int {
 	return al.size

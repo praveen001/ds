@@ -124,6 +124,19 @@ func (ll *LinkedList) IndexOf(x int) int {
 	return -1
 }
 
+// Values returns all the values in the list as an array
+func (ll *LinkedList) Values() []interface{} {
+	arr := make([]interface{}, ll.Size())
+	index := 0
+
+	for elem := ll.head; elem != nil; elem = elem.next {
+		arr[index] = elem.value
+		index++
+	}
+
+	return arr
+}
+
 // Size returns the total number of elements in the list
 func (ll *LinkedList) Size() int {
 	return ll.size
