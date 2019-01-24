@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
-	// al := arraylist.New()
+	// al := linkedlist.New()
 	// al.Append(10, 20, 30, 40, 50)
+	// fmt.Println(al.Values())
 	// fmt.Println("Append 10, 20, 30, 40, 50 =>", al)
 
 	// al.Prepend(-10, 0, 5)
@@ -54,4 +55,10 @@ func main() {
 	fmt.Println(bt.Min())
 
 	fmt.Println(bt.Max())
+
+	// bt.Insert(1)
+
+	// bt.Insert(0)
+
+	fmt.Println(bt.Height())
 }

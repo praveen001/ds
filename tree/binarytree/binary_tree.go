@@ -1,16 +1,18 @@
 package binarytree
 
+import "github.com/praveen001/ds/queue"
+
 // BinaryTree represents a binary tree
 type BinaryTree struct {
-	root *node
+	root *treeNode
 	size int
 }
 
 // Node represents a node in a binary tree
-type node struct {
+type treeNode struct {
 	value int
-	left  *node
-	right *node
+	left  *treeNode
+	right *treeNode
 }
 
 // New creates a new instance of binary tree and returns it
@@ -19,8 +21,8 @@ func New() *BinaryTree {
 }
 
 // NewNode returns a new binary tree node with given value
-func newNode(value int) *node {
-	return &node{value, nil, nil}
+func newNode(value int) *treeNode {
+	return &treeNode{value, nil, nil}
 }
 
 // Insert given values into the tree
@@ -76,6 +78,39 @@ func (bt *BinaryTree) Contains(value int) bool {
 	}
 }
 
+// Height returns the height of the binary tree (using node/level counts)
+func (bt *BinaryTree) Height() int {
+	if bt.Size() == 0 {
+		return 0
+	}
+
+	q := queue.New()
+	q.Enqueue(bt.root)
+	height := 0
+
+	for {
+		nodeCount := q.Size()
+		if nodeCount == 0 {
+			break
+		}
+
+		height++
+		for i := 0; i < nodeCount; i++ {
+			n, _ := q.Dequeue()
+			node := n.(*treeNode)
+
+			if node.left != nil {
+				q.Enqueue(node.left)
+			}
+			if node.right != nil {
+				q.Enqueue(node.right)
+			}
+		}
+	}
+
+	return height
+}
+
 // Min returns the minimum value from the tree
 func (bt *BinaryTree) Min() int {
 	if bt.Size() == 0 {
@@ -123,7 +158,7 @@ func (bt *BinaryTree) InOrder() []int {
 	return arr
 }
 
-func (n *node) inOrder(arr []int, index *int) {
+func (n *treeNode) inOrder(arr []int, index *int) {
 	if n.left != nil {
 		n.left.inOrder(arr, index)
 	}
