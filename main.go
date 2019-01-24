@@ -49,4 +49,9 @@ func main() {
 	bt.Insert(20)
 
 	fmt.Println(bt.InOrder())
+
+	fmt.Println(bt.Contains(3), bt.Contains(2), bt.Contains(20), bt.Contains(10))
+	fmt.Println(bt.Min())
+
+	fmt.Println(bt.Max())
 }

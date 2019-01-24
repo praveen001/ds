@@ -52,6 +52,60 @@ func (bt *BinaryTree) Insert(value int) {
 	}
 }
 
+// Contains returns true if the given value exists in the tree, otherwise false
+func (bt *BinaryTree) Contains(value int) bool {
+	if bt.Size() == 0 {
+		return false
+	}
+
+	node := bt.root
+	for {
+		if node.value < value {
+			if node.right == nil {
+				return false
+			}
+			node = node.right
+		} else if node.value > value {
+			if node.left == nil {
+				return false
+			}
+			node = node.left
+		} else {
+			return true
+		}
+	}
+}
+
+// Min returns the minimum value from the tree
+func (bt *BinaryTree) Min() int {
+	if bt.Size() == 0 {
+		return -1
+	}
+
+	node := bt.root
+	for {
+		if node.left == nil {
+			return node.value
+		}
+		node = node.left
+	}
+}
+
+// Max returns the maximum value from the tree
+func (bt *BinaryTree) Max() int {
+	if bt.Size() == 0 {
+		return -1
+	}
+
+	node := bt.root
+	for {
+		if node.right == nil {
+			return node.value
+		}
+		node = node.right
+	}
+}
+
 // Size returns the total number of values in the tree
 func (bt *BinaryTree) Size() int {
 	return bt.size
@@ -62,7 +116,7 @@ func (bt *BinaryTree) InOrder() []int {
 	arr := make([]int, bt.Size())
 	index := 0
 
-	if bt.root != nil {
+	if bt.Size() != 0 {
 		bt.root.inOrder(arr, &index)
 	}
 
