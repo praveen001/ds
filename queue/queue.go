@@ -23,7 +23,7 @@ func (q *Queue) Enqueue(value interface{}) {
 }
 
 // Dequeue removes and returns the first value from the queue
-func (q *Queue) Dequeue(value interface{}) (interface{}, bool) {
+func (q *Queue) Dequeue() (interface{}, bool) {
 	return q.list.Remove(0)
 }
 
