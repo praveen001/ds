@@ -43,7 +43,7 @@ func (ll *LinkedList) Append(values ...interface{}) *LinkedList {
 }
 
 // Prepend adds new values to the beginning of the list
-func (ll *LinkedList) Prepend(values ...interface{}) *List {
+func (ll *LinkedList) Prepend(values ...interface{}) *LinkedList {
 	for _, value := range values {
 		h := &element{value: value}
 		h.next = ll.head
