@@ -89,20 +89,20 @@ func (ll *LinkedList) Values() []interface{} {
 	return ll.values()
 }
 
-// Count returns the total number of elements in the list
-func (ll *LinkedList) Count() int {
+// Length returns the total number of elements in the list
+func (ll *LinkedList) Length() int {
 	ll.RLock()
 	defer ll.RUnlock()
 
-	return ll.count()
+	return ll.length()
 }
 
-// Empty clears the list
-func (ll *LinkedList) Empty() {
+// Clear the list
+func (ll *LinkedList) Clear() {
 	ll.Lock()
 	defer ll.RLock()
 
-	ll.empty()
+	ll.clear()
 }
 
 // WithInRange returns true if the given index is valid, otherwise false

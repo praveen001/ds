@@ -22,11 +22,11 @@ type Tree interface {
 	// Max returns the maximum value present in the tree
 	Max() (interface{}, bool)
 
-	// Count returns the total number of nodes in tree
-	Count() int
+	// Length returns the total number of nodes in tree
+	Length() int
 
-	// Empty removes all the nodes from tree
-	Empty()
+	// Clear removes all the nodes from tree
+	Clear()
 
 	// InOrder returns a list.List with all values in-order
 	InOrder() list.List

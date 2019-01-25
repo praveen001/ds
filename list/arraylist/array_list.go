@@ -84,20 +84,20 @@ func (al *ArrayList) Values() []interface{} {
 	return al.values()
 }
 
-// Count returns the total number of elements in the list
-func (al *ArrayList) Count() int {
+// Length returns the total number of elements in the list
+func (al *ArrayList) Length() int {
 	al.RLock()
 	defer al.RUnlock()
 
-	return al.count()
+	return al.length()
 }
 
-// Empty clears the list
-func (al *ArrayList) Empty() {
+// Clear the list
+func (al *ArrayList) Clear() {
 	al.Lock()
 	defer al.Unlock()
 
-	al.empty()
+	al.clear()
 }
 
 // WithInRange returns true if the given index is valid, otherwise false

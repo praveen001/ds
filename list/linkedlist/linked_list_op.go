@@ -104,7 +104,7 @@ func (ll *LinkedList) indexOf(value interface{}) int {
 }
 
 func (ll *LinkedList) values() []interface{} {
-	arr := make([]interface{}, ll.count())
+	arr := make([]interface{}, ll.length())
 	index := 0
 
 	for elem := ll.head; elem != nil; elem = elem.next {
@@ -115,11 +115,11 @@ func (ll *LinkedList) values() []interface{} {
 	return arr
 }
 
-func (ll *LinkedList) count() int {
+func (ll *LinkedList) length() int {
 	return ll.size
 }
 
-func (ll *LinkedList) empty() {
+func (ll *LinkedList) clear() {
 	ll.head = nil
 	ll.tail = nil
 	ll.size = 0

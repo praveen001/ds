@@ -25,22 +25,22 @@ func (s *Stack) Push(value interface{}) *Stack {
 
 // Pop removes the element from the top of the stack, and returns it
 func (s *Stack) Pop() (interface{}, bool) {
-	return s.list.Remove(s.list.Count() - 1)
+	return s.list.Remove(s.list.Length() - 1)
 }
 
 // Peek returns the top element without removing it
 func (s *Stack) Peek() (interface{}, bool) {
-	return s.list.Get(s.list.Count() - 1)
+	return s.list.Get(s.list.Length() - 1)
 }
 
-// Count returns the total values in the stack
-func (s *Stack) Count() int {
-	return s.list.Count()
+// Length returns the total values in the stack
+func (s *Stack) Length() int {
+	return s.list.Length()
 }
 
-// Empty clears the stack
-func (s *Stack) Empty() *Stack {
-	s.list.Empty()
+// Clear clears the stack
+func (s *Stack) Clear() *Stack {
+	s.list.Clear()
 	return s
 }
 

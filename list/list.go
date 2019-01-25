@@ -30,11 +30,11 @@ type List interface {
 	// Values returns all the values in the list as an array
 	Values() []interface{}
 
-	// Count returns the total number of elements in the list
-	Count() int
+	// Length returns the total number of elements in the list
+	Length() int
 
-	// Empty clears the list
-	Empty()
+	// Clear the list
+	Clear()
 
 	// WithInRange returns true if the given index is valid, otherwise false
 	WithInRange(index int) bool

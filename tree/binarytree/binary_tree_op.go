@@ -35,7 +35,7 @@ func (bt *BinaryTree) insert(value interface{}) {
 }
 
 func (bt *BinaryTree) delete(value interface{}) bool {
-	if bt.count() == 0 {
+	if bt.length() == 0 {
 		return false
 	}
 
@@ -104,7 +104,7 @@ func (bt *BinaryTree) delete(value interface{}) bool {
 }
 
 func (bt *BinaryTree) contains(value interface{}) bool {
-	if bt.count() == 0 {
+	if bt.length() == 0 {
 		return false
 	}
 
@@ -127,7 +127,7 @@ func (bt *BinaryTree) contains(value interface{}) bool {
 }
 
 func (bt *BinaryTree) height() int {
-	if bt.count() == 0 {
+	if bt.length() == 0 {
 		return 0
 	}
 
@@ -136,7 +136,7 @@ func (bt *BinaryTree) height() int {
 	height := 0
 
 	for {
-		nodeCount := q.Count()
+		nodeCount := q.Length()
 		if nodeCount == 0 {
 			break
 		}
@@ -159,7 +159,7 @@ func (bt *BinaryTree) height() int {
 }
 
 func (bt *BinaryTree) min() (interface{}, bool) {
-	if bt.count() == 0 {
+	if bt.length() == 0 {
 		return nil, false
 	}
 
@@ -173,7 +173,7 @@ func (bt *BinaryTree) min() (interface{}, bool) {
 }
 
 func (bt *BinaryTree) max() (interface{}, bool) {
-	if bt.count() == 0 {
+	if bt.length() == 0 {
 		return nil, false
 	}
 
@@ -186,11 +186,11 @@ func (bt *BinaryTree) max() (interface{}, bool) {
 	}
 }
 
-func (bt *BinaryTree) count() int {
+func (bt *BinaryTree) length() int {
 	return bt.size
 }
 
-func (bt *BinaryTree) empty() {
+func (bt *BinaryTree) clear() {
 	bt.root = nil
 	bt.size = 0
 }
@@ -198,7 +198,7 @@ func (bt *BinaryTree) empty() {
 func (bt *BinaryTree) inOrder() list.List {
 	ll := linkedlist.New()
 
-	if bt.count() != 0 {
+	if bt.length() != 0 {
 		bt.root.inOrder(ll)
 	}
 

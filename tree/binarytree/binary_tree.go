@@ -83,20 +83,20 @@ func (bt *BinaryTree) Max() (interface{}, bool) {
 	return bt.max()
 }
 
-// Count returns the total number of nodes in tree
-func (bt *BinaryTree) Count() int {
+// Length returns the total number of nodes in tree
+func (bt *BinaryTree) Length() int {
 	bt.RLock()
 	defer bt.RUnlock()
 
-	return bt.count()
+	return bt.length()
 }
 
-// Empty removes all the nodes from tree
-func (bt *BinaryTree) Empty() {
+// Clear removes all the nodes from tree
+func (bt *BinaryTree) Clear() {
 	bt.Lock()
 	defer bt.Unlock()
 
-	bt.empty()
+	bt.clear()
 }
 
 // InOrder returns a list.List with all values in-order

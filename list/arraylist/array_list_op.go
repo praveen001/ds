@@ -81,11 +81,11 @@ func (al *ArrayList) values() []interface{} {
 	return al.elements
 }
 
-func (al *ArrayList) count() int {
+func (al *ArrayList) length() int {
 	return al.size
 }
 
-func (al *ArrayList) empty() {
+func (al *ArrayList) clear() {
 	al.elements = make([]interface{}, 0)
 	al.size = 0
 }

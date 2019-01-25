@@ -29,17 +29,17 @@ func (q *Queue) Dequeue() (interface{}, bool) {
 
 // Peek returns the first value without remove it from the queue
 func (q *Queue) Peek() (interface{}, bool) {
-	return q.list.Get(q.list.Count() - 1)
+	return q.list.Get(q.list.Length() - 1)
 }
 
-// Count returns the total number of values in queue
-func (q *Queue) Count() int {
-	return q.list.Count()
+// Length returns the total number of values in queue
+func (q *Queue) Length() int {
+	return q.list.Length()
 }
 
-// Empty clears the queue
-func (q *Queue) Empty() {
-	q.list.Empty()
+// Clear the queue
+func (q *Queue) Clear() {
+	q.list.Clear()
 }
 
 // Values returns all the values in the queue as a slice
