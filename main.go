@@ -180,5 +180,5 @@ func main() {
 	// tryLinkedList()
 	// tryStack()
 	// tryQueue()
-	// tryBinaryTree()
+	tryBinaryTree()
 }

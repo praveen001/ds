@@ -10,17 +10,17 @@ import (
 
 // BinaryTree represents a binary tree
 type BinaryTree struct {
-	root    *treeNode
+	root    *Node
 	size    int
 	compare utils.CompareFunc
 	sync.RWMutex
 }
 
 // Node represents a node in a binary tree
-type treeNode struct {
+type Node struct {
 	value interface{}
-	left  *treeNode
-	right *treeNode
+	left  *Node
+	right *Node
 }
 
 // New creates a new instance of binary tree and returns it
@@ -31,8 +31,8 @@ func New(c utils.CompareFunc) *BinaryTree {
 }
 
 // NewNode returns a new binary tree node with given value
-func newNode(value interface{}) *treeNode {
-	return &treeNode{value, nil, nil}
+func newNode(value interface{}) *Node {
+	return &Node{value, nil, nil}
 }
 
 // Insert a given value into the tree

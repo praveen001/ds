@@ -41,7 +41,7 @@ func (bt *BinaryTree) delete(value interface{}) bool {
 
 	bt.size--
 	node := bt.root
-	var parent *treeNode
+	var parent *Node
 
 	for node != nil {
 		if comp := bt.compare(node.value, value); comp == 1 {
@@ -144,7 +144,7 @@ func (bt *BinaryTree) height() int {
 		height++
 		for i := 0; i < nodeCount; i++ {
 			n, _ := q.Dequeue()
-			node := n.(*treeNode)
+			node := n.(*Node)
 
 			if node.left != nil {
 				q.Enqueue(node.left)
@@ -205,7 +205,7 @@ func (bt *BinaryTree) inOrder() list.List {
 	return ll
 }
 
-func (n *treeNode) inOrder(ll *linkedlist.LinkedList) {
+func (n *Node) inOrder(ll *linkedlist.LinkedList) {
 	if n.left != nil {
 		n.left.inOrder(ll)
 	}
