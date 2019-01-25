@@ -158,29 +158,29 @@ func (bt *BinaryTree) height() int {
 	return height
 }
 
-func (bt *BinaryTree) min() interface{} {
+func (bt *BinaryTree) min() (interface{}, bool) {
 	if bt.count() == 0 {
-		return -1
+		return nil, false
 	}
 
 	node := bt.root
 	for {
 		if node.left == nil {
-			return node.value
+			return node.value, true
 		}
 		node = node.left
 	}
 }
 
-func (bt *BinaryTree) max() interface{} {
+func (bt *BinaryTree) max() (interface{}, bool) {
 	if bt.count() == 0 {
-		return -1
+		return nil, false
 	}
 
 	node := bt.root
 	for {
 		if node.right == nil {
-			return node.value
+			return node.value, true
 		}
 		node = node.right
 	}

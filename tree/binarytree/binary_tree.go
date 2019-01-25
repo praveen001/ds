@@ -35,7 +35,7 @@ func newNode(value interface{}) *treeNode {
 	return &treeNode{value, nil, nil}
 }
 
-// Insert given values into the tree
+// Insert a given value into the tree
 func (bt *BinaryTree) Insert(value interface{}) {
 	bt.Lock()
 	defer bt.Unlock()
@@ -43,7 +43,7 @@ func (bt *BinaryTree) Insert(value interface{}) {
 	bt.insert(value)
 }
 
-// Delete a value from the tree
+// Delete a node (using value) from the tree
 func (bt *BinaryTree) Delete(value interface{}) bool {
 	bt.Lock()
 	defer bt.Unlock()
@@ -51,7 +51,7 @@ func (bt *BinaryTree) Delete(value interface{}) bool {
 	return bt.delete(value)
 }
 
-// Contains returns true if the given value exists in the tree, otherwise false
+// Contains return true if value exists in tree, otherwise false
 func (bt *BinaryTree) Contains(value interface{}) bool {
 	bt.RLock()
 	defer bt.RUnlock()
@@ -59,7 +59,7 @@ func (bt *BinaryTree) Contains(value interface{}) bool {
 	return bt.contains(value)
 }
 
-// Height returns the height of the binary tree (using node/level counts)
+// Height returns the height of the tree (node/level count)
 func (bt *BinaryTree) Height() int {
 	bt.RLock()
 	defer bt.RUnlock()
@@ -67,23 +67,23 @@ func (bt *BinaryTree) Height() int {
 	return bt.height()
 }
 
-// Min returns the minimum value from the tree
-func (bt *BinaryTree) Min() interface{} {
+// Min returns the minimum value present in the tree
+func (bt *BinaryTree) Min() (interface{}, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
 
 	return bt.min()
 }
 
-// Max returns the maximum value from the tree
-func (bt *BinaryTree) Max() interface{} {
+// Max returns the maximum value present in the tree
+func (bt *BinaryTree) Max() (interface{}, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
 
 	return bt.max()
 }
 
-// Count returns the total number of values in the tree
+// Count returns the total number of nodes in tree
 func (bt *BinaryTree) Count() int {
 	bt.RLock()
 	defer bt.RUnlock()
@@ -91,7 +91,7 @@ func (bt *BinaryTree) Count() int {
 	return bt.count()
 }
 
-// Empty clears all the values in the tree
+// Empty removes all the nodes from tree
 func (bt *BinaryTree) Empty() {
 	bt.Lock()
 	defer bt.Unlock()
@@ -99,7 +99,7 @@ func (bt *BinaryTree) Empty() {
 	bt.empty()
 }
 
-// InOrder ..
+// InOrder returns a list.List with all values in-order
 func (bt *BinaryTree) InOrder() list.List {
 	bt.RLock()
 	defer bt.RUnlock()
