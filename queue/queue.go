@@ -42,6 +42,11 @@ func (q *Queue) Empty() {
 	q.list.Empty()
 }
 
+// Values returns all the values in the queue as a slice
+func (q *Queue) Values() []interface{} {
+	return q.list.Values()
+}
+
 // String returns the string representation of the stack
 func (q *Queue) String() string {
 	return q.list.String()

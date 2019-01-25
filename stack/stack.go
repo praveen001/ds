@@ -44,6 +44,11 @@ func (s *Stack) Empty() *Stack {
 	return s
 }
 
+// Values returns all the values in the stack as a slice
+func (s *Stack) Values() []interface{} {
+	return s.list.Values()
+}
+
 // String returns the string representation of the stack
 func (s *Stack) String() string {
 	return s.list.String()

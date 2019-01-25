@@ -1,34 +1,41 @@
 package binarytree
 
 import (
+	"github.com/praveen001/ds/list"
+
+	"github.com/praveen001/ds/list/linkedlist"
 	"github.com/praveen001/ds/queue"
+	"github.com/praveen001/ds/utils"
 )
 
 // BinaryTree represents a binary tree
 type BinaryTree struct {
-	root *treeNode
-	size int
+	root    *treeNode
+	size    int
+	compare utils.Comparator
 }
 
 // Node represents a node in a binary tree
 type treeNode struct {
-	value int
+	value interface{}
 	left  *treeNode
 	right *treeNode
 }
 
 // New creates a new instance of binary tree and returns it
-func New() *BinaryTree {
-	return &BinaryTree{}
+func New(c utils.Comparator) *BinaryTree {
+	return &BinaryTree{
+		compare: c,
+	}
 }
 
 // NewNode returns a new binary tree node with given value
-func newNode(value int) *treeNode {
+func newNode(value interface{}) *treeNode {
 	return &treeNode{value, nil, nil}
 }
 
 // Insert given values into the tree
-func (bt *BinaryTree) Insert(value int) {
+func (bt *BinaryTree) Insert(value interface{}) {
 	bt.size++
 
 	if bt.root == nil {
@@ -38,7 +45,7 @@ func (bt *BinaryTree) Insert(value int) {
 
 	node := bt.root
 	for {
-		if node.value < value {
+		if bt.compare(node.value, value) == -1 {
 			if node.right == nil {
 				node.right = newNode(value)
 				break
@@ -57,7 +64,7 @@ func (bt *BinaryTree) Insert(value int) {
 }
 
 // Delete a value from the tree
-func (bt *BinaryTree) Delete(value int) bool {
+func (bt *BinaryTree) Delete(value interface{}) bool {
 	if bt.Size() == 0 {
 		return false
 	}
@@ -67,10 +74,10 @@ func (bt *BinaryTree) Delete(value int) bool {
 	var parent *treeNode
 
 	for node != nil {
-		if node.value > value {
+		if comp := bt.compare(node.value, value); comp == 1 {
 			parent = node
 			node = node.left
-		} else if node.value < value {
+		} else if comp == -1 {
 			parent = node
 			node = node.right
 		} else {
@@ -78,7 +85,7 @@ func (bt *BinaryTree) Delete(value int) bool {
 			if node.left == nil && node.right == nil {
 				if parent == nil {
 					bt.root = nil
-				} else if parent.value > value {
+				} else if comp := bt.compare(parent.value, value); comp == 1 {
 					parent.left = nil
 				} else {
 					parent.right = nil
@@ -89,7 +96,7 @@ func (bt *BinaryTree) Delete(value int) bool {
 			if node.left == nil {
 				if parent == nil {
 					bt.root = node.right
-				} else if parent.value > value {
+				} else if comp := bt.compare(parent.value, value); comp == 1 {
 					parent.left = node.right
 				} else {
 					parent.right = node.right
@@ -98,7 +105,7 @@ func (bt *BinaryTree) Delete(value int) bool {
 			} else if node.right == nil {
 				if parent == nil {
 					bt.root = node.left
-				} else if parent.value > value {
+				} else if comp := bt.compare(parent.value, value); comp == 1 {
 					parent.left = node.left
 				} else {
 					parent.right = node.right
@@ -127,19 +134,19 @@ func (bt *BinaryTree) Delete(value int) bool {
 }
 
 // Contains returns true if the given value exists in the tree, otherwise false
-func (bt *BinaryTree) Contains(value int) bool {
+func (bt *BinaryTree) Contains(value interface{}) bool {
 	if bt.Size() == 0 {
 		return false
 	}
 
 	node := bt.root
 	for {
-		if node.value < value {
+		if comp := bt.compare(node.value, value); comp == -1 {
 			if node.right == nil {
 				return false
 			}
 			node = node.right
-		} else if node.value > value {
+		} else if comp == 1 {
 			if node.left == nil {
 				return false
 			}
@@ -184,7 +191,7 @@ func (bt *BinaryTree) Height() int {
 }
 
 // Min returns the minimum value from the tree
-func (bt *BinaryTree) Min() int {
+func (bt *BinaryTree) Min() interface{} {
 	if bt.Size() == 0 {
 		return -1
 	}
@@ -199,7 +206,7 @@ func (bt *BinaryTree) Min() int {
 }
 
 // Max returns the maximum value from the tree
-func (bt *BinaryTree) Max() int {
+func (bt *BinaryTree) Max() interface{} {
 	if bt.Size() == 0 {
 		return -1
 	}
@@ -218,27 +225,31 @@ func (bt *BinaryTree) Size() int {
 	return bt.size
 }
 
-// InOrder ..
-func (bt *BinaryTree) InOrder() []int {
-	arr := make([]int, bt.Size())
-	index := 0
-
-	if bt.Size() != 0 {
-		bt.root.inOrder(arr, &index)
-	}
-
-	return arr
+// Empty clears all the values in the tree
+func (bt *BinaryTree) Empty() {
+	bt.root = nil
+	bt.size = 0
 }
 
-func (n *treeNode) inOrder(arr []int, index *int) {
-	if n.left != nil {
-		n.left.inOrder(arr, index)
+// InOrder ..
+func (bt *BinaryTree) InOrder() list.List {
+	ll := linkedlist.New()
+
+	if bt.Size() != 0 {
+		bt.root.inOrder(ll)
 	}
 
-	arr[*index] = n.value
-	*index++
+	return ll
+}
+
+func (n *treeNode) inOrder(ll *linkedlist.LinkedList) {
+	if n.left != nil {
+		n.left.inOrder(ll)
+	}
+
+	ll.Append(n.value)
 
 	if n.right != nil {
-		n.right.inOrder(arr, index)
+		n.right.inOrder(ll)
 	}
 }

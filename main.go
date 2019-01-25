@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/praveen001/ds/tree"
 	"github.com/praveen001/ds/tree/binarytree"
 )
 
@@ -39,43 +40,63 @@ func main() {
 
 	// fmt.Println(s.Pop())
 
-	bt := binarytree.New()
+	bt := binarytree.New(func(a, b interface{}) int {
+		at := a.(string)
+		bt := b.(string)
 
-	bt.Insert(100)
-	bt.Insert(50)
-	bt.Insert(20)
-	bt.Insert(5)
-	bt.Insert(10)
-	bt.Insert(60)
-	bt.Insert(55)
-	bt.Insert(80)
-	bt.Insert(200)
+		if len(at) > len(bt) {
+			return 1
+		} else if at < bt {
+			return -1
+		} else {
+			return 0
+		}
+	})
 
-	fmt.Println(bt.InOrder())
+	var t tree.Tree
+	t = bt
 
-	bt.Delete(51)
-	fmt.Println(bt.InOrder())
+	t.Insert("aa")
+	t.Insert("aaaa")
+	t.Insert("aaa")
+	t.Insert("a")
+	t.Delete("a")
+	fmt.Println(t.InOrder())
 
-	bt.Delete(10)
-	fmt.Println(bt.InOrder())
-	bt.Delete(20)
-	fmt.Println(bt.InOrder())
+	// bt.Insert(100)
+	// bt.Insert(50)
+	// bt.Insert(20)
+	// bt.Insert(5)
+	// bt.Insert(10)
+	// bt.Insert(60)
+	// bt.Insert(55)
+	// bt.Insert(80)
+	// bt.Insert(200)
 
-	bt.Delete(100)
-	fmt.Println(bt.InOrder())
+	// fmt.Println(bt.InOrder())
+	// bt.Delete(50)
+	// fmt.Println(bt.InOrder())
 
-	bt.Delete(200)
-	fmt.Println(bt.InOrder())
+	// bt.Delete(10)
+	// fmt.Println(bt.InOrder())
+	// bt.Delete(20)
+	// fmt.Println(bt.InOrder())
 
-	bt.Delete(55)
-	fmt.Println(bt.InOrder())
+	// bt.Delete(100)
+	// fmt.Println(bt.InOrder())
 
-	bt.Delete(60)
-	fmt.Println(bt.InOrder())
+	// bt.Delete(200)
+	// fmt.Println(bt.InOrder())
 
-	bt.Delete(80)
-	fmt.Println(bt.InOrder())
+	// bt.Delete(55)
+	// fmt.Println(bt.InOrder())
 
-	bt.Delete(5)
-	fmt.Println(bt.InOrder())
+	// bt.Delete(60)
+	// fmt.Println(bt.InOrder())
+
+	// bt.Delete(80)
+	// fmt.Println(bt.InOrder())
+
+	// bt.Delete(5)
+	// fmt.Println(bt.InOrder())
 }
