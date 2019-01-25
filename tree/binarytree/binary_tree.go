@@ -1,10 +1,10 @@
 package binarytree
 
 import (
+	"sync"
+
 	"github.com/praveen001/ds/list"
 
-	"github.com/praveen001/ds/list/linkedlist"
-	"github.com/praveen001/ds/queue"
 	"github.com/praveen001/ds/utils"
 )
 
@@ -13,6 +13,7 @@ type BinaryTree struct {
 	root    *treeNode
 	size    int
 	compare utils.Comparator
+	sync.RWMutex
 }
 
 // Node represents a node in a binary tree
@@ -36,220 +37,72 @@ func newNode(value interface{}) *treeNode {
 
 // Insert given values into the tree
 func (bt *BinaryTree) Insert(value interface{}) {
-	bt.size++
+	bt.Lock()
+	defer bt.Unlock()
 
-	if bt.root == nil {
-		bt.root = newNode(value)
-		return
-	}
-
-	node := bt.root
-	for {
-		if bt.compare(node.value, value) == -1 {
-			if node.right == nil {
-				node.right = newNode(value)
-				break
-			} else {
-				node = node.right
-			}
-		} else {
-			if node.left == nil {
-				node.left = newNode(value)
-				break
-			} else {
-				node = node.left
-			}
-		}
-	}
+	bt.insert(value)
 }
 
 // Delete a value from the tree
 func (bt *BinaryTree) Delete(value interface{}) bool {
-	if bt.Count() == 0 {
-		return false
-	}
+	bt.Lock()
+	defer bt.Unlock()
 
-	bt.size--
-	node := bt.root
-	var parent *treeNode
-
-	for node != nil {
-		if comp := bt.compare(node.value, value); comp == 1 {
-			parent = node
-			node = node.left
-		} else if comp == -1 {
-			parent = node
-			node = node.right
-		} else {
-
-			if node.left == nil && node.right == nil {
-				if parent == nil {
-					bt.root = nil
-				} else if comp := bt.compare(parent.value, value); comp == 1 {
-					parent.left = nil
-				} else {
-					parent.right = nil
-				}
-				return true
-			}
-
-			if node.left == nil {
-				if parent == nil {
-					bt.root = node.right
-				} else if comp := bt.compare(parent.value, value); comp == 1 {
-					parent.left = node.right
-				} else {
-					parent.right = node.right
-				}
-				return true
-			} else if node.right == nil {
-				if parent == nil {
-					bt.root = node.left
-				} else if comp := bt.compare(parent.value, value); comp == 1 {
-					parent.left = node.left
-				} else {
-					parent.right = node.right
-				}
-				return true
-			}
-
-			min := node.right
-			for {
-				if min.left == nil {
-					break
-				}
-				min = min.left
-			}
-
-			node.value = min.value
-			value = min.value
-			parent = node
-			node = node.right
-
-		}
-	}
-
-	bt.size++
-	return false
+	return bt.delete(value)
 }
 
 // Contains returns true if the given value exists in the tree, otherwise false
 func (bt *BinaryTree) Contains(value interface{}) bool {
-	if bt.Count() == 0 {
-		return false
-	}
+	bt.RLock()
+	defer bt.RUnlock()
 
-	node := bt.root
-	for {
-		if comp := bt.compare(node.value, value); comp == -1 {
-			if node.right == nil {
-				return false
-			}
-			node = node.right
-		} else if comp == 1 {
-			if node.left == nil {
-				return false
-			}
-			node = node.left
-		} else {
-			return true
-		}
-	}
+	return bt.contains(value)
 }
 
 // Height returns the height of the binary tree (using node/level counts)
 func (bt *BinaryTree) Height() int {
-	if bt.Count() == 0 {
-		return 0
-	}
+	bt.RLock()
+	defer bt.RUnlock()
 
-	q := queue.New()
-	q.Enqueue(bt.root)
-	height := 0
-
-	for {
-		nodeCount := q.Count()
-		if nodeCount == 0 {
-			break
-		}
-
-		height++
-		for i := 0; i < nodeCount; i++ {
-			n, _ := q.Dequeue()
-			node := n.(*treeNode)
-
-			if node.left != nil {
-				q.Enqueue(node.left)
-			}
-			if node.right != nil {
-				q.Enqueue(node.right)
-			}
-		}
-	}
-
-	return height
+	return bt.height()
 }
 
 // Min returns the minimum value from the tree
 func (bt *BinaryTree) Min() interface{} {
-	if bt.Count() == 0 {
-		return -1
-	}
+	bt.RLock()
+	defer bt.RUnlock()
 
-	node := bt.root
-	for {
-		if node.left == nil {
-			return node.value
-		}
-		node = node.left
-	}
+	return bt.min()
 }
 
 // Max returns the maximum value from the tree
 func (bt *BinaryTree) Max() interface{} {
-	if bt.Count() == 0 {
-		return -1
-	}
+	bt.RLock()
+	defer bt.RUnlock()
 
-	node := bt.root
-	for {
-		if node.right == nil {
-			return node.value
-		}
-		node = node.right
-	}
+	return bt.max()
 }
 
 // Count returns the total number of values in the tree
 func (bt *BinaryTree) Count() int {
-	return bt.size
+	bt.RLock()
+	defer bt.RUnlock()
+
+	return bt.count()
 }
 
 // Empty clears all the values in the tree
 func (bt *BinaryTree) Empty() {
-	bt.root = nil
-	bt.size = 0
+	bt.Lock()
+	defer bt.Unlock()
+
+	bt.empty()
 }
 
 // InOrder ..
 func (bt *BinaryTree) InOrder() list.List {
-	ll := linkedlist.New()
+	bt.RLock()
+	defer bt.RUnlock()
 
-	if bt.Count() != 0 {
-		bt.root.inOrder(ll)
-	}
-
-	return ll
-}
-
-func (n *treeNode) inOrder(ll *linkedlist.LinkedList) {
-	if n.left != nil {
-		n.left.inOrder(ll)
-	}
-
-	ll.Append(n.value)
-
-	if n.right != nil {
-		n.right.inOrder(ll)
-	}
+	return bt.inOrder()
 }
