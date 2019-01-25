@@ -2,6 +2,10 @@ package arraylist
 
 import (
 	"sync"
+
+	"github.com/praveen001/ds/utils"
+
+	"github.com/praveen001/ds/list"
 )
 
 // ArrayList holds the elements in the list
@@ -110,4 +114,37 @@ func (al *ArrayList) String() string {
 	defer al.RUnlock()
 
 	return al.string()
+}
+
+// Filter creates a new list with every value that pass a test
+func (al *ArrayList) Filter(fn utils.FilterFunc) list.List {
+	al.RLock()
+	defer al.RUnlock()
+
+	return al.filter(fn)
+}
+
+// Concat joins two or more lists together
+func (al *ArrayList) Concat(...list.List) {
+	New()
+}
+
+// Reverse reverses the order of items in the list
+func (al *ArrayList) Reverse() {
+
+}
+
+// Sort arrange the values in ascending or descending order
+func (al *ArrayList) Sort(utils.Comparator) {
+
+}
+
+// Map creates a new list with every value returned by the MapFunc
+func (al *ArrayList) Map(utils.MapFunc) list.List {
+	return New()
+}
+
+// Clone creates a shallow copy and returns it
+func (al *ArrayList) Clone() list.List {
+	return New()
 }

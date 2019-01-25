@@ -2,6 +2,9 @@ package linkedlist
 
 import (
 	"sync"
+
+	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/utils"
 )
 
 // LinkedList ..
@@ -116,4 +119,37 @@ func (ll *LinkedList) String() string {
 	defer ll.RUnlock()
 
 	return ll.string()
+}
+
+// Filter creates a new list with every value that pass a test
+func (ll *LinkedList) Filter(fn utils.FilterFunc) list.List {
+	ll.RLock()
+	defer ll.RUnlock()
+
+	return ll.filter(fn)
+}
+
+// Concat joins two or more lists together
+func (ll *LinkedList) Concat(...list.List) {
+	New()
+}
+
+// Reverse reverses the order of items in the list
+func (ll *LinkedList) Reverse() {
+
+}
+
+// Sort arrange the values in ascending or descending order
+func (ll *LinkedList) Sort(utils.Comparator) {
+
+}
+
+// Map creates a new list with every value returned by the MapFunc
+func (ll *LinkedList) Map(utils.MapFunc) list.List {
+	return New()
+}
+
+// Clone creates a shallow copy and returns it
+func (ll *LinkedList) Clone() list.List {
+	return New()
 }

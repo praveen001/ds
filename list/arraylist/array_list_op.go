@@ -1,6 +1,11 @@
 package arraylist
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/utils"
+)
 
 func (al *ArrayList) append(values ...interface{}) {
 	al.elements = append(al.elements, values...)
@@ -91,4 +96,18 @@ func (al *ArrayList) withInRange(index int) bool {
 
 func (al *ArrayList) string() string {
 	return fmt.Sprintf("%v", al.elements)
+}
+
+func (al *ArrayList) filter(fn utils.FilterFunc) list.List {
+	al.RLock()
+	defer al.RUnlock()
+
+	l := New()
+	for _, value := range al.values() {
+		if fn(value) {
+			l.append(value)
+		}
+	}
+
+	return l
 }

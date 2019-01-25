@@ -2,6 +2,9 @@ package linkedlist
 
 import (
 	"fmt"
+
+	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/utils"
 )
 
 func (ll *LinkedList) append(values ...interface{}) {
@@ -143,4 +146,15 @@ func (ll *LinkedList) getElemByIdx(index int) *element {
 	}
 
 	return elem
+}
+
+func (ll *LinkedList) filter(fn utils.FilterFunc) list.List {
+	l := New()
+	for _, value := range ll.values() {
+		if fn(value) {
+			l.append(value)
+		}
+	}
+
+	return l
 }

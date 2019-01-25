@@ -1,5 +1,9 @@
 package list
 
+import (
+	"github.com/praveen001/ds/utils"
+)
+
 // List ..
 type List interface {
 	// Append new values to the ending of the list
@@ -37,4 +41,22 @@ type List interface {
 
 	// String returns the string representation of the list
 	String() string
+
+	// Concat joins two or more lists together
+	Concat(...List)
+
+	// Reverse reverses the order of items in the list
+	Reverse()
+
+	// Sort arrange the values in ascending or descending order
+	Sort(utils.Comparator)
+
+	// Filter creates a new list with every value that pass a test
+	Filter(utils.FilterFunc) List
+
+	// Map creates a new list with every value returned by the MapFunc
+	Map(utils.MapFunc) List
+
+	// Clone creates a shallow copy and returns it
+	Clone() List
 }

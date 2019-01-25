@@ -3,12 +3,20 @@ package main
 import (
 	"fmt"
 
+	"github.com/praveen001/ds/list/arraylist"
 	"github.com/praveen001/ds/tree"
 	"github.com/praveen001/ds/tree/binarytree"
 )
 
 func main() {
-	// al := arraylist.New()
+	al := arraylist.New()
+	al.Append(1, 2, 3, 4, 5, 6)
+	fmt.Println(al.Filter(func(x interface{}) bool {
+		if x.(int)%2 == 1 {
+			return true
+		}
+		return false
+	}))
 	// for i := 0; i < 100; i++ {
 	// 	al.Append(i)
 	// }
