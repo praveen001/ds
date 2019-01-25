@@ -1,7 +1,7 @@
 package linkedlist
 
 import (
-	"fmt"
+	"sync"
 )
 
 // LinkedList ..
@@ -9,6 +9,7 @@ type LinkedList struct {
 	head *element
 	tail *element
 	size int
+	sync.RWMutex
 }
 
 type element struct {
@@ -23,153 +24,96 @@ func New() *LinkedList {
 
 // Append new values to the ending of the list
 func (ll *LinkedList) Append(values ...interface{}) {
-	for _, value := range values {
-		newElem := &element{value: value}
+	ll.Lock()
+	defer ll.Unlock()
 
-		if ll.size == 0 {
-			ll.head = newElem
-		} else {
-			ll.tail.next = newElem
-		}
-
-		ll.tail = newElem
-		ll.size++
-	}
+	ll.append(values...)
 }
 
 // Prepend adds new values to the beginning of the list
 func (ll *LinkedList) Prepend(values ...interface{}) {
-	for _, value := range values {
-		h := &element{value: value}
-		h.next = ll.head
-		ll.head = h
-	}
-	ll.size += len(values)
+	ll.Lock()
+	defer ll.Unlock()
+
+	ll.prepend(values...)
 }
 
 // Get returns the value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (ll *LinkedList) Get(index int) (interface{}, bool) {
-	if ll.WithInRange(index) {
-		elem := ll.getElemByIdx(index)
-		return elem.value, true
-	}
+	ll.RLock()
+	defer ll.RUnlock()
 
-	return nil, false
+	return ll.get(index)
 }
 
 // Set assigns a value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (ll *LinkedList) Set(index int, value interface{}) bool {
-	if ll.WithInRange(index) {
-		elem := ll.getElemByIdx(index)
-		elem.value = value
-		return true
-	}
+	ll.Lock()
+	defer ll.Unlock()
 
-	return false
+	return ll.set(index, value)
 }
 
 // Remove removes the value at the given index, if index is not in range, it returns IndexOutOfBound error
 func (ll *LinkedList) Remove(index int) (interface{}, bool) {
-	if ll.WithInRange(index) {
-		var value interface{}
-		if index == 0 {
-			elem := ll.head
-			value = elem.value
+	ll.Lock()
+	defer ll.Unlock()
 
-			if elem.next != nil {
-				ll.head = elem.next
-			} else {
-				ll.head = nil
-			}
-		} else {
-			elem := ll.getElemByIdx(index - 1)
-			value = elem.value
-
-			if elem.next != nil {
-				elem.next = elem.next.next
-			} else {
-				elem.next = nil
-			}
-		}
-
-		ll.size--
-
-		return value, true
-	}
-
-	return nil, false
+	return ll.remove(index)
 }
 
 // Contains returns true if the given value exists in the list, otherwise false
-func (ll *LinkedList) Contains(x int) bool {
-	for elem := ll.head; elem != nil; elem = elem.next {
-		if elem.value == x {
-			return true
-		}
-	}
+func (ll *LinkedList) Contains(value interface{}) bool {
+	ll.RLock()
+	defer ll.RUnlock()
 
-	return false
+	return ll.contains(value)
 }
 
 // IndexOf returns the index of the given value if it exists, otherwise it returns -1
-func (ll *LinkedList) IndexOf(x int) int {
-	elem := ll.head
-	for i := 0; i < ll.size; i++ {
-		if elem.value == x {
-			return i
-		}
-		elem = elem.next
-	}
+func (ll *LinkedList) IndexOf(value interface{}) int {
+	ll.RLock()
+	defer ll.RUnlock()
 
-	return -1
+	return ll.indexOf(value)
 }
 
 // Values returns all the values in the list as an array
 func (ll *LinkedList) Values() []interface{} {
-	arr := make([]interface{}, ll.Size())
-	index := 0
+	ll.RLock()
+	defer ll.RUnlock()
 
-	for elem := ll.head; elem != nil; elem = elem.next {
-		arr[index] = elem.value
-		index++
-	}
-
-	return arr
+	return ll.values()
 }
 
-// Size returns the total number of elements in the list
-func (ll *LinkedList) Size() int {
-	return ll.size
+// Count returns the total number of elements in the list
+func (ll *LinkedList) Count() int {
+	ll.RLock()
+	defer ll.RUnlock()
+
+	return ll.count()
 }
 
 // Empty clears the list
 func (ll *LinkedList) Empty() {
-	ll.head = nil
-	ll.tail = nil
-	ll.size = 0
+	ll.Lock()
+	defer ll.RLock()
+
+	ll.empty()
 }
 
 // WithInRange returns true if the given index is valid, otherwise false
 func (ll *LinkedList) WithInRange(index int) bool {
-	return index > -1 && index < ll.size
+	ll.RLock()
+	defer ll.RUnlock()
+
+	return ll.withInRange(index)
 }
 
 // String returns the string representation of the list
 func (ll *LinkedList) String() string {
-	str := ""
-	for elem := ll.head; elem != nil; elem = elem.next {
-		str += fmt.Sprintf("%v ", elem.value)
-	}
+	ll.RLock()
+	defer ll.RUnlock()
 
-	return str
-}
-
-// getElemByIdx returns the element at the given index
-func (ll *LinkedList) getElemByIdx(index int) *element {
-	elem := ll.head
-	for i := 0; i < index; i++ {
-		elem = elem.next
-	}
-
-	return elem
+	return ll.string()
 }

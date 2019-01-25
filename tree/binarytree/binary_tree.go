@@ -65,7 +65,7 @@ func (bt *BinaryTree) Insert(value interface{}) {
 
 // Delete a value from the tree
 func (bt *BinaryTree) Delete(value interface{}) bool {
-	if bt.Size() == 0 {
+	if bt.Count() == 0 {
 		return false
 	}
 
@@ -135,7 +135,7 @@ func (bt *BinaryTree) Delete(value interface{}) bool {
 
 // Contains returns true if the given value exists in the tree, otherwise false
 func (bt *BinaryTree) Contains(value interface{}) bool {
-	if bt.Size() == 0 {
+	if bt.Count() == 0 {
 		return false
 	}
 
@@ -159,7 +159,7 @@ func (bt *BinaryTree) Contains(value interface{}) bool {
 
 // Height returns the height of the binary tree (using node/level counts)
 func (bt *BinaryTree) Height() int {
-	if bt.Size() == 0 {
+	if bt.Count() == 0 {
 		return 0
 	}
 
@@ -168,7 +168,7 @@ func (bt *BinaryTree) Height() int {
 	height := 0
 
 	for {
-		nodeCount := q.Size()
+		nodeCount := q.Count()
 		if nodeCount == 0 {
 			break
 		}
@@ -192,7 +192,7 @@ func (bt *BinaryTree) Height() int {
 
 // Min returns the minimum value from the tree
 func (bt *BinaryTree) Min() interface{} {
-	if bt.Size() == 0 {
+	if bt.Count() == 0 {
 		return -1
 	}
 
@@ -207,7 +207,7 @@ func (bt *BinaryTree) Min() interface{} {
 
 // Max returns the maximum value from the tree
 func (bt *BinaryTree) Max() interface{} {
-	if bt.Size() == 0 {
+	if bt.Count() == 0 {
 		return -1
 	}
 
@@ -220,8 +220,8 @@ func (bt *BinaryTree) Max() interface{} {
 	}
 }
 
-// Size returns the total number of values in the tree
-func (bt *BinaryTree) Size() int {
+// Count returns the total number of values in the tree
+func (bt *BinaryTree) Count() int {
 	return bt.size
 }
 
@@ -235,7 +235,7 @@ func (bt *BinaryTree) Empty() {
 func (bt *BinaryTree) InOrder() list.List {
 	ll := linkedlist.New()
 
-	if bt.Size() != 0 {
+	if bt.Count() != 0 {
 		bt.root.inOrder(ll)
 	}
 

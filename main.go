@@ -8,9 +8,12 @@ import (
 )
 
 func main() {
-	// al := linkedlist.New()
+	// al := arraylist.New()
+	// for i := 0; i < 100; i++ {
+	// 	al.Append(i)
+	// }
 	// al.Append(10, 20, 30, 40, 50)
-	// fmt.Println(al.Values())
+	// fmt.Println(al.Values(), len(al.Values()))
 	// fmt.Println("Append 10, 20, 30, 40, 50 =>", al)
 
 	// al.Prepend(-10, 0, 5)
@@ -41,10 +44,10 @@ func main() {
 	// fmt.Println(s.Pop())
 
 	bt := binarytree.New(func(a, b interface{}) int {
-		at := a.(string)
-		bt := b.(string)
+		at := a.(int)
+		bt := b.(int)
 
-		if len(at) > len(bt) {
+		if at > bt {
 			return 1
 		} else if at < bt {
 			return -1
@@ -55,48 +58,42 @@ func main() {
 
 	var t tree.Tree
 	t = bt
-
-	t.Insert("aa")
-	t.Insert("aaaa")
-	t.Insert("aaa")
-	t.Insert("a")
-	t.Delete("a")
 	fmt.Println(t.InOrder())
 
-	// bt.Insert(100)
-	// bt.Insert(50)
-	// bt.Insert(20)
-	// bt.Insert(5)
-	// bt.Insert(10)
-	// bt.Insert(60)
-	// bt.Insert(55)
-	// bt.Insert(80)
-	// bt.Insert(200)
+	bt.Insert(100)
+	bt.Insert(50)
+	bt.Insert(20)
+	bt.Insert(5)
+	bt.Insert(10)
+	bt.Insert(60)
+	bt.Insert(55)
+	bt.Insert(80)
+	bt.Insert(200)
 
-	// fmt.Println(bt.InOrder())
-	// bt.Delete(50)
-	// fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder())
+	bt.Delete(50)
+	fmt.Println(bt.InOrder())
 
-	// bt.Delete(10)
-	// fmt.Println(bt.InOrder())
-	// bt.Delete(20)
-	// fmt.Println(bt.InOrder())
+	bt.Delete(10)
+	fmt.Println(bt.InOrder())
+	bt.Delete(20)
+	fmt.Println(bt.InOrder())
 
-	// bt.Delete(100)
-	// fmt.Println(bt.InOrder())
+	bt.Delete(100)
+	fmt.Println(bt.InOrder())
 
-	// bt.Delete(200)
-	// fmt.Println(bt.InOrder())
+	bt.Delete(200)
+	fmt.Println(bt.InOrder())
 
-	// bt.Delete(55)
-	// fmt.Println(bt.InOrder())
+	bt.Delete(55)
+	fmt.Println(bt.InOrder())
 
-	// bt.Delete(60)
-	// fmt.Println(bt.InOrder())
+	bt.Delete(60)
+	fmt.Println(bt.InOrder())
 
-	// bt.Delete(80)
-	// fmt.Println(bt.InOrder())
+	bt.Delete(80)
+	fmt.Println(bt.InOrder())
 
-	// bt.Delete(5)
-	// fmt.Println(bt.InOrder())
+	bt.Delete(5)
+	fmt.Println(bt.InOrder())
 }

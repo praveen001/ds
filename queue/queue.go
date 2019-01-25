@@ -29,12 +29,12 @@ func (q *Queue) Dequeue() (interface{}, bool) {
 
 // Peek returns the first value without remove it from the queue
 func (q *Queue) Peek() (interface{}, bool) {
-	return q.list.Get(q.list.Size() - 1)
+	return q.list.Get(q.list.Count() - 1)
 }
 
-// Size returns the total number of values in queue
-func (q *Queue) Size() int {
-	return q.list.Size()
+// Count returns the total number of values in queue
+func (q *Queue) Count() int {
+	return q.list.Count()
 }
 
 // Empty clears the queue

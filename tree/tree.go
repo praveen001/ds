@@ -10,7 +10,7 @@ type Tree interface {
 	Height() int
 	Min() interface{}
 	Max() interface{}
-	Size() int
+	Count() int
 	Empty()
 	InOrder() list.List
 }

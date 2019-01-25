@@ -18,16 +18,16 @@ type List interface {
 	Remove(index int) (interface{}, bool)
 
 	// Contains returns true if the given value exists in the list, otherwise false
-	Contains(value int) bool
+	Contains(value interface{}) bool
 
 	// IndexOf returns the index of the given value if it exists, otherwise it returns -1
-	IndexOf(value int) int
+	IndexOf(value interface{}) int
 
 	// Values returns all the values in the list as an array
 	Values() []interface{}
 
-	// Size returns the total number of elements in the list
-	Size() int
+	// Count returns the total number of elements in the list
+	Count() int
 
 	// Empty clears the list
 	Empty()
