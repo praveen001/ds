@@ -12,7 +12,7 @@ import (
 type BinaryTree struct {
 	root    *treeNode
 	size    int
-	compare utils.Comparator
+	compare utils.CompareFunc
 	sync.RWMutex
 }
 
@@ -24,7 +24,7 @@ type treeNode struct {
 }
 
 // New creates a new instance of binary tree and returns it
-func New(c utils.Comparator) *BinaryTree {
+func New(c utils.CompareFunc) *BinaryTree {
 	return &BinaryTree{
 		compare: c,
 	}

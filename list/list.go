@@ -49,7 +49,7 @@ type List interface {
 	Reverse() List
 
 	// Sort arrange the values in ascending or descending order
-	Sort(utils.Comparator)
+	Sort(utils.CompareFunc)
 
 	// Filter creates a new list with every value that pass a test
 	Filter(utils.FilterFunc) List

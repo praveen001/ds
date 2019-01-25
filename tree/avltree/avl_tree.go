@@ -12,7 +12,7 @@ import (
 type AvlTree struct {
 	root    *treeNode
 	size    int
-	compare utils.Comparator
+	compare utils.CompareFunc
 	sync.RWMutex
 }
 
@@ -24,7 +24,7 @@ type treeNode struct {
 }
 
 // New creates a new instance of binary tree and returns it
-func New(c utils.Comparator) *AvlTree {
+func New(c utils.CompareFunc) *AvlTree {
 	return &AvlTree{
 		compare: c,
 	}
@@ -83,12 +83,12 @@ func (at *AvlTree) Max() (interface{}, bool) {
 	return at.max()
 }
 
-// Count returns the total number of nodes in tree
-func (at *AvlTree) Count() int {
+// Length returns the total number of nodes in tree
+func (at *AvlTree) Length() int {
 	at.RLock()
 	defer at.RUnlock()
 
-	return at.count()
+	return at.length()
 }
 
 // Empty removes all the nodes from tree

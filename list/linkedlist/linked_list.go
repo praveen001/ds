@@ -146,7 +146,7 @@ func (ll *LinkedList) Reverse() list.List {
 }
 
 // Sort arrange the values in ascending or descending order
-func (ll *LinkedList) Sort(utils.Comparator) {
+func (ll *LinkedList) Sort(utils.CompareFunc) {
 
 }
 

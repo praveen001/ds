@@ -141,7 +141,7 @@ func (al *ArrayList) Reverse() list.List {
 }
 
 // Sort arrange the values in ascending or descending order
-func (al *ArrayList) Sort(utils.Comparator) {
+func (al *ArrayList) Sort(utils.CompareFunc) {
 
 }
 

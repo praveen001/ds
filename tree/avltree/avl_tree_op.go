@@ -35,7 +35,7 @@ func (at *AvlTree) insert(value interface{}) {
 }
 
 func (at *AvlTree) delete(value interface{}) bool {
-	if at.count() == 0 {
+	if at.length() == 0 {
 		return false
 	}
 
@@ -104,7 +104,7 @@ func (at *AvlTree) delete(value interface{}) bool {
 }
 
 func (at *AvlTree) contains(value interface{}) bool {
-	if at.count() == 0 {
+	if at.length() == 0 {
 		return false
 	}
 
@@ -127,7 +127,7 @@ func (at *AvlTree) contains(value interface{}) bool {
 }
 
 func (at *AvlTree) height() int {
-	if at.count() == 0 {
+	if at.length() == 0 {
 		return 0
 	}
 
@@ -136,7 +136,7 @@ func (at *AvlTree) height() int {
 	height := 0
 
 	for {
-		nodeCount := q.Count()
+		nodeCount := q.Length()
 		if nodeCount == 0 {
 			break
 		}
@@ -159,7 +159,7 @@ func (at *AvlTree) height() int {
 }
 
 func (at *AvlTree) min() (interface{}, bool) {
-	if at.count() == 0 {
+	if at.length() == 0 {
 		return nil, false
 	}
 
@@ -173,7 +173,7 @@ func (at *AvlTree) min() (interface{}, bool) {
 }
 
 func (at *AvlTree) max() (interface{}, bool) {
-	if at.count() == 0 {
+	if at.length() == 0 {
 		return nil, false
 	}
 
@@ -186,7 +186,7 @@ func (at *AvlTree) max() (interface{}, bool) {
 	}
 }
 
-func (at *AvlTree) count() int {
+func (at *AvlTree) length() int {
 	return at.size
 }
 
@@ -198,7 +198,7 @@ func (at *AvlTree) empty() {
 func (at *AvlTree) inOrder() list.List {
 	ll := linkedlist.New()
 
-	if at.count() != 0 {
+	if at.length() != 0 {
 		at.root.inOrder(ll)
 	}
 
