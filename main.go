@@ -41,24 +41,41 @@ func main() {
 
 	bt := binarytree.New()
 
-	bt.Insert(10)
-
-	bt.Insert(5)
-
-	bt.Insert(2)
-
+	bt.Insert(100)
+	bt.Insert(50)
 	bt.Insert(20)
+	bt.Insert(5)
+	bt.Insert(10)
+	bt.Insert(60)
+	bt.Insert(55)
+	bt.Insert(80)
+	bt.Insert(200)
 
 	fmt.Println(bt.InOrder())
 
-	fmt.Println(bt.Contains(3), bt.Contains(2), bt.Contains(20), bt.Contains(10))
-	fmt.Println(bt.Min())
+	bt.Delete(51)
+	fmt.Println(bt.InOrder())
 
-	fmt.Println(bt.Max())
+	bt.Delete(10)
+	fmt.Println(bt.InOrder())
+	bt.Delete(20)
+	fmt.Println(bt.InOrder())
 
-	// bt.Insert(1)
+	bt.Delete(100)
+	fmt.Println(bt.InOrder())
 
-	// bt.Insert(0)
+	bt.Delete(200)
+	fmt.Println(bt.InOrder())
 
-	fmt.Println(bt.Height())
+	bt.Delete(55)
+	fmt.Println(bt.InOrder())
+
+	bt.Delete(60)
+	fmt.Println(bt.InOrder())
+
+	bt.Delete(80)
+	fmt.Println(bt.InOrder())
+
+	bt.Delete(5)
+	fmt.Println(bt.InOrder())
 }

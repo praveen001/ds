@@ -1,6 +1,8 @@
 package binarytree
 
-import "github.com/praveen001/ds/queue"
+import (
+	"github.com/praveen001/ds/queue"
+)
 
 // BinaryTree represents a binary tree
 type BinaryTree struct {
@@ -52,6 +54,76 @@ func (bt *BinaryTree) Insert(value int) {
 			}
 		}
 	}
+}
+
+// Delete a value from the tree
+func (bt *BinaryTree) Delete(value int) bool {
+	if bt.Size() == 0 {
+		return false
+	}
+
+	bt.size--
+	node := bt.root
+	var parent *treeNode
+
+	for node != nil {
+		if node.value > value {
+			parent = node
+			node = node.left
+		} else if node.value < value {
+			parent = node
+			node = node.right
+		} else {
+
+			if node.left == nil && node.right == nil {
+				if parent == nil {
+					bt.root = nil
+				} else if parent.value > value {
+					parent.left = nil
+				} else {
+					parent.right = nil
+				}
+				return true
+			}
+
+			if node.left == nil {
+				if parent == nil {
+					bt.root = node.right
+				} else if parent.value > value {
+					parent.left = node.right
+				} else {
+					parent.right = node.right
+				}
+				return true
+			} else if node.right == nil {
+				if parent == nil {
+					bt.root = node.left
+				} else if parent.value > value {
+					parent.left = node.left
+				} else {
+					parent.right = node.right
+				}
+				return true
+			}
+
+			min := node.right
+			for {
+				if min.left == nil {
+					break
+				}
+				min = min.left
+			}
+
+			node.value = min.value
+			value = min.value
+			parent = node
+			node = node.right
+
+		}
+	}
+
+	bt.size++
+	return false
 }
 
 // Contains returns true if the given value exists in the tree, otherwise false
