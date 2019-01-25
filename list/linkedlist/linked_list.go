@@ -100,7 +100,7 @@ func (ll *LinkedList) Length() int {
 // Clear the list
 func (ll *LinkedList) Clear() {
 	ll.Lock()
-	defer ll.RLock()
+	defer ll.Unlock()
 
 	ll.clear()
 }
@@ -130,13 +130,19 @@ func (ll *LinkedList) Filter(fn utils.FilterFunc) list.List {
 }
 
 // Concat joins two or more lists together
-func (ll *LinkedList) Concat(...list.List) {
-	New()
+func (ll *LinkedList) Concat(lists ...list.List) list.List {
+	ll.RLock()
+	defer ll.RUnlock()
+
+	return ll.concat(lists...)
 }
 
 // Reverse reverses the order of items in the list
-func (ll *LinkedList) Reverse() {
+func (ll *LinkedList) Reverse() list.List {
+	ll.RLock()
+	defer ll.RUnlock()
 
+	return ll.reverse()
 }
 
 // Sort arrange the values in ascending or descending order
@@ -145,11 +151,17 @@ func (ll *LinkedList) Sort(utils.Comparator) {
 }
 
 // Map creates a new list with every value returned by the MapFunc
-func (ll *LinkedList) Map(utils.MapFunc) list.List {
-	return New()
+func (ll *LinkedList) Map(fn utils.MapFunc) list.List {
+	ll.RLock()
+	defer ll.RUnlock()
+
+	return ll.mp(fn)
 }
 
 // Clone creates a shallow copy and returns it
 func (ll *LinkedList) Clone() list.List {
-	return New()
+	ll.RLock()
+	defer ll.RUnlock()
+
+	return ll.clone()
 }

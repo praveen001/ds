@@ -30,7 +30,7 @@ func (s *Stack) Pop() (interface{}, bool) {
 
 // Peek returns the top element without removing it
 func (s *Stack) Peek() (interface{}, bool) {
-	return s.list.Get(s.list.Length() - 1)
+	return s.list.Get(0)
 }
 
 // Length returns the total values in the stack

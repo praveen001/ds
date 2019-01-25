@@ -125,13 +125,19 @@ func (al *ArrayList) Filter(fn utils.FilterFunc) list.List {
 }
 
 // Concat joins two or more lists together
-func (al *ArrayList) Concat(...list.List) {
-	New()
+func (al *ArrayList) Concat(lists ...list.List) list.List {
+	al.Lock()
+	defer al.Unlock()
+
+	return al.concat(lists...)
 }
 
 // Reverse reverses the order of items in the list
-func (al *ArrayList) Reverse() {
+func (al *ArrayList) Reverse() list.List {
+	al.RLock()
+	defer al.RUnlock()
 
+	return al.reverse()
 }
 
 // Sort arrange the values in ascending or descending order
@@ -140,11 +146,17 @@ func (al *ArrayList) Sort(utils.Comparator) {
 }
 
 // Map creates a new list with every value returned by the MapFunc
-func (al *ArrayList) Map(utils.MapFunc) list.List {
-	return New()
+func (al *ArrayList) Map(fn utils.MapFunc) list.List {
+	al.RLock()
+	defer al.RUnlock()
+
+	return al.mp(fn)
 }
 
 // Clone creates a shallow copy and returns it
 func (al *ArrayList) Clone() list.List {
-	return New()
+	al.RLock()
+	defer al.RUnlock()
+
+	return al.clone()
 }

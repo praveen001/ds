@@ -43,10 +43,10 @@ type List interface {
 	String() string
 
 	// Concat joins two or more lists together
-	Concat(...List)
+	Concat(...List) List
 
 	// Reverse reverses the order of items in the list
-	Reverse()
+	Reverse() List
 
 	// Sort arrange the values in ascending or descending order
 	Sort(utils.Comparator)

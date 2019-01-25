@@ -130,11 +130,11 @@ func (ll *LinkedList) withInRange(index int) bool {
 }
 
 func (ll *LinkedList) string() string {
-	str := ""
+	str := "["
 	for elem := ll.head; elem != nil; elem = elem.next {
 		str += fmt.Sprintf("%v ", elem.value)
 	}
-
+	str += "]"
 	return str
 }
 
@@ -148,13 +148,47 @@ func (ll *LinkedList) getElemByIdx(index int) *element {
 	return elem
 }
 
-func (ll *LinkedList) filter(fn utils.FilterFunc) list.List {
-	l := New()
-	for _, value := range ll.values() {
-		if fn(value) {
-			l.append(value)
+func (ll *LinkedList) filter(fn utils.FilterFunc) *LinkedList {
+	nal := New()
+	for elem := ll.head; elem != nil; elem = elem.next {
+		if fn(elem.value) {
+			nal.append(elem.value)
 		}
 	}
 
-	return l
+	return nal
+}
+
+func (ll *LinkedList) mp(fn utils.MapFunc) *LinkedList {
+	nal := New()
+	for elem := ll.head; elem != nil; elem = elem.next {
+		nal.append(fn(elem.value))
+	}
+
+	return nal
+}
+
+func (ll *LinkedList) concat(lists ...list.List) *LinkedList {
+	nal := ll.clone()
+	for _, ls := range lists {
+		nal.append(ls.Values()...)
+	}
+
+	return nal
+}
+
+func (ll *LinkedList) clone() *LinkedList {
+	nal := New()
+	nal.append(ll.values()...)
+
+	return nal
+}
+
+func (ll *LinkedList) reverse() *LinkedList {
+	nal := New()
+	for elem := ll.head; elem != nil; elem = elem.next {
+		nal.prepend(elem.value)
+	}
+
+	return nal
 }

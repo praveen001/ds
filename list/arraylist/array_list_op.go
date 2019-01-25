@@ -45,7 +45,7 @@ func (al *ArrayList) remove(index int) (interface{}, bool) {
 	if al.withInRange(index) {
 		value := al.elements[index]
 
-		newElems := make([]interface{}, al.size)
+		newElems := make([]interface{}, al.size-1)
 
 		copy(newElems, al.elements[:index])
 		copy(newElems[index:], al.elements[index+1:])
@@ -98,16 +98,47 @@ func (al *ArrayList) string() string {
 	return fmt.Sprintf("%v", al.elements)
 }
 
-func (al *ArrayList) filter(fn utils.FilterFunc) list.List {
-	al.RLock()
-	defer al.RUnlock()
-
-	l := New()
+func (al *ArrayList) filter(fn utils.FilterFunc) *ArrayList {
+	nal := New()
 	for _, value := range al.values() {
 		if fn(value) {
-			l.append(value)
+			nal.Append(value)
 		}
 	}
 
-	return l
+	return nal
+}
+
+func (al *ArrayList) mp(fn utils.MapFunc) *ArrayList {
+	nal := New()
+	for _, value := range al.values() {
+		nal.append(fn(value))
+	}
+
+	return nal
+}
+
+func (al *ArrayList) concat(lists ...list.List) *ArrayList {
+	nal := al.clone()
+	for _, ls := range lists {
+		nal.append(ls.Values()...)
+	}
+
+	return nal
+}
+
+func (al *ArrayList) clone() *ArrayList {
+	nal := New()
+	nal.append(al.values()...)
+
+	return nal
+}
+
+func (al *ArrayList) reverse() *ArrayList {
+	nal := New()
+	for _, value := range al.values() {
+		nal.prepend(value)
+	}
+
+	return nal
 }
