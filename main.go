@@ -8,6 +8,7 @@ import (
 	"github.com/praveen001/ds/queue"
 	"github.com/praveen001/ds/stack"
 	"github.com/praveen001/ds/tree"
+	"github.com/praveen001/ds/tree/avltree"
 	"github.com/praveen001/ds/tree/binarytree"
 )
 
@@ -175,10 +176,61 @@ func tryBinaryTree() {
 	fmt.Println(bt.InOrder())
 }
 
+func tryAVLTree() {
+	at := avltree.New(func(a, b interface{}) int {
+		awt := a.(int)
+		bwt := b.(int)
+
+		if awt > bwt {
+			return 1
+		} else if awt < bwt {
+			return -1
+		} else {
+			return 0
+		}
+	})
+
+	at.RInsert(10)
+	at.RInsert(3)
+	at.RInsert(18)
+	at.RInsert(2)
+	at.RInsert(4)
+	at.RInsert(13)
+	at.RInsert(40)
+
+	at.RInsert(39)
+
+	at.RInsert(12)
+	at.RInsert(38)
+	at.RInsert(14)
+	at.RInsert(11)
+
+	at.Delete(10)
+	at.Delete(12)
+
+	fmt.Println(at.InOrder(), at.Length())
+}
+
 func main() {
 	// tryArrayList()
 	// tryLinkedList()
 	// tryStack()
 	// tryQueue()
-	tryBinaryTree()
+	// tryBinaryTree()
+	tryAVLTree()
+
+	// s := stack.New()
+	// s.Push(10)
+	// s.Push(20)
+	// s.Push(30)
+	// s.Push(40)
+	// s.Push(50)
+	// fmt.Println("Stack", s, s.Length())
+	// for {
+	// 	p, ok := s.Pop()
+	// 	if !ok {
+	// 		break
+	// 	}
+	// 	fmt.Println(p)
+	// }
 }
