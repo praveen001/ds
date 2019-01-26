@@ -70,6 +70,7 @@ func tryLinkedList() {
 	}))
 
 	al.Remove(0)
+	al.Remove(3)
 	fmt.Println(al)
 
 	al.Set(0, 10)
@@ -274,13 +275,13 @@ func tryHashMap() {
 
 func main() {
 	// tryArrayList()
-	// tryLinkedList()
+	tryLinkedList()
 	// tryStack()
 	// tryQueue()
 	// tryBinaryTree()
 	// tryAVLTree()
 	// tryBinaryHeap()
-	tryHashMap()
+	// tryHashMap()
 
 	// s := stack.New()
 	// s.Push(10)
