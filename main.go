@@ -6,6 +6,7 @@ import (
 	"github.com/praveen001/ds/heap/binaryheap"
 	"github.com/praveen001/ds/list/arraylist"
 	"github.com/praveen001/ds/list/linkedlist"
+	"github.com/praveen001/ds/maps/hashmap"
 	"github.com/praveen001/ds/queue"
 	"github.com/praveen001/ds/stack"
 	"github.com/praveen001/ds/tree/avltree"
@@ -251,6 +252,14 @@ func tryBinaryHeap() {
 	// fmt.Println(bh.Pop())
 }
 
+func tryHashMap() {
+	hm := hashmap.New()
+
+	hm.Put("hello", "world")
+
+	fmt.Println(hm.Get("hello"))
+}
+
 func main() {
 	// tryArrayList()
 	// tryLinkedList()
@@ -258,7 +267,8 @@ func main() {
 	// tryQueue()
 	// tryBinaryTree()
 	// tryAVLTree()
-	tryBinaryHeap()
+	// tryBinaryHeap()
+	tryHashMap()
 
 	// s := stack.New()
 	// s.Push(10)
