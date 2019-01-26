@@ -12,3 +12,19 @@ type FilterFunc func(a interface{}) bool
 
 // MapFunc is a function used to map/transform some values
 type MapFunc func(a interface{}) interface{}
+
+// MaxInt returns maximum of two number
+func MaxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+// Abs returns absolute value
+func Abs(a int) int {
+	if a < 0 {
+		return a * -1
+	}
+	return a
+}

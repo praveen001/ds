@@ -10,17 +10,19 @@ import (
 
 // AvlTree represents a binary tree
 type AvlTree struct {
-	root    *treeNode
+	root    *Node
 	size    int
 	compare utils.CompareFunc
 	sync.RWMutex
 }
 
 // Node represents a node in a binary tree
-type treeNode struct {
-	value interface{}
-	left  *treeNode
-	right *treeNode
+type Node struct {
+	height  int
+	bFactor int
+	value   interface{}
+	left    *Node
+	right   *Node
 }
 
 // New creates a new instance of binary tree and returns it
@@ -31,8 +33,8 @@ func New(c utils.CompareFunc) *AvlTree {
 }
 
 // NewNode returns a new binary tree node with given value
-func newNode(value interface{}) *treeNode {
-	return &treeNode{value, nil, nil}
+func newNode(value interface{}) *Node {
+	return &Node{height: 1, value: value, left: nil, right: nil}
 }
 
 // Insert a given value into the tree
@@ -41,6 +43,14 @@ func (at *AvlTree) Insert(value interface{}) {
 	defer at.Unlock()
 
 	at.insert(value)
+}
+
+// RInsert a given value into the tree recursively
+func (at *AvlTree) RInsert(value interface{}) {
+	at.Lock()
+	defer at.Unlock()
+
+	at.root = at.rinsert(at.root, value)
 }
 
 // Delete a node (using value) from the tree
@@ -91,12 +101,12 @@ func (at *AvlTree) Length() int {
 	return at.length()
 }
 
-// Empty removes all the nodes from tree
-func (at *AvlTree) Empty() {
+// Clear removes all the nodes from tree
+func (at *AvlTree) Clear() {
 	at.Lock()
 	defer at.Unlock()
 
-	at.empty()
+	at.clear()
 }
 
 // InOrder returns a list.List with all values in-order

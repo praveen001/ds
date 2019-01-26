@@ -1,36 +1,109 @@
 package avltree
 
 import (
+	"github.com/praveen001/ds/stack"
+
 	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
-	"github.com/praveen001/ds/queue"
 )
 
 func (at *AvlTree) insert(value interface{}) {
-	at.size++
-
 	if at.root == nil {
 		at.root = newNode(value)
+		at.size++
 		return
 	}
 
+	isLeftInsert := true
+	s := stack.New()
+
 	node := at.root
 	for {
-		if at.compare(node.value, value) == -1 {
-			if node.right == nil {
-				node.right = newNode(value)
-				break
-			} else {
-				node = node.right
-			}
-		} else {
+		s.Push(node)
+		if comp := at.compare(node.value, value); comp == 1 {
 			if node.left == nil {
 				node.left = newNode(value)
 				break
 			} else {
 				node = node.left
 			}
+		} else if comp == -1 {
+			if node.right == nil {
+				node.right = newNode(value)
+				isLeftInsert = false
+				break
+			} else {
+				node = node.right
+			}
+		} else {
+			return
 		}
+	}
+	at.size++
+
+	var prev *Node
+	for {
+		p, ok := s.Pop()
+		if !ok {
+			break
+		}
+		node = p.(*Node)
+
+		if prev != nil {
+			if comp := at.compare(node.value, prev.value); comp == 1 {
+				node.left = prev
+			} else if comp == -1 {
+				node.right = prev
+			}
+			prev = nil
+		}
+		node.recomputeHeight()
+
+		prev = nil
+		if node.bFactor > 1 {
+			if !isLeftInsert {
+				node.left = at.leftRotate(node.left)
+			}
+			prev = at.rightRotate(node)
+		} else if node.bFactor < -1 {
+			if isLeftInsert {
+				node.right = at.rightRotate(node.right)
+			}
+			prev = at.leftRotate(node)
+		}
+	}
+	if prev != nil {
+		at.root = prev
+	}
+}
+
+func (at *AvlTree) rinsert(node *Node, value interface{}) *Node {
+	if node == nil {
+		at.size++
+		return newNode(value)
+	}
+
+	if comp := at.compare(node.value, value); comp == 1 {
+		node.left = at.rinsert(node.left, value)
+	} else if comp == -1 {
+		node.right = at.rinsert(node.right, value)
+	} else {
+		return nil
+	}
+
+	node.recomputeHeight()
+	if node.bFactor > 1 {
+		if at.compare(node.left.value, value) == -1 {
+			node.left = at.leftRotate(node.left)
+		}
+		return at.rightRotate(node)
+	} else if node.bFactor < -1 {
+		if at.compare(node.right.value, value) == 1 {
+			node.right = at.rightRotate(node.right)
+		}
+		return at.leftRotate(node)
+	} else {
+		return node
 	}
 }
 
@@ -41,7 +114,7 @@ func (at *AvlTree) delete(value interface{}) bool {
 
 	at.size--
 	node := at.root
-	var parent *treeNode
+	var parent *Node
 
 	for node != nil {
 		if comp := at.compare(node.value, value); comp == 1 {
@@ -127,35 +200,10 @@ func (at *AvlTree) contains(value interface{}) bool {
 }
 
 func (at *AvlTree) height() int {
-	if at.length() == 0 {
+	if at.root == nil {
 		return 0
 	}
-
-	q := queue.New()
-	q.Enqueue(at.root)
-	height := 0
-
-	for {
-		nodeCount := q.Length()
-		if nodeCount == 0 {
-			break
-		}
-
-		height++
-		for i := 0; i < nodeCount; i++ {
-			n, _ := q.Dequeue()
-			node := n.(*treeNode)
-
-			if node.left != nil {
-				q.Enqueue(node.left)
-			}
-			if node.right != nil {
-				q.Enqueue(node.right)
-			}
-		}
-	}
-
-	return height
+	return at.root.height
 }
 
 func (at *AvlTree) min() (interface{}, bool) {
@@ -190,7 +238,7 @@ func (at *AvlTree) length() int {
 	return at.size
 }
 
-func (at *AvlTree) empty() {
+func (at *AvlTree) clear() {
 	at.root = nil
 	at.size = 0
 }
@@ -205,14 +253,28 @@ func (at *AvlTree) inOrder() list.List {
 	return ll
 }
 
-func (n *treeNode) inOrder(ll *linkedlist.LinkedList) {
-	if n.left != nil {
-		n.left.inOrder(ll)
-	}
+func (at *AvlTree) leftRotate(x *Node) *Node {
+	y := x.right
+	z := y.left
 
-	ll.Append(n.value)
+	y.left = x
+	x.right = z
 
-	if n.right != nil {
-		n.right.inOrder(ll)
-	}
+	x.recomputeHeight()
+	y.recomputeHeight()
+
+	return y
+}
+
+func (at *AvlTree) rightRotate(x *Node) *Node {
+	y := x.left
+	z := y.right
+
+	y.right = x
+	x.left = z
+
+	x.recomputeHeight()
+	y.recomputeHeight()
+
+	return y
 }
