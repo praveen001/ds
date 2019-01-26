@@ -16,6 +16,9 @@ func tryArrayList() {
 	al.Append(1, 2, 3, 4, 5, 6)
 	fmt.Println(al)
 
+	al.Swap(0, 1)
+	fmt.Println(al)
+
 	al.Prepend(0, -1)
 	fmt.Println(al)
 
@@ -49,6 +52,9 @@ func tryLinkedList() {
 	al := linkedlist.New()
 
 	al.Append(1, 2, 3, 4, 5, 6)
+	fmt.Println(al)
+
+	al.Swap(0, 1)
 	fmt.Println(al)
 
 	al.Prepend(0, -1)
@@ -220,11 +226,11 @@ func tryAVLTree() {
 }
 
 func main() {
-	// tryArrayList()
+	tryArrayList()
 	// tryLinkedList()
 	// tryStack()
 	// tryQueue()
-	tryBinaryTree()
+	// tryBinaryTree()
 	// tryAVLTree()
 
 	// s := stack.New()

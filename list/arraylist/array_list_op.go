@@ -142,3 +142,17 @@ func (al *ArrayList) reverse() *ArrayList {
 
 	return nal
 }
+
+func (al *ArrayList) swap(a, b int) bool {
+	valA, validA := al.get(a)
+	valB, validB := al.get(b)
+
+	if !validA || !validB {
+		return false
+	}
+
+	al.set(a, valB)
+	al.set(b, valA)
+
+	return true
+}

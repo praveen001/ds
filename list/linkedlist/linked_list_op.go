@@ -192,3 +192,17 @@ func (ll *LinkedList) reverse() *LinkedList {
 
 	return nal
 }
+
+func (ll *LinkedList) swap(a, b int) bool {
+	valA, validA := ll.get(a)
+	valB, validB := ll.get(b)
+
+	if !validA || !validB {
+		return false
+	}
+
+	ll.set(a, valB)
+	ll.set(b, valA)
+
+	return true
+}

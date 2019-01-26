@@ -160,3 +160,11 @@ func (al *ArrayList) Clone() list.List {
 
 	return al.clone()
 }
+
+// Swap two values based on index
+func (al *ArrayList) Swap(a, b int) bool {
+	al.Lock()
+	defer al.Unlock()
+
+	return al.swap(a, b)
+}

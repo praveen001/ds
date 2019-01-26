@@ -165,3 +165,11 @@ func (ll *LinkedList) Clone() list.List {
 
 	return ll.clone()
 }
+
+// Swap two values based on index
+func (ll *LinkedList) Swap(a, b int) bool {
+	ll.Lock()
+	defer ll.Unlock()
+
+	return ll.swap(a, b)
+}

@@ -59,4 +59,6 @@ type List interface {
 
 	// Clone creates a shallow copy and returns it
 	Clone() List
+
+	Swap(a, b int) bool
 }
