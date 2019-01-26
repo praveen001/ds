@@ -1,6 +1,6 @@
 package hashmap
 
-func (hm *HashMap) put(key, val interface{}) {
+func (hm *HashMap) set(key, val interface{}) {
 	hm.m[key] = val
 }
 
@@ -10,25 +10,11 @@ func (hm *HashMap) get(key interface{}) (interface{}, bool) {
 	return val, ok
 }
 
-func (hm *HashMap) contains(key interface{}) bool {
-	_, ok := hm.m[key]
-
-	return ok
-}
-
-func (hm *HashMap) delete(key interface{}) bool {
+func (hm *HashMap) remove(key interface{}) bool {
 	_, ok := hm.m[key]
 	delete(hm.m, key)
 
 	return ok
-}
-
-func (hm *HashMap) length() int {
-	return len(hm.m)
-}
-
-func (hm *HashMap) clear() {
-	hm.m = make(map[interface{}]interface{})
 }
 
 func (hm *HashMap) keys() []interface{} {
@@ -53,4 +39,18 @@ func (hm *HashMap) values() []interface{} {
 	}
 
 	return vals
+}
+
+func (hm *HashMap) contains(key interface{}) bool {
+	_, ok := hm.m[key]
+
+	return ok
+}
+
+func (hm *HashMap) length() int {
+	return len(hm.m)
+}
+
+func (hm *HashMap) clear() {
+	hm.m = make(map[interface{}]interface{})
 }

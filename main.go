@@ -255,7 +255,7 @@ func tryBinaryHeap() {
 func tryHashMap() {
 	hm := hashmap.New()
 
-	hm.Put("hello", "world")
+	hm.Set("hello", "world")
 
 	fmt.Println(hm.Get("hello"))
 
@@ -264,8 +264,8 @@ func tryHashMap() {
 	fmt.Println(hm.Values())
 	fmt.Println(hm.Contains("hello"))
 
-	fmt.Println(hm.Delete("hello"))
-	hm.Put("hello2", "world2")
+	fmt.Println(hm.Remove("hello"))
+	hm.Set("hello2", "world2")
 	fmt.Println(hm.Length())
 	hm.Clear()
 	fmt.Println(hm.Values())

@@ -15,12 +15,12 @@ func New() *HashMap {
 	}
 }
 
-// Put a value in hashmap
-func (hm *HashMap) Put(key, val interface{}) {
+// Set a value in hashmap
+func (hm *HashMap) Set(key, val interface{}) {
 	hm.Lock()
 	defer hm.Unlock()
 
-	hm.put(key, val)
+	hm.set(key, val)
 }
 
 // Get finds value by key and returns it, if found, otherwise it returns nil
@@ -31,36 +31,12 @@ func (hm *HashMap) Get(key interface{}) (interface{}, bool) {
 	return hm.get(key)
 }
 
-// Contains return whether given key in exists in hashmap
-func (hm *HashMap) Contains(key interface{}) bool {
-	hm.RLock()
-	defer hm.RUnlock()
-
-	return hm.contains(key)
-}
-
-// Delete removes a value from hashmap
-func (hm *HashMap) Delete(key interface{}) bool {
+// Remove a value from hashmap
+func (hm *HashMap) Remove(key interface{}) bool {
 	hm.Lock()
 	defer hm.Unlock()
 
-	return hm.delete(key)
-}
-
-// Length returns total number of entries in hashmap
-func (hm *HashMap) Length() int {
-	hm.RLock()
-	defer hm.RUnlock()
-
-	return hm.length()
-}
-
-// Clear removes all the entries from hashmap
-func (hm *HashMap) Clear() {
-	hm.Lock()
-	defer hm.Unlock()
-
-	hm.clear()
+	return hm.remove(key)
 }
 
 // Keys returns list of keys present in hashmap
@@ -77,4 +53,28 @@ func (hm *HashMap) Values() []interface{} {
 	defer hm.RUnlock()
 
 	return hm.values()
+}
+
+// Contains return whether given key in exists in hashmap
+func (hm *HashMap) Contains(key interface{}) bool {
+	hm.RLock()
+	defer hm.RUnlock()
+
+	return hm.contains(key)
+}
+
+// Length returns total number of entries in hashmap
+func (hm *HashMap) Length() int {
+	hm.RLock()
+	defer hm.RUnlock()
+
+	return hm.length()
+}
+
+// Clear removes all the entries from hashmap
+func (hm *HashMap) Clear() {
+	hm.Lock()
+	defer hm.Unlock()
+
+	hm.clear()
 }
