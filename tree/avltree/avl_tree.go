@@ -37,36 +37,28 @@ func newNode(value interface{}) *Node {
 	return &Node{height: 1, value: value, left: nil, right: nil}
 }
 
-// Insert a given value into the tree
-func (at *AvlTree) Insert(value interface{}) bool {
+// Add a given value into the tree
+func (at *AvlTree) Add(value interface{}) bool {
 	at.Lock()
 	defer at.Unlock()
 
-	return at.insert(value)
+	return at.add(value)
 }
 
-// RInsert a given value into the tree recursively
-func (at *AvlTree) RInsert(value interface{}) {
+// RAdd a given value into the tree recursively
+func (at *AvlTree) RAdd(value interface{}) {
 	at.Lock()
 	defer at.Unlock()
 
-	at.root = at.rinsert(at.root, value)
+	at.root = at.radd(at.root, value)
 }
 
-// Delete a node (using value) from the tree
-func (at *AvlTree) Delete(value interface{}) bool {
+// Remove a node (using value) from the tree
+func (at *AvlTree) Remove(value interface{}) bool {
 	at.Lock()
 	defer at.Unlock()
 
-	return at.delete(value)
-}
-
-// Contains return true if value exists in tree, otherwise false
-func (at *AvlTree) Contains(value interface{}) bool {
-	at.RLock()
-	defer at.RUnlock()
-
-	return at.contains(value)
+	return at.remove(value)
 }
 
 // Height returns the height of the tree (node/level count)
@@ -91,6 +83,14 @@ func (at *AvlTree) Max() (interface{}, bool) {
 	defer at.RUnlock()
 
 	return at.max()
+}
+
+// Contains return true if value exists in tree, otherwise false
+func (at *AvlTree) Contains(value interface{}) bool {
+	at.RLock()
+	defer at.RUnlock()
+
+	return at.contains(value)
 }
 
 // Length returns the total number of nodes in tree

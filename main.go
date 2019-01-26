@@ -140,41 +140,41 @@ func tryBinaryTree() {
 		}
 	})
 
-	bt.Insert(100)
-	bt.Insert(50)
-	bt.Insert(20)
-	bt.Insert(5)
-	bt.Insert(10)
-	bt.Insert(60)
-	bt.Insert(55)
-	bt.Insert(80)
-	bt.Insert(200)
+	bt.Add(100)
+	bt.Add(50)
+	bt.Add(20)
+	bt.Add(5)
+	bt.Add(10)
+	bt.Add(60)
+	bt.Add(55)
+	bt.Add(80)
+	bt.Add(200)
 
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
-	bt.Delete(50)
+	bt.Remove(50)
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
-	bt.Delete(10)
+	bt.Remove(10)
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
-	bt.Delete(20)
-	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
-
-	bt.Delete(100)
+	bt.Remove(20)
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
-	bt.Delete(200)
+	bt.Remove(100)
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
-	bt.Delete(55)
+	bt.Remove(200)
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
-	bt.Delete(60)
+	bt.Remove(55)
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
-	bt.Delete(80)
+	bt.Remove(60)
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
-	bt.Delete(5)
+	bt.Remove(80)
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
+
+	bt.Remove(5)
 	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 }
 
@@ -192,38 +192,38 @@ func tryAVLTree() {
 		}
 	})
 
-	// at.RInsert(10)
-	// at.RInsert(3)
-	// at.RInsert(18)
-	// at.RInsert(2)
-	// at.RInsert(4)
-	// at.RInsert(13)
-	// at.RInsert(40)
+	// at.RAdd(10)
+	// at.RAdd(3)
+	// at.RAdd(18)
+	// at.RAdd(2)
+	// at.RAdd(4)
+	// at.RAdd(13)
+	// at.RAdd(40)
 
-	// at.RInsert(39)
+	// at.RAdd(39)
 
-	// at.RInsert(12)
-	// at.RInsert(38)
-	// at.RInsert(14)
-	// at.RInsert(11)
+	// at.RAdd(12)
+	// at.RAdd(38)
+	// at.RAdd(14)
+	// at.RAdd(11)
 
-	// at.Delete(10)
-	// at.Delete(12)
+	// at.Remove(10)
+	// at.Remove(12)
 
 	// fmt.Println(at.InOrder(), at.Length())
 
-	at.RInsert(9)
-	at.RInsert(5)
-	at.Insert(10)
-	at.Insert(0)
-	at.Insert(6)
-	at.Insert(11)
-	at.RInsert(-1)
-	at.RInsert(1)
-	at.RInsert(2)
+	at.RAdd(9)
+	at.RAdd(5)
+	at.Add(10)
+	at.Add(0)
+	at.Add(6)
+	at.Add(11)
+	at.RAdd(-1)
+	at.RAdd(1)
+	at.RAdd(2)
 	fmt.Println(at.PreOrder(), at.Length())
 
-	at.Delete(10)
+	at.Remove(10)
 	fmt.Println(at.PreOrder(), at.Length())
 }
 

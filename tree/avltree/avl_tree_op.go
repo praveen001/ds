@@ -7,7 +7,7 @@ import (
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
-func (at *AvlTree) insert(value interface{}) bool {
+func (at *AvlTree) add(value interface{}) bool {
 	if at.length() == 0 {
 		at.root = newNode(value)
 		at.size++
@@ -43,16 +43,16 @@ func (at *AvlTree) insert(value interface{}) bool {
 	return true
 }
 
-func (at *AvlTree) rinsert(node *Node, value interface{}) *Node {
+func (at *AvlTree) radd(node *Node, value interface{}) *Node {
 	if node == nil {
 		at.size++
 		return newNode(value)
 	}
 
 	if comp := at.compare(node.value, value); comp == 1 {
-		node.left = at.rinsert(node.left, value)
+		node.left = at.radd(node.left, value)
 	} else if comp == -1 {
-		node.right = at.rinsert(node.right, value)
+		node.right = at.radd(node.right, value)
 	} else {
 		return nil
 	}
@@ -73,7 +73,7 @@ func (at *AvlTree) rinsert(node *Node, value interface{}) *Node {
 	}
 }
 
-func (at *AvlTree) delete(value interface{}) bool {
+func (at *AvlTree) remove(value interface{}) bool {
 	if at.length() == 0 {
 		return false
 	}
@@ -146,29 +146,6 @@ func (at *AvlTree) delete(value interface{}) bool {
 	return false
 }
 
-func (at *AvlTree) contains(value interface{}) bool {
-	if at.length() == 0 {
-		return false
-	}
-
-	node := at.root
-	for {
-		if comp := at.compare(node.value, value); comp == -1 {
-			if node.right == nil {
-				return false
-			}
-			node = node.right
-		} else if comp == 1 {
-			if node.left == nil {
-				return false
-			}
-			node = node.left
-		} else {
-			return true
-		}
-	}
-}
-
 func (at *AvlTree) height() int {
 	if at.root == nil {
 		return 0
@@ -201,6 +178,29 @@ func (at *AvlTree) max() (interface{}, bool) {
 			return node.value, true
 		}
 		node = node.right
+	}
+}
+
+func (at *AvlTree) contains(value interface{}) bool {
+	if at.length() == 0 {
+		return false
+	}
+
+	node := at.root
+	for {
+		if comp := at.compare(node.value, value); comp == -1 {
+			if node.right == nil {
+				return false
+			}
+			node = node.right
+		} else if comp == 1 {
+			if node.left == nil {
+				return false
+			}
+			node = node.left
+		} else {
+			return true
+		}
 	}
 }
 

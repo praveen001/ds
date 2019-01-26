@@ -4,14 +4,11 @@ import "github.com/praveen001/ds/list"
 
 // Tree ..
 type Tree interface {
-	// Insert a given value into the tree
-	Insert(value interface{}) bool
+	// Add a given value into the tree
+	Add(value interface{}) bool
 
-	// Delete a node (using value) from the tree
-	Delete(value interface{}) bool
-
-	// Contains return true if value exists in tree, otherwise false
-	Contains(value interface{}) bool
+	// Remove a node (using value) from the tree
+	Remove(value interface{}) bool
 
 	// Height returns the height of the tree (node/level count)
 	Height() int
@@ -22,6 +19,9 @@ type Tree interface {
 	// Max returns the maximum value present in the tree
 	Max() (interface{}, bool)
 
+	// Contains return true if value exists in tree, otherwise false
+	Contains(value interface{}) bool
+
 	// Length returns the total number of nodes in tree
 	Length() int
 
@@ -30,4 +30,10 @@ type Tree interface {
 
 	// InOrder returns a list.List with all values in-order
 	InOrder() list.List
+
+	// PreOrder returns a list.List with all values in pre order
+	PreOrder() list.List
+
+	// PostOrder returns a list.List with all values in post order
+	PostOrder() list.List
 }

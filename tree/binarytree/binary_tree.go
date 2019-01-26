@@ -36,28 +36,20 @@ func newNode(value interface{}) *Node {
 	return &Node{1, value, nil, nil}
 }
 
-// Insert a given value into the tree
-func (bt *BinaryTree) Insert(value interface{}) bool {
+// Add a given value into the tree
+func (bt *BinaryTree) Add(value interface{}) bool {
 	bt.Lock()
 	defer bt.Unlock()
 
-	return bt.insert(value)
+	return bt.add(value)
 }
 
-// Delete a node (using value) from the tree
-func (bt *BinaryTree) Delete(value interface{}) bool {
+// Remove a node (using value) from the tree
+func (bt *BinaryTree) Remove(value interface{}) bool {
 	bt.Lock()
 	defer bt.Unlock()
 
-	return bt.delete(value)
-}
-
-// Contains return true if value exists in tree, otherwise false
-func (bt *BinaryTree) Contains(value interface{}) bool {
-	bt.RLock()
-	defer bt.RUnlock()
-
-	return bt.contains(value)
+	return bt.remove(value)
 }
 
 // Height returns the height of the tree (node/level count)
@@ -82,6 +74,14 @@ func (bt *BinaryTree) Max() (interface{}, bool) {
 	defer bt.RUnlock()
 
 	return bt.max()
+}
+
+// Contains return true if value exists in tree, otherwise false
+func (bt *BinaryTree) Contains(value interface{}) bool {
+	bt.RLock()
+	defer bt.RUnlock()
+
+	return bt.contains(value)
 }
 
 // Length returns the total number of nodes in tree
