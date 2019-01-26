@@ -10,10 +10,22 @@ type Queue struct {
 	list list.List
 }
 
+// Config for queue
+type Config struct {
+	List list.List
+}
+
 // New creates a new queue and returns it
 func New() *Queue {
 	return &Queue{
 		list: linkedlist.New(),
+	}
+}
+
+// NewWithConfig creates a new queue with given config
+func NewWithConfig(c *Config) *Queue {
+	return &Queue{
+		list: c.List,
 	}
 }
 

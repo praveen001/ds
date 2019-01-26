@@ -13,10 +13,23 @@ type BinaryHeap struct {
 	compare utils.CompareFunc
 }
 
+// Config for binary heap
+type Config struct {
+	List list.List
+}
+
 // New returns a empty binary heap
 func New(fn utils.CompareFunc) *BinaryHeap {
 	return &BinaryHeap{
 		list:    linkedlist.New(),
+		compare: fn,
+	}
+}
+
+// NewWithConfig returns a empty binary heap with config
+func NewWithConfig(c *Config, fn utils.CompareFunc) *BinaryHeap {
+	return &BinaryHeap{
+		list:    c.List,
 		compare: fn,
 	}
 }

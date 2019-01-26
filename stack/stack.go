@@ -10,10 +10,22 @@ type Stack struct {
 	list list.List
 }
 
+// Config config for stack
+type Config struct {
+	List list.List
+}
+
 // New creates a new stack and returns it
 func New() *Stack {
 	return &Stack{
 		list: linkedlist.New(),
+	}
+}
+
+// NewWithConfig creates a new stack with given config
+func NewWithConfig(c *Config) *Stack {
+	return &Stack{
+		list: c.List,
 	}
 }
 
