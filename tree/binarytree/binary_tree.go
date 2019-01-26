@@ -36,11 +36,11 @@ func newNode(value interface{}) *Node {
 }
 
 // Insert a given value into the tree
-func (bt *BinaryTree) Insert(value interface{}) {
+func (bt *BinaryTree) Insert(value interface{}) bool {
 	bt.Lock()
 	defer bt.Unlock()
 
-	bt.insert(value)
+	return bt.insert(value)
 }
 
 // Delete a node (using value) from the tree

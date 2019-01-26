@@ -6,32 +6,34 @@ import (
 	"github.com/praveen001/ds/queue"
 )
 
-func (bt *BinaryTree) insert(value interface{}) {
-	bt.size++
-
+func (bt *BinaryTree) insert(value interface{}) bool {
 	if bt.root == nil {
 		bt.root = newNode(value)
-		return
+		bt.size++
+		return true
 	}
 
 	node := bt.root
 	for {
-		if bt.compare(node.value, value) == -1 {
+		if comp := bt.compare(node.value, value); comp == -1 {
 			if node.right == nil {
 				node.right = newNode(value)
 				break
-			} else {
-				node = node.right
 			}
-		} else {
+			node = node.right
+		} else if comp == 1 {
 			if node.left == nil {
 				node.left = newNode(value)
 				break
-			} else {
-				node = node.left
 			}
+			node = node.left
+		} else {
+			return false
 		}
 	}
+
+	bt.size++
+	return true
 }
 
 func (bt *BinaryTree) delete(value interface{}) bool {

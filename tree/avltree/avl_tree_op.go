@@ -7,11 +7,11 @@ import (
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
-func (at *AvlTree) insert(value interface{}) {
-	if at.root == nil {
+func (at *AvlTree) insert(value interface{}) bool {
+	if at.length() == 0 {
 		at.root = newNode(value)
 		at.size++
-		return
+		return true
 	}
 
 	s := stack.New()
@@ -34,45 +34,13 @@ func (at *AvlTree) insert(value interface{}) {
 				node = node.right
 			}
 		} else {
-			return
+			return false
 		}
 	}
 	at.size++
 
-	var prev *Node
-	for {
-		p, ok := s.Pop()
-		if !ok {
-			break
-		}
-		node = p.(*Node)
-
-		if prev != nil {
-			if comp := at.compare(node.value, prev.value); comp == 1 {
-				node.left = prev
-			} else if comp == -1 {
-				node.right = prev
-			}
-			prev = nil
-		}
-		node.recomputeHeight()
-
-		prev = nil
-		if node.bFactor > 1 {
-			if node.left.bFactor < 0 {
-				node.left = at.leftRotate(node.left)
-			}
-			prev = at.rightRotate(node)
-		} else if node.bFactor < -1 {
-			if node.right.bFactor > 0 {
-				node.right = at.rightRotate(node.right)
-			}
-			prev = at.leftRotate(node)
-		}
-	}
-	if prev != nil {
-		at.root = prev
-	}
+	at.rebalance(s)
+	return true
 }
 
 func (at *AvlTree) rinsert(node *Node, value interface{}) *Node {
@@ -91,12 +59,12 @@ func (at *AvlTree) rinsert(node *Node, value interface{}) *Node {
 
 	node.recomputeHeight()
 	if node.bFactor > 1 {
-		if at.compare(node.left.value, value) == -1 {
+		if node.left.bFactor < 0 {
 			node.left = at.leftRotate(node.left)
 		}
 		return at.rightRotate(node)
 	} else if node.bFactor < -1 {
-		if at.compare(node.right.value, value) == 1 {
+		if node.right.bFactor > 0 {
 			node.right = at.rightRotate(node.right)
 		}
 		return at.leftRotate(node)
@@ -111,10 +79,12 @@ func (at *AvlTree) delete(value interface{}) bool {
 	}
 
 	at.size--
-	node := at.root
 	var parent *Node
+	s := stack.New()
 
+	node := at.root
 	for node != nil {
+		s.Push(node)
 		if comp := at.compare(node.value, value); comp == 1 {
 			parent = node
 			node = node.left
@@ -122,35 +92,38 @@ func (at *AvlTree) delete(value interface{}) bool {
 			parent = node
 			node = node.right
 		} else {
-
+			comp := at.compare(parent.value, value)
 			if node.left == nil && node.right == nil {
 				if parent == nil {
 					at.root = nil
-				} else if comp := at.compare(parent.value, value); comp == 1 {
+				} else if comp == 1 {
 					parent.left = nil
 				} else {
 					parent.right = nil
 				}
+				at.rebalance(s)
 				return true
 			}
 
 			if node.left == nil {
 				if parent == nil {
 					at.root = node.right
-				} else if comp := at.compare(parent.value, value); comp == 1 {
+				} else if comp == 1 {
 					parent.left = node.right
 				} else {
 					parent.right = node.right
 				}
+				at.rebalance(s)
 				return true
 			} else if node.right == nil {
 				if parent == nil {
 					at.root = node.left
-				} else if comp := at.compare(parent.value, value); comp == 1 {
+				} else if comp == 1 {
 					parent.left = node.left
 				} else {
 					parent.right = node.right
 				}
+				at.rebalance(s)
 				return true
 			}
 
@@ -275,4 +248,41 @@ func (at *AvlTree) rightRotate(x *Node) *Node {
 	y.recomputeHeight()
 
 	return y
+}
+
+func (at *AvlTree) rebalance(s *stack.Stack) {
+	var prev, node *Node
+	for {
+		p, ok := s.Pop()
+		if !ok {
+			break
+		}
+		node = p.(*Node)
+
+		if prev != nil {
+			if comp := at.compare(node.value, prev.value); comp == 1 {
+				node.left = prev
+			} else if comp == -1 {
+				node.right = prev
+			}
+			prev = nil
+		}
+		node.recomputeHeight()
+
+		prev = nil
+		if node.bFactor > 1 {
+			if node.left.bFactor < 0 {
+				node.left = at.leftRotate(node.left)
+			}
+			prev = at.rightRotate(node)
+		} else if node.bFactor < -1 {
+			if node.right.bFactor > 0 {
+				node.right = at.rightRotate(node.right)
+			}
+			prev = at.leftRotate(node)
+		}
+	}
+	if prev != nil {
+		at.root = prev
+	}
 }

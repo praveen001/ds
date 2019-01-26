@@ -38,11 +38,11 @@ func newNode(value interface{}) *Node {
 }
 
 // Insert a given value into the tree
-func (at *AvlTree) Insert(value interface{}) {
+func (at *AvlTree) Insert(value interface{}) bool {
 	at.Lock()
 	defer at.Unlock()
 
-	at.insert(value)
+	return at.insert(value)
 }
 
 // RInsert a given value into the tree recursively

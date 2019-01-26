@@ -5,7 +5,7 @@ import "github.com/praveen001/ds/list"
 // Tree ..
 type Tree interface {
 	// Insert a given value into the tree
-	Insert(value interface{})
+	Insert(value interface{}) bool
 
 	// Delete a node (using value) from the tree
 	Delete(value interface{}) bool
