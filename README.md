@@ -5,6 +5,7 @@ All data structure implementations are safe for concurrent access (through mutex
 -   [List ](https://github.com/praveen001/ds/blob/master/README.md#list-interface)
 	- [Array List](https://github.com/praveen001/ds/blob/master/README.md#array-list)
 	- [Singly Linked List](https://github.com/praveen001/ds/blob/master/README.md#singly-linked-list)
+	- [Doubly Linked List](https://github.com/praveen001/ds/blob/master/README.md#doubly-linked-list)
 -   [Queue](https://github.com/praveen001/ds/blob/master/README.md#queue)
 -   [Stack](https://github.com/praveen001/ds/blob/master/README.md#stack)
 -   [Tree](https://github.com/praveen001/ds/blob/master/README.md#tree-interface)
@@ -86,7 +87,11 @@ type List interface {
 
 ## Singly Linked List
 
--   Array list implements `Tree` interface.
+-   singly linked list implements `Tree` interface.
+
+## Doubly Linked List
+
+- Doubly linked list implements `Tree` interface.
 
 **Usage**
 
