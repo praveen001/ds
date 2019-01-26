@@ -1,18 +1,13 @@
 # Data structures
+
 All data structure implementations are safe for concurrent access (through mutex).
 
-- [List ](https://github.com/praveen001/ds/blob/master/README.md#list-interface)
-	- [Array List](https://github.com/praveen001/ds/blob/master/README.md#array-list)
-	- [Singly Linked List](https://github.com/praveen001/ds/blob/master/README.md#singly-linked-list)
-- [Queue](https://github.com/praveen001/ds/blob/master/README.md#queue)
-- [Stack](https://github.com/praveen001/ds/blob/master/README.md#stack)
-- [Tree](https://github.com/praveen001/ds/blob/master/README.md#tree-interface)
-	- [Binary Tree](https://github.com/praveen001/ds/blob/master/README.md#binary-tree)
-	- [AVL Tree](https://github.com/praveen001/ds/blob/master/README.md#avl-tree)
-- [Heap]()
-	- [Binary Heap](https://github.com/praveen001/ds/blob/master/README.md#binary-heap)
-- [Hash]()
-	- [HashMap](https://github.com/praveen001/ds/blob/master/README.md#hash-map)
+-   [List ](https://github.com/praveen001/ds/blob/master/README.md#list-interface) - [Array List](https://github.com/praveen001/ds/blob/master/README.md#array-list) - [Singly Linked List](https://github.com/praveen001/ds/blob/master/README.md#singly-linked-list)
+-   [Queue](https://github.com/praveen001/ds/blob/master/README.md#queue)
+-   [Stack](https://github.com/praveen001/ds/blob/master/README.md#stack)
+-   [Tree](https://github.com/praveen001/ds/blob/master/README.md#tree-interface) - [Binary Tree](https://github.com/praveen001/ds/blob/master/README.md#binary-tree) - [AVL Tree](https://github.com/praveen001/ds/blob/master/README.md#avl-tree)
+-   [Heap]() - [Binary Heap](https://github.com/praveen001/ds/blob/master/README.md#binary-heap)
+-   [Hash]() - [HashMap](https://github.com/praveen001/ds/blob/master/README.md#hash-map)
 
 # List Interface
 
@@ -78,37 +73,38 @@ type List interface {
 ```
 
 ## Array List
-  - Array list implements `Tree` interface.
- 
+
+-   Array list implements `Tree` interface.
+
 **Usage**
 
 ## Singly Linked List
-  - Array list implements `Tree` interface.
-  
+
+-   Array list implements `Tree` interface.
+
 **Usage**
 
 ## Queue
-  - Queue internally uses `linkedlist.List` to store data.
+
+-   Queue internally uses `linkedlist.List` to store data.
 
 **Usage**
 
 ## Stack
-  - Stack internally uses `linkedlist.List` to store data.
-  
+
+-   Stack internally uses `linkedlist.List` to store data.
+
 **Usage**
 
 # Tree Interface
 
 ```go
 type Tree interface {
-	// Insert a given value into the tree
-	Insert(value interface{}) bool
+	// Add a given value into the tree
+	Add(value interface{}) bool
 
-	// Delete a node (using value) from the tree
-	Delete(value interface{}) bool
-
-	// Contains return true if value exists in tree, otherwise false
-	Contains(value interface{}) bool
+	// Remove a node (using value) from the tree
+	Remove(value interface{}) bool
 
 	// Height returns the height of the tree (node/level count)
 	Height() int
@@ -119,6 +115,9 @@ type Tree interface {
 	// Max returns the maximum value present in the tree
 	Max() (interface{}, bool)
 
+	// Contains return true if value exists in tree, otherwise false
+	Contains(value interface{}) bool
+
 	// Length returns the total number of nodes in tree
 	Length() int
 
@@ -127,27 +126,67 @@ type Tree interface {
 
 	// InOrder returns a list.List with all values in-order
 	InOrder() list.List
+
+	// PreOrder returns a list.List with all values in pre order
+	PreOrder() list.List
+
+	// PostOrder returns a list.List with all values in post order
+	PostOrder() list.List
 }
 
 ```
 
 ## Binary Tree
-  - Insertions and deletions are iterative. 
-  - Node in tree stores - value, left child, right child, and height.
+
+-   Insertions and deletions are iterative.
+-   Node in tree stores - value, left child, right child, and height.
 
 **Usage**
 
 ## AVL Tree
-  - Insertions, deletions, balancing are all iterative.
-  - Node in tree stores - value, left child, right child, height and balance factor.
+
+-   Insertions, deletions, balancing are all iterative.
+-   Node in tree stores - value, left child, right child, height and balance factor.
 
 **Usage**
 
 ## Binary Heap
-  - Binary heap internally uses a `arraylist.ArrayList` to store data.
-  
+
+-   Binary heap internally uses a `arraylist.ArrayList` to store data.
+
 **Usage**
+
+# Map Interface
+
+```go
+// Map ..
+type Map interface {
+	// Set a value in map
+	Set(key, val interface{})
+
+	// Get finds value by key and returns it, if found, otherwise it returns nil
+	Get(key interface{}) (interface{}, bool)
+
+	// Remove a value from map
+	Remove(key interface{}) bool
+
+	// Keys returns list of keys present in map
+	Keys() []interface{}
+
+	// Values returns list of values present in map
+	Values() []interface{}
+
+	// Contains return whether given key exists in map
+	Contains(key interface{}) bool
+
+	// Length returns total number of entries in map
+	Length() int
+
+	// Clear removes all the entries from map
+	Clear()
+}
+```
 
 ## Hash Map
-**Usage**
 
+**Usage**
