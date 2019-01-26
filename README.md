@@ -1,20 +1,20 @@
 # ds
 Data structures implementation (Array List, Singly Linked List, Queue, Stack, Binary Tree, AVL Tree, Binary Heap, Hash Map)
 
-# Array List
+## Array List
 
-# Singly Linked List
+## Singly Linked List
 
-# Queue
+## Queue
 
-# Stack
+## Stack
 
-# Binary Tree
+## Binary Tree
 
-# AVL Tree
+## AVL Tree
 
-# Binary Heap
+## Binary Heap
 
-# Hash Map
+## Hash Map
 
 * All data structures are safe for concurrent access. Mutex based thread-safety
