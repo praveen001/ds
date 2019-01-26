@@ -62,3 +62,19 @@ func (hm *HashMap) Clear() {
 
 	hm.clear()
 }
+
+// Keys returns list of keys present in hashmap
+func (hm *HashMap) Keys() []interface{} {
+	hm.RLock()
+	defer hm.RUnlock()
+
+	return hm.keys()
+}
+
+// Values returns list of values present in hashmap
+func (hm *HashMap) Values() []interface{} {
+	hm.RLock()
+	defer hm.RUnlock()
+
+	return hm.values()
+}
