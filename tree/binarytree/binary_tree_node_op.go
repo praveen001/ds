@@ -1,4 +1,4 @@
-package avltree
+package binarytree
 
 import (
 	"github.com/praveen001/ds/list/linkedlist"
@@ -10,7 +10,7 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 		x.left.inOrder(ll)
 	}
 
-	ll.Append([]interface{}{x.value, x.height, x.bFactor})
+	ll.Append(x.value)
 
 	if x.right != nil {
 		x.right.inOrder(ll)
@@ -18,7 +18,7 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 }
 
 func (x *Node) preOrder(ll *linkedlist.LinkedList) {
-	ll.Append([]interface{}{x.value, x.height, x.bFactor})
+	ll.Append([]interface{}{x.value, x.height})
 
 	if x.left != nil {
 		x.left.preOrder(ll)
@@ -38,7 +38,7 @@ func (x *Node) postOrder(ll *linkedlist.LinkedList) {
 		x.right.postOrder(ll)
 	}
 
-	ll.Append([]interface{}{x.value, x.height, x.bFactor})
+	ll.Append([]interface{}{x.value, x.height})
 }
 
 func (x *Node) recomputeHeight() {
@@ -50,18 +50,5 @@ func (x *Node) recomputeHeight() {
 		x.height = x.left.height + 1
 	} else {
 		x.height = utils.MaxInt(x.left.height, x.right.height) + 1
-	}
-	x.bFactor = x.recomputeBFactor()
-}
-
-func (x *Node) recomputeBFactor() int {
-	if x.left == nil && x.right == nil {
-		return 0
-	} else if x.left == nil {
-		return 0 - x.right.height
-	} else if x.right == nil {
-		return x.left.height
-	} else {
-		return x.left.height - x.right.height
 	}
 }

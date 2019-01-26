@@ -7,9 +7,7 @@ import (
 	"github.com/praveen001/ds/list/linkedlist"
 	"github.com/praveen001/ds/queue"
 	"github.com/praveen001/ds/stack"
-	"github.com/praveen001/ds/tree"
 	"github.com/praveen001/ds/tree/avltree"
-	"github.com/praveen001/ds/tree/binarytree"
 )
 
 func tryArrayList() {
@@ -121,7 +119,7 @@ func tryQueue() {
 }
 
 func tryBinaryTree() {
-	bt := binarytree.New(func(a, b interface{}) int {
+	bt := avltree.New(func(a, b interface{}) int {
 		at := a.(int)
 		bt := b.(int)
 
@@ -134,10 +132,6 @@ func tryBinaryTree() {
 		}
 	})
 
-	var t tree.Tree
-	t = bt
-	fmt.Println(t.InOrder())
-
 	bt.Insert(100)
 	bt.Insert(50)
 	bt.Insert(20)
@@ -148,32 +142,32 @@ func tryBinaryTree() {
 	bt.Insert(80)
 	bt.Insert(200)
 
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 	bt.Delete(50)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
 	bt.Delete(10)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 	bt.Delete(20)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
 	bt.Delete(100)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
 	bt.Delete(200)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
 	bt.Delete(55)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
 	bt.Delete(60)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
 	bt.Delete(80)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 
 	bt.Delete(5)
-	fmt.Println(bt.InOrder())
+	fmt.Println(bt.InOrder(), bt.Height(), bt.Length())
 }
 
 func tryAVLTree() {
@@ -190,25 +184,39 @@ func tryAVLTree() {
 		}
 	})
 
-	at.RInsert(10)
-	at.RInsert(3)
-	at.RInsert(18)
+	// at.RInsert(10)
+	// at.RInsert(3)
+	// at.RInsert(18)
+	// at.RInsert(2)
+	// at.RInsert(4)
+	// at.RInsert(13)
+	// at.RInsert(40)
+
+	// at.RInsert(39)
+
+	// at.RInsert(12)
+	// at.RInsert(38)
+	// at.RInsert(14)
+	// at.RInsert(11)
+
+	// at.Delete(10)
+	// at.Delete(12)
+
+	// fmt.Println(at.InOrder(), at.Length())
+
+	at.RInsert(9)
+	at.RInsert(5)
+	at.Insert(10)
+	at.Insert(0)
+	at.Insert(6)
+	at.Insert(11)
+	at.RInsert(-1)
+	at.RInsert(1)
 	at.RInsert(2)
-	at.RInsert(4)
-	at.RInsert(13)
-	at.RInsert(40)
-
-	at.RInsert(39)
-
-	at.RInsert(12)
-	at.RInsert(38)
-	at.RInsert(14)
-	at.RInsert(11)
+	fmt.Println(at.PreOrder(), at.Length())
 
 	at.Delete(10)
-	at.Delete(12)
-
-	fmt.Println(at.InOrder(), at.Length())
+	fmt.Println(at.PreOrder(), at.Length())
 }
 
 func main() {
@@ -216,8 +224,8 @@ func main() {
 	// tryLinkedList()
 	// tryStack()
 	// tryQueue()
-	// tryBinaryTree()
-	tryAVLTree()
+	tryBinaryTree()
+	// tryAVLTree()
 
 	// s := stack.New()
 	// s.Push(10)

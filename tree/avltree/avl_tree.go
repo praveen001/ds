@@ -116,3 +116,19 @@ func (at *AvlTree) InOrder() list.List {
 
 	return at.inOrder()
 }
+
+// PreOrder returns a list.List with all values in pre order
+func (at *AvlTree) PreOrder() list.List {
+	at.RLock()
+	defer at.RUnlock()
+
+	return at.preOrder()
+}
+
+// PostOrder returns a list.List with all values in post order
+func (at *AvlTree) PostOrder() list.List {
+	at.RLock()
+	defer at.RUnlock()
+
+	return at.postOrder()
+}

@@ -18,9 +18,10 @@ type BinaryTree struct {
 
 // Node represents a node in a binary tree
 type Node struct {
-	value interface{}
-	left  *Node
-	right *Node
+	height int
+	value  interface{}
+	left   *Node
+	right  *Node
 }
 
 // New creates a new instance of binary tree and returns it
@@ -32,7 +33,7 @@ func New(c utils.CompareFunc) *BinaryTree {
 
 // NewNode returns a new binary tree node with given value
 func newNode(value interface{}) *Node {
-	return &Node{value, nil, nil}
+	return &Node{1, value, nil, nil}
 }
 
 // Insert a given value into the tree
@@ -105,4 +106,20 @@ func (bt *BinaryTree) InOrder() list.List {
 	defer bt.RUnlock()
 
 	return bt.inOrder()
+}
+
+// PreOrder returns a list.List with all values in pre order
+func (bt *BinaryTree) PreOrder() list.List {
+	bt.RLock()
+	defer bt.RUnlock()
+
+	return bt.preOrder()
+}
+
+// PostOrder returns a list.List with all values in post order
+func (bt *BinaryTree) PostOrder() list.List {
+	bt.RLock()
+	defer bt.RUnlock()
+
+	return bt.postOrder()
 }

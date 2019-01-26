@@ -92,11 +92,10 @@ func (at *AvlTree) delete(value interface{}) bool {
 			parent = node
 			node = node.right
 		} else {
-			comp := at.compare(parent.value, value)
 			if node.left == nil && node.right == nil {
 				if parent == nil {
 					at.root = nil
-				} else if comp == 1 {
+				} else if at.compare(parent.value, value) == 1 {
 					parent.left = nil
 				} else {
 					parent.right = nil
@@ -108,7 +107,7 @@ func (at *AvlTree) delete(value interface{}) bool {
 			if node.left == nil {
 				if parent == nil {
 					at.root = node.right
-				} else if comp == 1 {
+				} else if at.compare(parent.value, value) == 1 {
 					parent.left = node.right
 				} else {
 					parent.right = node.right
@@ -118,10 +117,10 @@ func (at *AvlTree) delete(value interface{}) bool {
 			} else if node.right == nil {
 				if parent == nil {
 					at.root = node.left
-				} else if comp == 1 {
+				} else if at.compare(parent.value, value) == 1 {
 					parent.left = node.left
 				} else {
-					parent.right = node.right
+					parent.right = node.left
 				}
 				at.rebalance(s)
 				return true
@@ -219,6 +218,26 @@ func (at *AvlTree) inOrder() list.List {
 
 	if at.length() != 0 {
 		at.root.inOrder(ll)
+	}
+
+	return ll
+}
+
+func (at *AvlTree) preOrder() list.List {
+	ll := linkedlist.New()
+
+	if at.Length() != 0 {
+		at.root.preOrder(ll)
+	}
+
+	return ll
+}
+
+func (at *AvlTree) postOrder() list.List {
+	ll := linkedlist.New()
+
+	if at.Length() != 0 {
+		at.root.postOrder(ll)
 	}
 
 	return ll

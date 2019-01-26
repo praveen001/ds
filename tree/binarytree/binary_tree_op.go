@@ -3,7 +3,7 @@ package binarytree
 import (
 	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
-	"github.com/praveen001/ds/queue"
+	"github.com/praveen001/ds/stack"
 )
 
 func (bt *BinaryTree) insert(value interface{}) bool {
@@ -13,8 +13,11 @@ func (bt *BinaryTree) insert(value interface{}) bool {
 		return true
 	}
 
+	s := stack.New()
+
 	node := bt.root
 	for {
+		s.Push(node)
 		if comp := bt.compare(node.value, value); comp == -1 {
 			if node.right == nil {
 				node.right = newNode(value)
@@ -31,8 +34,9 @@ func (bt *BinaryTree) insert(value interface{}) bool {
 			return false
 		}
 	}
-
 	bt.size++
+
+	bt.readjust(s)
 	return true
 }
 
@@ -42,10 +46,12 @@ func (bt *BinaryTree) delete(value interface{}) bool {
 	}
 
 	bt.size--
-	node := bt.root
 	var parent *Node
+	s := stack.New()
 
+	node := bt.root
 	for node != nil {
+		s.Push(node)
 		if comp := bt.compare(node.value, value); comp == 1 {
 			parent = node
 			node = node.left
@@ -53,35 +59,37 @@ func (bt *BinaryTree) delete(value interface{}) bool {
 			parent = node
 			node = node.right
 		} else {
-
 			if node.left == nil && node.right == nil {
 				if parent == nil {
 					bt.root = nil
-				} else if comp := bt.compare(parent.value, value); comp == 1 {
+				} else if bt.compare(parent.value, value) == 1 {
 					parent.left = nil
 				} else {
 					parent.right = nil
 				}
+				bt.readjust(s)
 				return true
 			}
 
 			if node.left == nil {
 				if parent == nil {
 					bt.root = node.right
-				} else if comp := bt.compare(parent.value, value); comp == 1 {
+				} else if bt.compare(parent.value, value) == 1 {
 					parent.left = node.right
 				} else {
 					parent.right = node.right
 				}
+				bt.readjust(s)
 				return true
 			} else if node.right == nil {
 				if parent == nil {
 					bt.root = node.left
-				} else if comp := bt.compare(parent.value, value); comp == 1 {
+				} else if bt.compare(parent.value, value) == 1 {
 					parent.left = node.left
 				} else {
 					parent.right = node.right
 				}
+				bt.readjust(s)
 				return true
 			}
 
@@ -133,31 +141,32 @@ func (bt *BinaryTree) height() int {
 		return 0
 	}
 
-	q := queue.New()
-	q.Enqueue(bt.root)
-	height := 0
+	return bt.root.height
+	// q := queue.New()
+	// q.Enqueue(bt.root)
+	// height := 0
 
-	for {
-		nodeCount := q.Length()
-		if nodeCount == 0 {
-			break
-		}
+	// for {
+	// 	nodeCount := q.Length()
+	// 	if nodeCount == 0 {
+	// 		break
+	// 	}
 
-		height++
-		for i := 0; i < nodeCount; i++ {
-			n, _ := q.Dequeue()
-			node := n.(*Node)
+	// 	height++
+	// 	for i := 0; i < nodeCount; i++ {
+	// 		n, _ := q.Dequeue()
+	// 		node := n.(*Node)
 
-			if node.left != nil {
-				q.Enqueue(node.left)
-			}
-			if node.right != nil {
-				q.Enqueue(node.right)
-			}
-		}
-	}
+	// 		if node.left != nil {
+	// 			q.Enqueue(node.left)
+	// 		}
+	// 		if node.right != nil {
+	// 			q.Enqueue(node.right)
+	// 		}
+	// 	}
+	// }
 
-	return height
+	// return height
 }
 
 func (bt *BinaryTree) min() (interface{}, bool) {
@@ -207,14 +216,34 @@ func (bt *BinaryTree) inOrder() list.List {
 	return ll
 }
 
-func (n *Node) inOrder(ll *linkedlist.LinkedList) {
-	if n.left != nil {
-		n.left.inOrder(ll)
+func (bt *BinaryTree) preOrder() list.List {
+	ll := linkedlist.New()
+
+	if bt.Length() != 0 {
+		bt.root.preOrder(ll)
 	}
 
-	ll.Append(n.value)
+	return ll
+}
 
-	if n.right != nil {
-		n.right.inOrder(ll)
+func (bt *BinaryTree) postOrder() list.List {
+	ll := linkedlist.New()
+
+	if bt.Length() != 0 {
+		bt.root.postOrder(ll)
+	}
+
+	return ll
+}
+
+func (bt *BinaryTree) readjust(s *stack.Stack) {
+	var node *Node
+	for {
+		p, ok := s.Pop()
+		if !ok {
+			break
+		}
+		node = p.(*Node)
+		node.recomputeHeight()
 	}
 }
