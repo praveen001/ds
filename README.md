@@ -13,8 +13,6 @@ All data structure implementations are safe for concurrent access (through mutex
 	- [Binary Heap](https://github.com/praveen001/ds/blob/master/README.md#binary-heap)
 - [Hash]()
 	- [HashMap](https://github.com/praveen001/ds/blob/master/README.md#hash-map)
-		
-* All data structures are safe for concurrent access. Mutex based thread-safety
 
 ## List Interface
 
