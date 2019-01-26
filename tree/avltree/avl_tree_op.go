@@ -14,7 +14,6 @@ func (at *AvlTree) insert(value interface{}) {
 		return
 	}
 
-	isLeftInsert := true
 	s := stack.New()
 
 	node := at.root
@@ -30,7 +29,6 @@ func (at *AvlTree) insert(value interface{}) {
 		} else if comp == -1 {
 			if node.right == nil {
 				node.right = newNode(value)
-				isLeftInsert = false
 				break
 			} else {
 				node = node.right
@@ -61,12 +59,12 @@ func (at *AvlTree) insert(value interface{}) {
 
 		prev = nil
 		if node.bFactor > 1 {
-			if !isLeftInsert {
+			if node.left.bFactor < 0 {
 				node.left = at.leftRotate(node.left)
 			}
 			prev = at.rightRotate(node)
 		} else if node.bFactor < -1 {
-			if isLeftInsert {
+			if node.right.bFactor > 0 {
 				node.right = at.rightRotate(node.right)
 			}
 			prev = at.leftRotate(node)
