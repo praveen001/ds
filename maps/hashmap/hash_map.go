@@ -31,6 +31,14 @@ func (hm *HashMap) Get(key interface{}) (interface{}, bool) {
 	return hm.get(key)
 }
 
+// Contains return whether given key in exists in hashmap
+func (hm *HashMap) Contains(key interface{}) bool {
+	hm.RLock()
+	defer hm.RUnlock()
+
+	return hm.contains(key)
+}
+
 // Delete removes a value from hashmap
 func (hm *HashMap) Delete(key interface{}) bool {
 	hm.Lock()
