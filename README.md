@@ -1,18 +1,18 @@
 # Data structures
 All data structure implementations are safe for concurrent access (through mutex).
 
-- [List ]()
-	- Array List
-	- Singly Linked List
-- Queue
-- Stack
-- Tree
-	- Binary Tree
-	- AVL Tree
-- Heap
-	- Binary Heap
-- Hash
-	- HashMap
+- [List ](https://github.com/praveen001/ds/blob/master/README.md#list-interface)
+	- [Array List]
+	- [Singly Linked List]
+- [Queue]
+- [Stack]
+- [Tree]
+	- [Binary Tree]
+	- [AVL Tree]
+- [Heap]
+	- [Binary Heap]
+- [Hash]
+	- [HashMap]
 		
 * All data structures are safe for concurrent access. Mutex based thread-safety
 
