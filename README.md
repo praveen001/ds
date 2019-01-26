@@ -16,7 +16,8 @@ All data structure implementations are safe for concurrent access (through mutex
 		
 * All data structures are safe for concurrent access. Mutex based thread-safety
 
-# Interfaces
+## List Interface
+
 ```go
 type List interface {
 	// Append new values to the ending of the list
@@ -78,25 +79,59 @@ type List interface {
 
 ```
 
-## Array List
+### Array List
   - Array list implements `Tree` interface.
  
 **Usage**
 
-## Singly Linked List
+### Singly Linked List
   - Array list implements `Tree` interface.
   
 **Usage**
 
-## Queue
+### Queue
   - Queue internally uses `linkedlist.List` to store data.
 
 **Usage**
 
-## Stack
+### Stack
   - Stack internally uses `linkedlist.List` to store data.
   
 **Usage**
+
+## Tree Interface
+
+```go
+type Tree interface {
+	// Insert a given value into the tree
+	Insert(value interface{}) bool
+
+	// Delete a node (using value) from the tree
+	Delete(value interface{}) bool
+
+	// Contains return true if value exists in tree, otherwise false
+	Contains(value interface{}) bool
+
+	// Height returns the height of the tree (node/level count)
+	Height() int
+
+	// Min returns the minimum value present in the tree
+	Min() (interface{}, bool)
+
+	// Max returns the maximum value present in the tree
+	Max() (interface{}, bool)
+
+	// Length returns the total number of nodes in tree
+	Length() int
+
+	// Clear removes all the nodes from tree
+	Clear()
+
+	// InOrder returns a list.List with all values in-order
+	InOrder() list.List
+}
+
+```
 
 ## Binary Tree
   - Insertions and deletions are iterative. 
