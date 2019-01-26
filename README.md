@@ -14,7 +14,7 @@ All data structure implementations are safe for concurrent access (through mutex
 - [Hash]()
 	- [HashMap](https://github.com/praveen001/ds/blob/master/README.md#hash-map)
 
-## List Interface
+# List Interface
 
 ```go
 type List interface {
@@ -77,27 +77,27 @@ type List interface {
 
 ```
 
-### Array List
+## Array List
   - Array list implements `Tree` interface.
  
 **Usage**
 
-### Singly Linked List
+## Singly Linked List
   - Array list implements `Tree` interface.
   
 **Usage**
 
-### Queue
+## Queue
   - Queue internally uses `linkedlist.List` to store data.
 
 **Usage**
 
-### Stack
+## Stack
   - Stack internally uses `linkedlist.List` to store data.
   
 **Usage**
 
-## Tree Interface
+# Tree Interface
 
 ```go
 type Tree interface {
