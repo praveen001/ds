@@ -1,7 +1,7 @@
 # Data structures
 All data structure implementations are safe for concurrent access (through mutex).
 
-- List 
+- [List ]()
 	- Array List
 	- Singly Linked List
 - Queue
