@@ -2,12 +2,18 @@
 
 All data structure implementations are safe for concurrent access (through mutex).
 
--   [List ](https://github.com/praveen001/ds/blob/master/README.md#list-interface) - [Array List](https://github.com/praveen001/ds/blob/master/README.md#array-list) - [Singly Linked List](https://github.com/praveen001/ds/blob/master/README.md#singly-linked-list)
+-   [List ](https://github.com/praveen001/ds/blob/master/README.md#list-interface)
+	- [Array List](https://github.com/praveen001/ds/blob/master/README.md#array-list)
+	- [Singly Linked List](https://github.com/praveen001/ds/blob/master/README.md#singly-linked-list)
 -   [Queue](https://github.com/praveen001/ds/blob/master/README.md#queue)
 -   [Stack](https://github.com/praveen001/ds/blob/master/README.md#stack)
--   [Tree](https://github.com/praveen001/ds/blob/master/README.md#tree-interface) - [Binary Tree](https://github.com/praveen001/ds/blob/master/README.md#binary-tree) - [AVL Tree](https://github.com/praveen001/ds/blob/master/README.md#avl-tree)
--   [Heap]() - [Binary Heap](https://github.com/praveen001/ds/blob/master/README.md#binary-heap)
--   [Hash]() - [HashMap](https://github.com/praveen001/ds/blob/master/README.md#hash-map)
+-   [Tree](https://github.com/praveen001/ds/blob/master/README.md#tree-interface)
+	- [Binary Tree](https://github.com/praveen001/ds/blob/master/README.md#binary-tree)
+	- [AVL Tree](https://github.com/praveen001/ds/blob/master/README.md#avl-tree)
+-   [Heap]()
+	- [Binary Heap](https://github.com/praveen001/ds/blob/master/README.md#binary-heap)
+-   [Hash]()
+	- [HashMap](https://github.com/praveen001/ds/blob/master/README.md#hash-map)
 
 # List Interface
 
