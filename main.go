@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/praveen001/ds/heap/binaryheap"
 	"github.com/praveen001/ds/list/arraylist"
 	"github.com/praveen001/ds/list/linkedlist"
 	"github.com/praveen001/ds/queue"
@@ -225,13 +226,39 @@ func tryAVLTree() {
 	fmt.Println(at.PreOrder(), at.Length())
 }
 
+func tryBinaryHeap() {
+	bh := binaryheap.New(func(a, b interface{}) int {
+		awt := a.(int)
+		bwt := b.(int)
+
+		if awt > bwt {
+			return 1
+		} else if awt < bwt {
+			return -1
+		} else {
+			return 0
+		}
+	})
+
+	bh.Push(56, 34, 23, 78, 43, 61, 6, 3, 90, 30)
+
+	fmt.Println(bh)
+
+	fmt.Println(bh.Pop())
+
+	fmt.Println(bh)
+	// fmt.Println(bh.Pop())
+	// fmt.Println(bh.Pop())
+}
+
 func main() {
-	tryArrayList()
+	// tryArrayList()
 	// tryLinkedList()
 	// tryStack()
 	// tryQueue()
 	// tryBinaryTree()
 	// tryAVLTree()
+	tryBinaryHeap()
 
 	// s := stack.New()
 	// s.Push(10)
