@@ -42,17 +42,23 @@ func NewWithConfig(c *Config) *DAryHeap {
 	}
 }
 
-// Push a given values into the tree
+// Push a given values into the tree.
+//
+// Returns true if push succeeds.
 func (dh *DAryHeap) Push(values ...interface{}) bool {
 	return dh.push(values...)
 }
 
-// Pop a node (using value) from the tree
+// Pop removes first value from tree, and returns it.
+//
+// Second return value will be false if tree is empty.
 func (dh *DAryHeap) Pop() (interface{}, bool) {
 	return dh.pop()
 }
 
 // Peek returns the first value in heap without removing it
+//
+// Second return value will be false if tree is empty.
 func (dh *DAryHeap) Peek() (interface{}, bool) {
 	return dh.peek()
 }
