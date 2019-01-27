@@ -13,14 +13,7 @@ func (al *ArrayList) append(values ...interface{}) {
 }
 
 func (al *ArrayList) prepend(values ...interface{}) {
-	length := len(values)
-
-	newSubArr := make([]interface{}, length)
-	for i := 0; i < len(values); i++ {
-		newSubArr[i] = values[length-1-i]
-	}
-
-	al.elements = append(newSubArr, al.elements...)
+	al.elements = append(values, al.elements...)
 	al.size += len(values)
 }
 

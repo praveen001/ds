@@ -1,6 +1,9 @@
-package arraylist
+package doublylinkedlist
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestNew(t *testing.T) {
 	al := New()
@@ -313,7 +316,9 @@ func TestReverse(t *testing.T) {
 	al := New()
 
 	al.Append(10, 20, 30)
+	al.Prepend(-10, 0)
 	nal := al.Reverse()
+	fmt.Println(nal)
 
 	if val, ok := nal.Get(0); val != 30 || !ok {
 		t.Errorf("Expected %v, %v Got %v, %v", 30, true, val, ok)
@@ -321,6 +326,10 @@ func TestReverse(t *testing.T) {
 
 	if val, ok := nal.Get(2); val != 10 || !ok {
 		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
+	}
+
+	if l := nal.Length(); l != 5 {
+		t.Errorf("Expected %v Got %v", 5, l)
 	}
 }
 

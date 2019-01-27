@@ -24,15 +24,17 @@ func (dl *DoublyLinkedList) append(values ...interface{}) {
 }
 
 func (dl *DoublyLinkedList) prepend(values ...interface{}) {
-	for _, value := range values {
-		newElem := &element{value: value}
-
-		dl.head.prev = newElem
-		newElem.next = dl.head
-		dl.head = newElem
-
-		dl.size++
+	n := dl.head
+	for i := 0; i < len(values); i++ {
+		h := &element{value: values[len(values)-1-i]}
+		h.next = n
+		if n != nil {
+			n.prev = h
+		}
+		dl.head = h
+		n = h
 	}
+	dl.size += len(values)
 }
 
 func (dl *DoublyLinkedList) get(index int) (interface{}, bool) {
@@ -138,7 +140,10 @@ func (dl *DoublyLinkedList) withInRange(index int) bool {
 func (dl *DoublyLinkedList) string() string {
 	str := "["
 	for elem := dl.head; elem != nil; elem = elem.next {
-		str += fmt.Sprintf("%v ", elem.value)
+		str += fmt.Sprintf("%v", elem.value)
+		if elem.next != nil {
+			str += " "
+		}
 	}
 	str += "]"
 	return str
@@ -192,8 +197,8 @@ func (dl *DoublyLinkedList) clone() *DoublyLinkedList {
 
 func (dl *DoublyLinkedList) reverse() *DoublyLinkedList {
 	nal := New()
-	for elem := dl.head; elem != nil; elem = elem.next {
-		nal.prepend(elem.value)
+	for elem := dl.tail; elem != nil; elem = elem.prev {
+		nal.append(elem.value)
 	}
 
 	return nal

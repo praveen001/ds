@@ -23,10 +23,12 @@ func (ll *LinkedList) append(values ...interface{}) {
 }
 
 func (ll *LinkedList) prepend(values ...interface{}) {
-	for _, value := range values {
-		h := &element{value: value}
-		h.next = ll.head
+	n := ll.head
+	for i := 0; i < len(values); i++ {
+		h := &element{value: values[len(values)-1-i]}
+		h.next = n
 		ll.head = h
+		n = h
 	}
 	ll.size += len(values)
 }
@@ -132,7 +134,10 @@ func (ll *LinkedList) withInRange(index int) bool {
 func (ll *LinkedList) string() string {
 	str := "["
 	for elem := ll.head; elem != nil; elem = elem.next {
-		str += fmt.Sprintf("%v ", elem.value)
+		str += fmt.Sprintf("%v", elem.value)
+		if elem.next != nil {
+			str += " "
+		}
 	}
 	str += "]"
 	return str
