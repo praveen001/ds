@@ -1,21 +1,23 @@
 [![GoDoc](https://godoc.org/github.com/praveen001/ds?status.svg)](https://godoc.org/github.com/praveen001/ds) [![Build Status](https://travis-ci.org/praveen001/ds.svg?branch=master)](https://travis-ci.org/praveen001/ds.svg?branch=master)
+
 # Data structures
 
 All data structure implementations are safe for concurrent access (through mutex).
 
 -   [List ](https://github.com/praveen001/ds/blob/master/README.md#list-interface)
-	- [Array List](https://github.com/praveen001/ds/blob/master/README.md#array-list)
-	- [Singly Linked List](https://github.com/praveen001/ds/blob/master/README.md#singly-linked-list)
-	- [Doubly Linked List](https://github.com/praveen001/ds/blob/master/README.md#doubly-linked-list)
+    -   [Array List](https://github.com/praveen001/ds/blob/master/README.md#array-list)
+    -   [Singly Linked List](https://github.com/praveen001/ds/blob/master/README.md#singly-linked-list)
+    -   [Doubly Linked List](https://github.com/praveen001/ds/blob/master/README.md#doubly-linked-list)
 -   [Queue](https://github.com/praveen001/ds/blob/master/README.md#queue)
 -   [Stack](https://github.com/praveen001/ds/blob/master/README.md#stack)
 -   [Tree](https://github.com/praveen001/ds/blob/master/README.md#tree-interface)
-	- [Binary Tree](https://github.com/praveen001/ds/blob/master/README.md#binary-tree)
-	- [AVL Tree](https://github.com/praveen001/ds/blob/master/README.md#avl-tree)
+    -   [Binary Tree](https://github.com/praveen001/ds/blob/master/README.md#binary-tree)
+    -   [AVL Tree](https://github.com/praveen001/ds/blob/master/README.md#avl-tree)
 -   [Heap]()
-	- [Binary Heap](https://github.com/praveen001/ds/blob/master/README.md#binary-heap)
+    -   [Binary Heap](https://github.com/praveen001/ds/blob/master/README.md#binary-heap)
+    -   [D-ary Heap](https://github.com/praveen001/ds/blob/master/README.md#dary-heap)
 -   [Hash]()
-	- [HashMap](https://github.com/praveen001/ds/blob/master/README.md#hash-map)
+    -   [HashMap](https://github.com/praveen001/ds/blob/master/README.md#hash-map)
 
 # List Interface
 
@@ -92,7 +94,7 @@ type List interface {
 
 ## Doubly Linked List
 
-- Doubly linked list implements `Tree` interface.
+-   Doubly linked list implements `Tree` interface.
 
 **Usage**
 
@@ -162,9 +164,33 @@ type Tree interface {
 
 **Usage**
 
+# Heap Interface
+
+```go
+type Heap interface {
+	Push(values ...interface{}) bool
+
+	Pop() (interface{}, bool)
+
+	Peek() (interface{}, bool)
+
+	Clear()
+
+	Length() int
+
+	String() string
+}
+```
+
 ## Binary Heap
 
--   Binary heap internally uses a `arraylist.ArrayList` to store data.
+-   Binary heap by default uses `linkedlist.LinkedList` to store data.
+
+**Usage**
+
+## D-ary Heap
+
+-   D-ary heap by default uses `linkedlist.LinkedList` to store data.
 
 **Usage**
 
