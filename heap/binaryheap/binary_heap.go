@@ -1,6 +1,7 @@
 package binaryheap
 
 import (
+	"github.com/praveen001/ds/heap"
 	"github.com/praveen001/ds/utils"
 
 	"github.com/praveen001/ds/list"
@@ -11,11 +12,14 @@ import (
 type BinaryHeap struct {
 	list    list.List
 	compare utils.CompareFunc
+	variant int
 }
 
 // Config for binary heap
 type Config struct {
-	List list.List
+	List       list.List
+	Comparator utils.CompareFunc
+	Variant    int
 }
 
 // New returns a empty binary heap
@@ -23,14 +27,16 @@ func New(fn utils.CompareFunc) *BinaryHeap {
 	return &BinaryHeap{
 		list:    linkedlist.New(),
 		compare: fn,
+		variant: heap.MinHeap,
 	}
 }
 
 // NewWithConfig returns a empty binary heap with config
-func NewWithConfig(c *Config, fn utils.CompareFunc) *BinaryHeap {
+func NewWithConfig(c *Config) *BinaryHeap {
 	return &BinaryHeap{
 		list:    c.List,
-		compare: fn,
+		compare: c.Comparator,
+		variant: c.Variant,
 	}
 }
 

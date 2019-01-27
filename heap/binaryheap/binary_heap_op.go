@@ -38,7 +38,7 @@ func (bh *BinaryHeap) percolateUp(idx int) {
 	x, _ := bh.list.Get(idx)
 	p, _ := bh.list.Get(idx / 2)
 
-	for bh.compare(p, x) == 1 {
+	for bh.compare(p, x) == bh.variant {
 		bh.list.Swap(idx, idx/2)
 
 		idx = idx / 2
@@ -53,11 +53,11 @@ func (bh *BinaryHeap) percolateDown(idx int) {
 		c := idx*2 + 1
 		if lchv, ok := bh.list.Get(c); ok {
 
-			if rchv, ok := bh.list.Get(c + 1); ok && bh.compare(lchv, rchv) == 1 {
+			if rchv, ok := bh.list.Get(c + 1); ok && bh.compare(lchv, rchv) == bh.variant {
 				c = c + 1
 			}
 
-			if mchv, _ := bh.list.Get(c); bh.compare(x, mchv) == 1 {
+			if mchv, _ := bh.list.Get(c); bh.compare(x, mchv) == bh.variant {
 				bh.list.Swap(idx, c)
 			} else {
 				break
