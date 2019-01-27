@@ -275,7 +275,7 @@ func tryHashMap() {
 
 func main() {
 	// tryArrayList()
-	tryLinkedList()
+	// tryLinkedList()
 	// tryStack()
 	// tryQueue()
 	// tryBinaryTree()
@@ -297,4 +297,22 @@ func main() {
 	// 	}
 	// 	fmt.Println(p)
 	// }
+
+	// bt := binarytree.New(utils.IntComparator)
+	// var wg sync.WaitGroup
+
+	// for i := 0; i < 100; i++ {
+	// 	wg.Add(2)
+	// 	go func() {
+	// 		wg.Done()
+	// 		bt.Add(10)
+	// 	}()
+
+	// 	go func() {
+	// 		wg.Done()
+	// 		bt.Remove(10)
+	// 	}()
+	// }
+	// wg.Wait()
+	// fmt.Println(bt.InOrder())
 }

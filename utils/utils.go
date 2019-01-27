@@ -28,3 +28,38 @@ func Abs(a int) int {
 	}
 	return a
 }
+
+// IntComparator ..
+func IntComparator(a, b interface{}) int {
+	aa := a.(int)
+	bb := b.(int)
+
+	if aa > bb {
+		return 1
+	}
+
+	if aa < bb {
+		return -1
+	}
+
+	return 0
+}
+
+// StringComparator ..
+func StringComparator(a, b interface{}) int {
+	aa := a.(string)
+	bb := b.(string)
+
+	aal := len(aa)
+	bbl := len(bb)
+
+	if aal > bbl {
+		return 1
+	}
+
+	if aal < bbl {
+		return -1
+	}
+
+	return 0
+}
