@@ -7,7 +7,11 @@ import (
 	"github.com/praveen001/ds/utils"
 )
 
-// DoublyLinkedList ..
+// DoublyLinkedList holds the set of elements in a slice
+//
+// It also stores the total number of elements currently present in the list, so length of the list is given in O(1)
+//
+// It uses sync.RWMutex to support concurrent access, all read operations acquires a RLock, and all write operatiors acquires a Lock()
 type DoublyLinkedList struct {
 	head *element
 	tail *element
@@ -21,12 +25,12 @@ type element struct {
 	prev  *element
 }
 
-// New creates a new linked list and returns its
+// New creates a new empty list and return it's reference.
 func New() *DoublyLinkedList {
 	return &DoublyLinkedList{}
 }
 
-// Append new values to the ending of the list
+// Append a set of new values at the end of the list
 func (dl *DoublyLinkedList) Append(values ...interface{}) {
 	dl.Lock()
 	defer dl.Unlock()
@@ -34,7 +38,7 @@ func (dl *DoublyLinkedList) Append(values ...interface{}) {
 	dl.append(values...)
 }
 
-// Prepend adds new values to the beginning of the list
+// Prepend a set of new values at the beginning of the list
 func (dl *DoublyLinkedList) Prepend(values ...interface{}) {
 	dl.Lock()
 	defer dl.Unlock()
@@ -42,7 +46,11 @@ func (dl *DoublyLinkedList) Prepend(values ...interface{}) {
 	dl.prepend(values...)
 }
 
-// Get returns the value at the given index, if index is not in range, it returns IndexOutOfBound error
+// Get the value at an index.
+//
+// Returns the value present at the index, if index is out of bound it will return nil.
+//
+// Second argument will be false if index is out of bound, otherwise it will be true.
 func (dl *DoublyLinkedList) Get(index int) (interface{}, bool) {
 	dl.RLock()
 	defer dl.RUnlock()
@@ -50,7 +58,9 @@ func (dl *DoublyLinkedList) Get(index int) (interface{}, bool) {
 	return dl.get(index)
 }
 
-// Set assigns a value at the given index, if index is not in range, it returns IndexOutOfBound error
+// Set a value at an index
+//
+// Returns false if index is out of bound, otherwise it will be true.
 func (dl *DoublyLinkedList) Set(index int, value interface{}) bool {
 	dl.Lock()
 	defer dl.Unlock()
@@ -58,7 +68,11 @@ func (dl *DoublyLinkedList) Set(index int, value interface{}) bool {
 	return dl.set(index, value)
 }
 
-// Remove removes the value at the given index, if index is not in range, it returns IndexOutOfBound error
+// Remove the value at an index
+//
+// Returns the removed value present, if index is out of bound it will return nil.
+//
+// Second argument will be false if index is out of bound, otherwise it will be true.
 func (dl *DoublyLinkedList) Remove(index int) (interface{}, bool) {
 	dl.Lock()
 	defer dl.Unlock()
@@ -82,7 +96,7 @@ func (dl *DoublyLinkedList) IndexOf(value interface{}) int {
 	return dl.indexOf(value)
 }
 
-// Values returns all the values in the list as an array
+// Values returns all the values in the list as a slice
 func (dl *DoublyLinkedList) Values() []interface{} {
 	dl.RLock()
 	defer dl.RUnlock()
@@ -122,7 +136,9 @@ func (dl *DoublyLinkedList) String() string {
 	return dl.string()
 }
 
-// Filter creates a new list with every value that pass a test
+// Filter creates a new list with every value that passes uitls.FilterFunc
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (dl *DoublyLinkedList) Filter(fn utils.FilterFunc) list.List {
 	dl.RLock()
 	defer dl.RUnlock()
@@ -131,6 +147,8 @@ func (dl *DoublyLinkedList) Filter(fn utils.FilterFunc) list.List {
 }
 
 // Concat joins two or more lists together
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (dl *DoublyLinkedList) Concat(lists ...list.List) list.List {
 	dl.RLock()
 	defer dl.RUnlock()
@@ -138,7 +156,9 @@ func (dl *DoublyLinkedList) Concat(lists ...list.List) list.List {
 	return dl.concat(lists...)
 }
 
-// Reverse reverses the order of items in the list
+// Reverse the order of items in the list
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (dl *DoublyLinkedList) Reverse() list.List {
 	dl.RLock()
 	defer dl.RUnlock()
@@ -147,11 +167,17 @@ func (dl *DoublyLinkedList) Reverse() list.List {
 }
 
 // Sort arrange the values in ascending or descending order
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (dl *DoublyLinkedList) Sort(utils.CompareFunc) {
 
 }
 
-// Map creates a new list with every value returned by the MapFunc
+// Map creates a new list with values returned by the MapFunc
+//
+// Each value in the list is passed to the MapFunc, and values returned by MapFunc are used to construct a new list.
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (dl *DoublyLinkedList) Map(fn utils.MapFunc) list.List {
 	dl.RLock()
 	defer dl.RUnlock()
@@ -159,7 +185,7 @@ func (dl *DoublyLinkedList) Map(fn utils.MapFunc) list.List {
 	return dl.mp(fn)
 }
 
-// Clone creates a shallow copy and returns it
+// Clone creates a shallow copy and returns the reference
 func (dl *DoublyLinkedList) Clone() list.List {
 	dl.RLock()
 	defer dl.RUnlock()
@@ -167,7 +193,9 @@ func (dl *DoublyLinkedList) Clone() list.List {
 	return dl.clone()
 }
 
-// Swap two values based on index
+// Swap two values at two given indexes
+//
+// Returns false if swap doesn't succeed, otherwise true
 func (dl *DoublyLinkedList) Swap(a, b int) bool {
 	dl.Lock()
 	defer dl.Unlock()

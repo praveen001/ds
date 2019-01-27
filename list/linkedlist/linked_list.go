@@ -7,7 +7,11 @@ import (
 	"github.com/praveen001/ds/utils"
 )
 
-// LinkedList ..
+// LinkedList holds the set of elements in a slice
+//
+// It also stores the total number of elements currently present in the list, so length of the list is given in O(1)
+//
+// It uses sync.RWMutex to support concurrent access, all read operations acquires a RLock, and all write operatiors acquires a Lock()
 type LinkedList struct {
 	head *element
 	tail *element
@@ -20,12 +24,12 @@ type element struct {
 	next  *element
 }
 
-// New creates a new linked list and returns its
+// New creates a new empty list and return it's reference.
 func New() *LinkedList {
 	return &LinkedList{}
 }
 
-// Append new values to the ending of the list
+// Append a set of new values at the end of the list
 func (ll *LinkedList) Append(values ...interface{}) {
 	ll.Lock()
 	defer ll.Unlock()
@@ -33,7 +37,7 @@ func (ll *LinkedList) Append(values ...interface{}) {
 	ll.append(values...)
 }
 
-// Prepend adds new values to the beginning of the list
+// Prepend a set of new values at the beginning of the list
 func (ll *LinkedList) Prepend(values ...interface{}) {
 	ll.Lock()
 	defer ll.Unlock()
@@ -41,7 +45,11 @@ func (ll *LinkedList) Prepend(values ...interface{}) {
 	ll.prepend(values...)
 }
 
-// Get returns the value at the given index, if index is not in range, it returns IndexOutOfBound error
+// Get the value at an index.
+//
+// Returns the value present at the index, if index is out of bound it will return nil.
+//
+// Second argument will be false if index is out of bound, otherwise it will be true.
 func (ll *LinkedList) Get(index int) (interface{}, bool) {
 	ll.RLock()
 	defer ll.RUnlock()
@@ -49,7 +57,9 @@ func (ll *LinkedList) Get(index int) (interface{}, bool) {
 	return ll.get(index)
 }
 
-// Set assigns a value at the given index, if index is not in range, it returns IndexOutOfBound error
+// Set a value at an index
+//
+// Returns false if index is out of bound, otherwise it will be true.
 func (ll *LinkedList) Set(index int, value interface{}) bool {
 	ll.Lock()
 	defer ll.Unlock()
@@ -57,7 +67,11 @@ func (ll *LinkedList) Set(index int, value interface{}) bool {
 	return ll.set(index, value)
 }
 
-// Remove removes the value at the given index, if index is not in range, it returns IndexOutOfBound error
+// Remove the value at an index
+//
+// Returns the removed value present, if index is out of bound it will return nil.
+//
+// Second argument will be false if index is out of bound, otherwise it will be true
 func (ll *LinkedList) Remove(index int) (interface{}, bool) {
 	ll.Lock()
 	defer ll.Unlock()
@@ -81,7 +95,7 @@ func (ll *LinkedList) IndexOf(value interface{}) int {
 	return ll.indexOf(value)
 }
 
-// Values returns all the values in the list as an array
+// Values returns all the values in the list as a slice
 func (ll *LinkedList) Values() []interface{} {
 	ll.RLock()
 	defer ll.RUnlock()
@@ -121,7 +135,9 @@ func (ll *LinkedList) String() string {
 	return ll.string()
 }
 
-// Filter creates a new list with every value that pass a test
+// Filter creates a new list with every value that passes uitls.FilterFunc
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (ll *LinkedList) Filter(fn utils.FilterFunc) list.List {
 	ll.RLock()
 	defer ll.RUnlock()
@@ -130,6 +146,8 @@ func (ll *LinkedList) Filter(fn utils.FilterFunc) list.List {
 }
 
 // Concat joins two or more lists together
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (ll *LinkedList) Concat(lists ...list.List) list.List {
 	ll.RLock()
 	defer ll.RUnlock()
@@ -137,7 +155,9 @@ func (ll *LinkedList) Concat(lists ...list.List) list.List {
 	return ll.concat(lists...)
 }
 
-// Reverse reverses the order of items in the list
+// Reverse the order of items in the list
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (ll *LinkedList) Reverse() list.List {
 	ll.RLock()
 	defer ll.RUnlock()
@@ -146,11 +166,17 @@ func (ll *LinkedList) Reverse() list.List {
 }
 
 // Sort arrange the values in ascending or descending order
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (ll *LinkedList) Sort(utils.CompareFunc) {
 
 }
 
-// Map creates a new list with every value returned by the MapFunc
+// Map creates a new list with values returned by the MapFunc
+//
+// Each value in the list is passed to the MapFunc, and values returned by MapFunc are used to construct a new list.
+//
+// It doesn't mutate the list, instead it creates a new list and returns it's reference.
 func (ll *LinkedList) Map(fn utils.MapFunc) list.List {
 	ll.RLock()
 	defer ll.RUnlock()
@@ -158,7 +184,7 @@ func (ll *LinkedList) Map(fn utils.MapFunc) list.List {
 	return ll.mp(fn)
 }
 
-// Clone creates a shallow copy and returns it
+// Clone creates a shallow copy and returns the reference
 func (ll *LinkedList) Clone() list.List {
 	ll.RLock()
 	defer ll.RUnlock()
@@ -166,7 +192,9 @@ func (ll *LinkedList) Clone() list.List {
 	return ll.clone()
 }
 
-// Swap two values based on index
+// Swap two values at two given indexes
+//
+// Returns false if swap doesn't succeed, otherwise true
 func (ll *LinkedList) Swap(a, b int) bool {
 	ll.Lock()
 	defer ll.Unlock()
