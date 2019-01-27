@@ -1,8 +1,6 @@
 package redblacktree
 
 import (
-	"fmt"
-
 	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
 	"github.com/praveen001/ds/stack"
@@ -40,11 +38,8 @@ func (rbt *RedBlackTree) add(value interface{}) bool {
 		}
 	}
 	rbt.size++
-
+	rbt.readjust(s)
 	rbt.rebalance(newElem)
-	fmt.Println("Before adjusting", rbt.inOrder())
-	fmt.Println("Stack ", s)
-	// rbt.readjust(s)
 	return true
 }
 
