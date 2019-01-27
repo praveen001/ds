@@ -1,4 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/praveen001/ds?status.svg)](https://godoc.org/github.com/praveen001/ds) [![Build Status](https://travis-ci.org/praveen001/ds.svg?branch=master)](https://travis-ci.org/praveen001/ds.svg?branch=master)
+[![GoDoc](https://godoc.org/github.com/praveen001/ds?status.svg)](https://godoc.org/github.com/praveen001/ds) [![Build Status](https://travis-ci.org/praveen001/ds.svg?branch=master)](https://travis-ci.org/praveen001/ds)
 
 # Data structures
 
