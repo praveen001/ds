@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/emirpasic/gods.svg)
+![Build Status](https://travis-ci.org/praveen001/ds.svg)
 # Data structures
 
 All data structure implementations are safe for concurrent access (through mutex).
