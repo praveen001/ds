@@ -36,7 +36,9 @@ func newNode(value interface{}) *Node {
 	return &Node{1, value, nil, nil}
 }
 
-// Add a given value into the tree
+// Add a value into the tree
+//
+// Returns false is value already exists in tree, otherwise true
 func (bt *BinaryTree) Add(value interface{}) bool {
 	bt.Lock()
 	defer bt.Unlock()
@@ -44,7 +46,9 @@ func (bt *BinaryTree) Add(value interface{}) bool {
 	return bt.add(value)
 }
 
-// Remove a node (using value) from the tree
+// Remove a value from the tree
+//
+// Returns true if value was removed, otherwise false.
 func (bt *BinaryTree) Remove(value interface{}) bool {
 	bt.Lock()
 	defer bt.Unlock()
@@ -52,7 +56,7 @@ func (bt *BinaryTree) Remove(value interface{}) bool {
 	return bt.remove(value)
 }
 
-// Height returns the height of the tree (node/level count)
+// Height returns the height of the tree (node/level count) in O(1) Time Complexity.
 func (bt *BinaryTree) Height() int {
 	bt.RLock()
 	defer bt.RUnlock()
@@ -61,6 +65,8 @@ func (bt *BinaryTree) Height() int {
 }
 
 // Min returns the minimum value present in the tree
+//
+// Returns false if tree is empty
 func (bt *BinaryTree) Min() (interface{}, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
@@ -69,6 +75,8 @@ func (bt *BinaryTree) Min() (interface{}, bool) {
 }
 
 // Max returns the maximum value present in the tree
+//
+// Returns false if tree is empty
 func (bt *BinaryTree) Max() (interface{}, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
@@ -92,7 +100,7 @@ func (bt *BinaryTree) Length() int {
 	return bt.length()
 }
 
-// Clear removes all the nodes from tree
+// Clear all the nodes from tree
 func (bt *BinaryTree) Clear() {
 	bt.Lock()
 	defer bt.Unlock()

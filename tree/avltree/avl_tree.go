@@ -37,7 +37,9 @@ func newNode(value interface{}) *Node {
 	return &Node{height: 1, value: value, left: nil, right: nil}
 }
 
-// Add a given value into the tree
+// Add a value into the tree
+//
+// Returns false is value already exists in tree, otherwise true
 func (at *AvlTree) Add(value interface{}) bool {
 	at.Lock()
 	defer at.Unlock()
@@ -53,7 +55,9 @@ func (at *AvlTree) RAdd(value interface{}) {
 	at.root = at.radd(at.root, value)
 }
 
-// Remove a node (using value) from the tree
+// Remove a value from the tree
+//
+// Returns true if value was removed, otherwise false.
 func (at *AvlTree) Remove(value interface{}) bool {
 	at.Lock()
 	defer at.Unlock()
@@ -61,7 +65,7 @@ func (at *AvlTree) Remove(value interface{}) bool {
 	return at.remove(value)
 }
 
-// Height returns the height of the tree (node/level count)
+// Height returns the height of the tree (node/level count) in O(1) Time Complexity.
 func (at *AvlTree) Height() int {
 	at.RLock()
 	defer at.RUnlock()
@@ -70,6 +74,8 @@ func (at *AvlTree) Height() int {
 }
 
 // Min returns the minimum value present in the tree
+//
+// Returns false if tree is empty
 func (at *AvlTree) Min() (interface{}, bool) {
 	at.RLock()
 	defer at.RUnlock()
@@ -78,6 +84,8 @@ func (at *AvlTree) Min() (interface{}, bool) {
 }
 
 // Max returns the maximum value present in the tree
+//
+// Returns false if tree is empty
 func (at *AvlTree) Max() (interface{}, bool) {
 	at.RLock()
 	defer at.RUnlock()
@@ -101,7 +109,7 @@ func (at *AvlTree) Length() int {
 	return at.length()
 }
 
-// Clear removes all the nodes from tree
+// Clear all the nodes from tree
 func (at *AvlTree) Clear() {
 	at.Lock()
 	defer at.Unlock()
