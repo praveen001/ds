@@ -13,12 +13,10 @@ func (rbt *RedBlackTree) add(value interface{}) bool {
 		return true
 	}
 
-	s := stack.New()
 	var newElem *Node
 
 	node := rbt.root
 	for {
-		s.Push(node)
 		if comp := rbt.compare(node.value, value); comp == -1 {
 			if node.right == nil {
 				newElem = newNode(value, node, red)
@@ -38,7 +36,6 @@ func (rbt *RedBlackTree) add(value interface{}) bool {
 		}
 	}
 	rbt.size++
-	rbt.readjust(s)
 	rbt.rebalance(newElem)
 	return true
 }
@@ -70,7 +67,6 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 				} else {
 					parent.right = nil
 				}
-				rbt.readjust(s)
 				return true
 			}
 
@@ -82,7 +78,6 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 				} else {
 					parent.right = node.right
 				}
-				rbt.readjust(s)
 				return true
 			} else if node.right == nil {
 				if parent == nil {
@@ -92,7 +87,6 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 				} else {
 					parent.right = node.right
 				}
-				rbt.readjust(s)
 				return true
 			}
 
@@ -214,18 +208,6 @@ func (rbt *RedBlackTree) postOrder() list.List {
 	return ll
 }
 
-func (rbt *RedBlackTree) readjust(s *stack.Stack) {
-	var node *Node
-	for {
-		p, ok := s.Pop()
-		if !ok {
-			break
-		}
-		node = p.(*Node)
-		node.recomputeHeight()
-	}
-}
-
 func (rbt *RedBlackTree) getNeigbours(x *Node) (p, g, u *Node) {
 	// Parent
 	p = x.parent
@@ -252,6 +234,8 @@ func (rbt *RedBlackTree) rebalance(x *Node) {
 		if p == nil || g == nil {
 			return
 		}
+		p.recomputeHeight()
+		g.recomputeHeight()
 
 		if p.isBlack() {
 			return
