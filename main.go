@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"github.com/praveen001/ds/utils"
+
 	"github.com/praveen001/ds/heap/binaryheap"
 	"github.com/praveen001/ds/list/arraylist"
 	"github.com/praveen001/ds/list/linkedlist"
@@ -10,6 +12,7 @@ import (
 	"github.com/praveen001/ds/queue"
 	"github.com/praveen001/ds/stack"
 	"github.com/praveen001/ds/tree/avltree"
+	"github.com/praveen001/ds/tree/redblacktree"
 )
 
 func tryArrayList() {
@@ -315,4 +318,21 @@ func main() {
 	// }
 	// wg.Wait()
 	// fmt.Println(bt.InOrder())
+
+	rbt := redblacktree.New(utils.IntComparator)
+
+	rbt.Add(11)
+	rbt.Add(2)
+	rbt.Add(14)
+	rbt.Add(1)
+	rbt.Add(7)
+	rbt.Add(15)
+	rbt.Add(5)
+	rbt.Add(8)
+
+	fmt.Println(rbt.InOrder())
+
+	fmt.Println("------------------")
+	rbt.Add(4)
+	fmt.Println(rbt.InOrder())
 }
