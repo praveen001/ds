@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/praveen001/ds.svg)
+[![GoDoc](https://godoc.org/github.com/praveen001/ds?status.svg)](https://godoc.org/github.com/praveen001/ds) ![Build Status](https://travis-ci.org/praveen001/ds.svg)
 # Data structures
 
 All data structure implementations are safe for concurrent access (through mutex).
