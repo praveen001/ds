@@ -89,7 +89,7 @@ func TestMin(t *testing.T) {
 	bt.Set(5, 5)
 
 	if m, ok := bt.Min(); m.value != 5 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 5, true, m, ok)
+		t.Errorf("Expected %v, %v Got %v, %v", 5, true, m.value, ok)
 	}
 }
 
@@ -106,7 +106,7 @@ func TestMax(t *testing.T) {
 	bt.Set(20, 20)
 
 	if m, ok := bt.Max(); m.value != 100 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 100, true, m, ok)
+		t.Errorf("Expected %v, %v Got %v, %v", 100, true, m.value, ok)
 	}
 }
 

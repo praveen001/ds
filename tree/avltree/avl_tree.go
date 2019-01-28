@@ -20,6 +20,7 @@ type AvlTree struct {
 type Node struct {
 	height  int
 	bFactor int
+	key     interface{}
 	value   interface{}
 	left    *Node
 	right   *Node
@@ -33,36 +34,46 @@ func New(c utils.CompareFunc) *AvlTree {
 }
 
 // NewNode returns a new binary tree node with given value
-func newNode(value interface{}) *Node {
-	return &Node{height: 1, value: value, left: nil, right: nil}
+func newNode(key, value interface{}) *Node {
+	return &Node{height: 1, key: key, value: value, left: nil, right: nil}
 }
 
-// Add a value into the tree
+// Set a value into the tree
 //
 // Returns false is value already exists in tree, otherwise true
-func (at *AvlTree) Add(value interface{}) bool {
+func (at *AvlTree) Set(key, value interface{}) bool {
 	at.Lock()
 	defer at.Unlock()
 
-	return at.add(value)
+	return at.set(key, value)
 }
 
-// RAdd a given value into the tree recursively
-func (at *AvlTree) RAdd(value interface{}) {
+// RSet a given value into the tree recursively
+func (at *AvlTree) RSet(key, value interface{}) {
 	at.Lock()
 	defer at.Unlock()
 
-	at.root = at.radd(at.root, value)
+	at.root = at.rset(at.root, key, value)
 }
 
-// Remove a value from the tree
+// Get a value by key from tree
 //
-// Returns true if value was removed, otherwise false.
-func (at *AvlTree) Remove(value interface{}) bool {
+// Returns value if key exists, otherwise it returns nil, false
+func (at *AvlTree) Get(key interface{}) (interface{}, bool) {
 	at.Lock()
 	defer at.Unlock()
 
-	return at.remove(value)
+	return at.get(key)
+}
+
+// Remove a key from the tree
+//
+// Returns true if key was removed, otherwise false.
+func (at *AvlTree) Remove(key interface{}) bool {
+	at.Lock()
+	defer at.Unlock()
+
+	return at.remove(key)
 }
 
 // Height returns the height of the tree (node/level count) in O(1) Time Complexity.
@@ -76,7 +87,7 @@ func (at *AvlTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (at *AvlTree) Min() (interface{}, bool) {
+func (at *AvlTree) Min() (*Node, bool) {
 	at.RLock()
 	defer at.RUnlock()
 
@@ -86,19 +97,19 @@ func (at *AvlTree) Min() (interface{}, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (at *AvlTree) Max() (interface{}, bool) {
+func (at *AvlTree) Max() (*Node, bool) {
 	at.RLock()
 	defer at.RUnlock()
 
 	return at.max()
 }
 
-// Contains return true if value exists in tree, otherwise false
-func (at *AvlTree) Contains(value interface{}) bool {
+// Contains return true if key exists in tree, otherwise false
+func (at *AvlTree) Contains(key interface{}) bool {
 	at.RLock()
 	defer at.RUnlock()
 
-	return at.contains(value)
+	return at.contains(key)
 }
 
 // Length returns the total number of nodes in tree

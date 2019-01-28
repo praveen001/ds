@@ -14,27 +14,42 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestAdd(t *testing.T) {
+func TestSet(t *testing.T) {
 	at := New(utils.IntComparator)
 
-	at.Add(10)
+	at.Set(10, 10)
 
 	if l := at.Length(); l != 1 {
 		t.Errorf("Expected %v Got %v", 1, l)
 	}
 
-	at.Add(10)
-	at.Add(20)
+	at.Set(10, 10)
+	at.Set(20, 20)
 	if l := at.Length(); l != 2 {
 		t.Errorf("Expected %v Got %v", 2, l)
+	}
+}
+
+func TestGet(t *testing.T) {
+	at := New(utils.IntComparator)
+
+	at.Set(1, 10)
+	at.Set(2, 20)
+
+	if val, ok := at.Get(1); val != 10 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
+	}
+
+	if val, ok := at.Get(3); val != nil || ok {
+		t.Errorf("Expected %v, %v Got %v, %v", nil, false, val, ok)
 	}
 }
 
 func TestRemove(t *testing.T) {
 	at := New(utils.IntComparator)
 
-	at.Add(10)
-	at.Add(20)
+	at.Set(10, 10)
+	at.Set(20, 20)
 
 	if ok := at.Remove(10); !ok {
 		t.Errorf("Expected %v Got %v", true, ok)
@@ -52,9 +67,9 @@ func TestHeight(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 0, h)
 	}
 
-	at.Add(10)
-	at.Add(20)
-	at.Add(30)
+	at.Set(10, 10)
+	at.Set(20, 20)
+	at.Set(30, 30)
 
 	if h := at.Height(); h != 2 {
 		t.Errorf("Expected %v Got %v", 2, h)
@@ -68,13 +83,13 @@ func TestMin(t *testing.T) {
 		t.Errorf("Expected %v, %v Got %v, %v", nil, false, m, ok)
 	}
 
-	at.Add(100)
-	at.Add(10)
-	at.Add(20)
-	at.Add(5)
+	at.Set(100, 100)
+	at.Set(10, 10)
+	at.Set(20, 20)
+	at.Set(5, 5)
 
-	if m, ok := at.Min(); m != 5 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 5, true, m, ok)
+	if m, ok := at.Min(); m.value != 5 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 5, true, m.value, ok)
 	}
 }
 
@@ -85,13 +100,13 @@ func TestMax(t *testing.T) {
 		t.Errorf("Expected %v, %v Got %v, %v", nil, false, m, ok)
 	}
 
-	at.Add(5)
-	at.Add(10)
-	at.Add(100)
-	at.Add(20)
+	at.Set(5, 5)
+	at.Set(10, 10)
+	at.Set(100, 100)
+	at.Set(20, 20)
 
-	if m, ok := at.Max(); m != 100 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 100, true, m, ok)
+	if m, ok := at.Max(); m.value != 100 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 100, true, m.value, ok)
 	}
 }
 
@@ -102,10 +117,10 @@ func TestContains(t *testing.T) {
 		t.Errorf("Expected %v Got %v", false, ok)
 	}
 
-	at.Add(5)
-	at.Add(10)
-	at.Add(100)
-	at.Add(20)
+	at.Set(5, 5)
+	at.Set(10, 10)
+	at.Set(100, 100)
+	at.Set(20, 20)
 
 	if ok := at.Contains(20); !ok {
 		t.Errorf("Expected %v Got %v", true, ok)
@@ -125,10 +140,10 @@ func TestLength(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 
-	at.Add(5)
-	at.Add(10)
-	at.Add(100)
-	at.Add(20)
+	at.Set(5, 5)
+	at.Set(10, 10)
+	at.Set(100, 100)
+	at.Set(20, 20)
 
 	if l := at.Length(); l != 4 {
 		t.Errorf("Expected %v Got %v", 4, l)
@@ -148,10 +163,10 @@ func TestClear(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 
-	at.Add(5)
-	at.Add(10)
-	at.Add(100)
-	at.Add(20)
+	at.Set(5, 5)
+	at.Set(10, 10)
+	at.Set(100, 100)
+	at.Set(20, 20)
 
 	if l := at.Length(); l != 4 {
 		t.Errorf("Expected %v Got %v", 4, l)
@@ -175,10 +190,10 @@ func TestInOrder(t *testing.T) {
 		t.Errorf("Expected %v Got %v", "[]", str.String())
 	}
 
-	at.Add(5)
-	at.Add(10)
-	at.Add(100)
-	at.Add(20)
+	at.Set(5, 5)
+	at.Set(10, 10)
+	at.Set(100, 100)
+	at.Set(20, 20)
 
 	if str := at.InOrder(); str.String() != "[5 10 20 100]" {
 		t.Errorf("Expected %v Got %v", "[5 10 20 100]", str.String())
@@ -192,11 +207,11 @@ func TestPreOrder(t *testing.T) {
 		t.Errorf("Expected %v Got %v", "[]", str.String())
 	}
 
-	at.Add(5)
-	at.Add(10)
-	at.Add(7)
-	at.Add(100)
-	at.Add(20)
+	at.Set(5, 5)
+	at.Set(10, 10)
+	at.Set(7, 7)
+	at.Set(100, 100)
+	at.Set(20, 20)
 
 	if str := at.PreOrder(); str.String() != "[7 5 20 10 100]" {
 		t.Errorf("Expected %v Got %v", "[7 5 20 10 100]", str.String())
@@ -210,11 +225,11 @@ func TestPostOrder(t *testing.T) {
 		t.Errorf("Expected %v Got %v", "[]", str.String())
 	}
 
-	at.Add(5)
-	at.Add(10)
-	at.Add(7)
-	at.Add(100)
-	at.Add(20)
+	at.Set(5, 5)
+	at.Set(10, 10)
+	at.Set(7, 7)
+	at.Set(100, 100)
+	at.Set(20, 20)
 
 	if str := at.PostOrder(); str.String() != "[5 10 100 20 7]" {
 		t.Errorf("Expected %v Got %v", "[7 20 100 10 5]", str.String())
@@ -233,9 +248,9 @@ func TestLeftRotate(t *testing.T) {
 							\
 							100
 	*/
-	at.Add(10)
-	at.Add(50)
-	at.Add(100)
+	at.Set(10, 10)
+	at.Set(50, 50)
+	at.Set(100, 100)
 
 	if h := at.Height(); h != 2 {
 		t.Errorf("Expected %v Got %v", 2, h)
@@ -261,11 +276,11 @@ func TestLeftRotate(t *testing.T) {
 							\
 							300
 	*/
-	at.Add(10)
-	at.Add(5)
-	at.Add(100)
-	at.Add(200)
-	at.Add(300)
+	at.Set(10, 10)
+	at.Set(5, 5)
+	at.Set(100, 100)
+	at.Set(200, 200)
+	at.Set(300, 300)
 
 	if h := at.Height(); h != 3 {
 		t.Errorf("Expected %v Got %v", 3, h)
@@ -288,10 +303,10 @@ func TestLeftRotate(t *testing.T) {
 	20																	20
 	*/
 
-	at.Add(100)
-	at.Add(200)
-	at.Add(50)
-	at.Add(20)
+	at.Set(100, 100)
+	at.Set(200, 200)
+	at.Set(50, 50)
+	at.Set(20, 20)
 	at.Remove(200)
 
 	if h := at.Height(); h != 2 {
@@ -319,9 +334,9 @@ func TestRightRotate(t *testing.T) {
 			 /
 			10
 	*/
-	at.Add(100)
-	at.Add(50)
-	at.Add(10)
+	at.Set(100, 100)
+	at.Set(50, 50)
+	at.Set(10, 10)
 
 	if h := at.Height(); h != 2 {
 		t.Errorf("Expected %v Got %v", 2, h)
@@ -347,11 +362,11 @@ func TestRightRotate(t *testing.T) {
 			/
 		 5
 	*/
-	at.Add(200)
-	at.Add(100)
-	at.Add(300)
-	at.Add(10)
-	at.Add(5)
+	at.Set(200, 200)
+	at.Set(100, 100)
+	at.Set(300, 300)
+	at.Set(10, 10)
+	at.Set(5, 5)
 
 	if h := at.Height(); h != 3 {
 		t.Errorf("Expected %v Got %v", 3, h)
@@ -375,10 +390,10 @@ func TestRightRotate(t *testing.T) {
 						300																	300
 	*/
 
-	at.Add(100)
-	at.Add(200)
-	at.Add(50)
-	at.Add(300)
+	at.Set(100, 100)
+	at.Set(200, 200)
+	at.Set(50, 50)
+	at.Set(300, 300)
 	at.Remove(50)
 
 	if h := at.Height(); h != 2 {
@@ -406,9 +421,9 @@ func TestRightLeftRotate(t *testing.T) {
 						/
 					 40
 	*/
-	at.Add(10)
-	at.Add(50)
-	at.Add(40)
+	at.Set(10, 10)
+	at.Set(50, 50)
+	at.Set(40, 40)
 
 	if h := at.Height(); h != 2 {
 		t.Errorf("Expected %v Got %v", 2, h)
@@ -434,11 +449,11 @@ func TestRightLeftRotate(t *testing.T) {
 						/
 					150
 	*/
-	at.Add(10)
-	at.Add(5)
-	at.Add(100)
-	at.Add(200)
-	at.Add(150)
+	at.Set(10, 10)
+	at.Set(5, 5)
+	at.Set(100, 100)
+	at.Set(200, 200)
+	at.Set(150, 150)
 
 	if h := at.Height(); h != 3 {
 		t.Errorf("Expected %v Got %v", 3, h)
@@ -464,13 +479,13 @@ func TestRightLeftRotate(t *testing.T) {
 							/																				/																					\
 						150																			150																					200
 	*/
-	at.Add(10)
-	at.Add(5)
-	at.Add(100)
-	at.Add(200)
-	at.Add(90)
-	at.Add(1)
-	at.Add(150)
+	at.Set(10, 10)
+	at.Set(5, 5)
+	at.Set(100, 100)
+	at.Set(200, 200)
+	at.Set(90, 90)
+	at.Set(1, 1)
+	at.Set(150, 150)
 	at.Remove(90)
 
 	if h := at.Height(); h != 3 {
@@ -498,9 +513,9 @@ func TestLeftRightRotate(t *testing.T) {
 			 		\
 					60
 	*/
-	at.Add(100)
-	at.Add(50)
-	at.Add(60)
+	at.Set(100, 100)
+	at.Set(50, 50)
+	at.Set(60, 60)
 
 	if h := at.Height(); h != 2 {
 		t.Errorf("Expected %v Got %v", 2, h)
@@ -526,11 +541,11 @@ func TestLeftRightRotate(t *testing.T) {
 				\
 		 		60
 	*/
-	at.Add(200)
-	at.Add(100)
-	at.Add(300)
-	at.Add(10)
-	at.Add(60)
+	at.Set(200, 200)
+	at.Set(100, 100)
+	at.Set(300, 300)
+	at.Set(10, 10)
+	at.Set(60, 60)
 
 	if h := at.Height(); h != 3 {
 		t.Errorf("Expected %v Got %v", 3, h)
@@ -556,13 +571,13 @@ func TestLeftRightRotate(t *testing.T) {
 				\																	\																	/
 		 		60																60															10
 	*/
-	at.Add(200)
-	at.Add(100)
-	at.Add(300)
-	at.Add(10)
-	at.Add(150)
-	at.Add(400)
-	at.Add(60)
+	at.Set(200, 200)
+	at.Set(100, 100)
+	at.Set(300, 300)
+	at.Set(10, 10)
+	at.Set(150, 150)
+	at.Set(400, 400)
+	at.Set(60, 60)
 	at.Remove(150)
 
 	if h := at.Height(); h != 3 {

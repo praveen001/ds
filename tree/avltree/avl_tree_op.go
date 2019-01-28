@@ -7,9 +7,9 @@ import (
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
-func (at *AvlTree) add(value interface{}) bool {
+func (at *AvlTree) set(key, value interface{}) bool {
 	if at.length() == 0 {
-		at.root = newNode(value)
+		at.root = newNode(key, value)
 		at.size++
 		return true
 	}
@@ -19,16 +19,16 @@ func (at *AvlTree) add(value interface{}) bool {
 	node := at.root
 	for {
 		s.Push(node)
-		if comp := at.compare(node.value, value); comp == 1 {
+		if comp := at.compare(node.key, key); comp == 1 {
 			if node.left == nil {
-				node.left = newNode(value)
+				node.left = newNode(key, value)
 				break
 			} else {
 				node = node.left
 			}
 		} else if comp == -1 {
 			if node.right == nil {
-				node.right = newNode(value)
+				node.right = newNode(key, value)
 				break
 			} else {
 				node = node.right
@@ -43,16 +43,16 @@ func (at *AvlTree) add(value interface{}) bool {
 	return true
 }
 
-func (at *AvlTree) radd(node *Node, value interface{}) *Node {
+func (at *AvlTree) rset(node *Node, key, value interface{}) *Node {
 	if node == nil {
 		at.size++
-		return newNode(value)
+		return newNode(key, value)
 	}
 
-	if comp := at.compare(node.value, value); comp == 1 {
-		node.left = at.radd(node.left, value)
+	if comp := at.compare(node.key, key); comp == 1 {
+		node.left = at.rset(node.left, key, value)
 	} else if comp == -1 {
-		node.right = at.radd(node.right, value)
+		node.right = at.rset(node.right, key, value)
 	} else {
 		return nil
 	}
@@ -73,7 +73,22 @@ func (at *AvlTree) radd(node *Node, value interface{}) *Node {
 	}
 }
 
-func (at *AvlTree) remove(value interface{}) bool {
+func (at *AvlTree) get(key interface{}) (interface{}, bool) {
+	node := at.root
+	for node != nil {
+		if comp := at.compare(node.key, key); comp == -1 {
+			node = node.right
+		} else if comp == 1 {
+			node = node.left
+		} else {
+			return node.value, true
+		}
+	}
+
+	return nil, false
+}
+
+func (at *AvlTree) remove(key interface{}) bool {
 	if at.length() == 0 {
 		return false
 	}
@@ -85,7 +100,7 @@ func (at *AvlTree) remove(value interface{}) bool {
 	node := at.root
 	for node != nil {
 		s.Push(node)
-		if comp := at.compare(node.value, value); comp == 1 {
+		if comp := at.compare(node.key, key); comp == 1 {
 			parent = node
 			node = node.left
 		} else if comp == -1 {
@@ -95,7 +110,7 @@ func (at *AvlTree) remove(value interface{}) bool {
 			if node.left == nil && node.right == nil {
 				if parent == nil {
 					at.root = nil
-				} else if at.compare(parent.value, value) == 1 {
+				} else if at.compare(parent.key, key) == 1 {
 					parent.left = nil
 				} else {
 					parent.right = nil
@@ -107,7 +122,7 @@ func (at *AvlTree) remove(value interface{}) bool {
 			if node.left == nil {
 				if parent == nil {
 					at.root = node.right
-				} else if at.compare(parent.value, value) == 1 {
+				} else if at.compare(parent.key, key) == 1 {
 					parent.left = node.right
 				} else {
 					parent.right = node.right
@@ -117,7 +132,7 @@ func (at *AvlTree) remove(value interface{}) bool {
 			} else if node.right == nil {
 				if parent == nil {
 					at.root = node.left
-				} else if at.compare(parent.value, value) == 1 {
+				} else if at.compare(parent.key, key) == 1 {
 					parent.left = node.left
 				} else {
 					parent.right = node.left
@@ -135,7 +150,9 @@ func (at *AvlTree) remove(value interface{}) bool {
 			}
 
 			node.value = min.value
-			value = min.value
+			node.key = min.key
+
+			key = min.key
 			parent = node
 			node = node.right
 
@@ -153,7 +170,7 @@ func (at *AvlTree) height() int {
 	return at.root.height
 }
 
-func (at *AvlTree) min() (interface{}, bool) {
+func (at *AvlTree) min() (*Node, bool) {
 	if at.length() == 0 {
 		return nil, false
 	}
@@ -161,13 +178,13 @@ func (at *AvlTree) min() (interface{}, bool) {
 	node := at.root
 	for {
 		if node.left == nil {
-			return node.value, true
+			return node, true
 		}
 		node = node.left
 	}
 }
 
-func (at *AvlTree) max() (interface{}, bool) {
+func (at *AvlTree) max() (*Node, bool) {
 	if at.length() == 0 {
 		return nil, false
 	}
@@ -175,20 +192,20 @@ func (at *AvlTree) max() (interface{}, bool) {
 	node := at.root
 	for {
 		if node.right == nil {
-			return node.value, true
+			return node, true
 		}
 		node = node.right
 	}
 }
 
-func (at *AvlTree) contains(value interface{}) bool {
+func (at *AvlTree) contains(key interface{}) bool {
 	if at.length() == 0 {
 		return false
 	}
 
 	node := at.root
 	for {
-		if comp := at.compare(node.value, value); comp == -1 {
+		if comp := at.compare(node.key, key); comp == -1 {
 			if node.right == nil {
 				return false
 			}
@@ -279,7 +296,7 @@ func (at *AvlTree) rebalance(s *stack.Stack) {
 		node = p.(*Node)
 
 		if prev != nil {
-			if comp := at.compare(node.value, prev.value); comp == 1 {
+			if comp := at.compare(node.key, prev.key); comp == 1 {
 				node.left = prev
 			} else if comp == -1 {
 				node.right = prev
