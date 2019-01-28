@@ -6,9 +6,9 @@ import (
 	"github.com/praveen001/ds/stack"
 )
 
-func (bt *BinaryTree) add(value interface{}) bool {
+func (bt *BinaryTree) set(key, value interface{}) bool {
 	if bt.root == nil {
-		bt.root = newNode(value)
+		bt.root = newNode(key, value)
 		bt.size++
 		return true
 	}
@@ -18,15 +18,15 @@ func (bt *BinaryTree) add(value interface{}) bool {
 	node := bt.root
 	for {
 		s.Push(node)
-		if comp := bt.compare(node.value, value); comp == -1 {
+		if comp := bt.compare(node.key, key); comp == -1 {
 			if node.right == nil {
-				node.right = newNode(value)
+				node.right = newNode(key, value)
 				break
 			}
 			node = node.right
 		} else if comp == 1 {
 			if node.left == nil {
-				node.left = newNode(value)
+				node.left = newNode(key, value)
 				break
 			}
 			node = node.left
@@ -40,7 +40,22 @@ func (bt *BinaryTree) add(value interface{}) bool {
 	return true
 }
 
-func (bt *BinaryTree) remove(value interface{}) bool {
+func (bt *BinaryTree) get(key interface{}) (interface{}, bool) {
+	node := bt.root
+	for node != nil {
+		if comp := bt.compare(node.key, key); comp == -1 {
+			node = node.right
+		} else if comp == 1 {
+			node = node.left
+		} else {
+			return node.value, true
+		}
+	}
+
+	return nil, false
+}
+
+func (bt *BinaryTree) remove(key interface{}) bool {
 	if bt.length() == 0 {
 		return false
 	}
@@ -52,7 +67,7 @@ func (bt *BinaryTree) remove(value interface{}) bool {
 	node := bt.root
 	for node != nil {
 		s.Push(node)
-		if comp := bt.compare(node.value, value); comp == 1 {
+		if comp := bt.compare(node.key, key); comp == 1 {
 			parent = node
 			node = node.left
 		} else if comp == -1 {
@@ -62,7 +77,7 @@ func (bt *BinaryTree) remove(value interface{}) bool {
 			if node.left == nil && node.right == nil {
 				if parent == nil {
 					bt.root = nil
-				} else if bt.compare(parent.value, value) == 1 {
+				} else if bt.compare(parent.key, key) == 1 {
 					parent.left = nil
 				} else {
 					parent.right = nil
@@ -74,7 +89,7 @@ func (bt *BinaryTree) remove(value interface{}) bool {
 			if node.left == nil {
 				if parent == nil {
 					bt.root = node.right
-				} else if bt.compare(parent.value, value) == 1 {
+				} else if bt.compare(parent.key, key) == 1 {
 					parent.left = node.right
 				} else {
 					parent.right = node.right
@@ -84,7 +99,7 @@ func (bt *BinaryTree) remove(value interface{}) bool {
 			} else if node.right == nil {
 				if parent == nil {
 					bt.root = node.left
-				} else if bt.compare(parent.value, value) == 1 {
+				} else if bt.compare(parent.key, key) == 1 {
 					parent.left = node.left
 				} else {
 					parent.right = node.right
@@ -101,8 +116,10 @@ func (bt *BinaryTree) remove(value interface{}) bool {
 				min = min.left
 			}
 
+			node.key = min.key
 			node.value = min.value
-			value = min.value
+
+			key = min.key
 			parent = node
 			node = node.right
 
@@ -146,7 +163,7 @@ func (bt *BinaryTree) height() int {
 	// return height
 }
 
-func (bt *BinaryTree) min() (interface{}, bool) {
+func (bt *BinaryTree) min() (*Node, bool) {
 	if bt.length() == 0 {
 		return nil, false
 	}
@@ -154,13 +171,13 @@ func (bt *BinaryTree) min() (interface{}, bool) {
 	node := bt.root
 	for {
 		if node.left == nil {
-			return node.value, true
+			return node, true
 		}
 		node = node.left
 	}
 }
 
-func (bt *BinaryTree) max() (interface{}, bool) {
+func (bt *BinaryTree) max() (*Node, bool) {
 	if bt.length() == 0 {
 		return nil, false
 	}
@@ -168,20 +185,20 @@ func (bt *BinaryTree) max() (interface{}, bool) {
 	node := bt.root
 	for {
 		if node.right == nil {
-			return node.value, true
+			return node, true
 		}
 		node = node.right
 	}
 }
 
-func (bt *BinaryTree) contains(value interface{}) bool {
+func (bt *BinaryTree) contains(key interface{}) bool {
 	if bt.length() == 0 {
 		return false
 	}
 
 	node := bt.root
 	for {
-		if comp := bt.compare(node.value, value); comp == -1 {
+		if comp := bt.compare(node.key, key); comp == -1 {
 			if node.right == nil {
 				return false
 			}

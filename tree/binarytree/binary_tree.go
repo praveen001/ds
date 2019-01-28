@@ -19,6 +19,7 @@ type BinaryTree struct {
 // Node represents a node in a binary tree
 type Node struct {
 	height int
+	key    interface{}
 	value  interface{}
 	left   *Node
 	right  *Node
@@ -32,18 +33,28 @@ func New(c utils.CompareFunc) *BinaryTree {
 }
 
 // NewNode returns a new binary tree node with given value
-func newNode(value interface{}) *Node {
-	return &Node{1, value, nil, nil}
+func newNode(key, value interface{}) *Node {
+	return &Node{1, key, value, nil, nil}
 }
 
-// Add a value into the tree
+// Set a value into the tree
 //
 // Returns false is value already exists in tree, otherwise true
-func (bt *BinaryTree) Add(value interface{}) bool {
+func (bt *BinaryTree) Set(key, value interface{}) bool {
 	bt.Lock()
 	defer bt.Unlock()
 
-	return bt.add(value)
+	return bt.set(key, value)
+}
+
+// Get a value by key from tree
+//
+// Returns value if key exists, otherwise it returns nil, false
+func (bt *BinaryTree) Get(key interface{}) (interface{}, bool) {
+	bt.Lock()
+	defer bt.Unlock()
+
+	return bt.get(key)
 }
 
 // Remove a value from the tree
@@ -67,7 +78,7 @@ func (bt *BinaryTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (bt *BinaryTree) Min() (interface{}, bool) {
+func (bt *BinaryTree) Min() (*Node, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
 
@@ -77,7 +88,7 @@ func (bt *BinaryTree) Min() (interface{}, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (bt *BinaryTree) Max() (interface{}, bool) {
+func (bt *BinaryTree) Max() (*Node, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
 
