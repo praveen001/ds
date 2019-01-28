@@ -68,11 +68,7 @@ func (ll *LinkedList) remove(index int) (interface{}, bool) {
 			elem := ll.getElemByIdx(index - 1)
 			value = elem.next.value
 
-			if elem.next != nil {
-				elem.next = elem.next.next
-			} else {
-				elem.next = nil
-			}
+			elem.next = elem.next.next
 		}
 
 		ll.size--

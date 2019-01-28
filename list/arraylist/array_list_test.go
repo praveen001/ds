@@ -328,6 +328,12 @@ func TestSwap(t *testing.T) {
 	al := New()
 
 	al.Append(10, 20, 30)
+
+	// Invalid case
+	if ok := al.Swap(-1, 2); ok {
+		t.Errorf("Expected %v, Got %v", false, ok)
+	}
+
 	al.Swap(0, 2)
 
 	if val, ok := al.Get(0); val != 30 || !ok {

@@ -117,7 +117,7 @@ func TestRemove(t *testing.T) {
 	}
 
 	// Valid Case
-	if val, ok := al.Remove(1); val == nil || !ok {
+	if val, ok := al.Remove(1); val != 11.5 || !ok {
 		t.Errorf("Expected %v, %v Got %v, %v", 11.5, true, val, ok)
 	}
 	if len := al.Length(); len != 2 {
@@ -125,6 +125,21 @@ func TestRemove(t *testing.T) {
 	}
 	if val, ok := al.Get(1); val == nil || !ok {
 		t.Errorf("Expected %v, %v Got %v, %v", 12.5, true, val, ok)
+	}
+
+	// Remove head while it has next node
+	if val, ok := al.Remove(0); val != 10.5 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 10.5, true, val, ok)
+	}
+
+	// Remove head when it's the only node
+	if val, ok := al.Remove(0); val != 12.5 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 10.5, true, val, ok)
+	}
+
+	al.Append(10, 20)
+	if val, ok := al.Remove(al.Length() - 1); val != 20 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 20, true, val, ok)
 	}
 }
 
@@ -328,6 +343,12 @@ func TestSwap(t *testing.T) {
 	al := New()
 
 	al.Append(10, 20, 30)
+
+	// Invalid case
+	if ok := al.Swap(-1, 2); ok {
+		t.Errorf("Expected %v, Got %v", false, ok)
+	}
+
 	al.Swap(0, 2)
 
 	if val, ok := al.Get(0); val != 30 || !ok {
