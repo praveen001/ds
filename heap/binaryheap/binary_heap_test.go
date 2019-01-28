@@ -40,29 +40,57 @@ func TestNewWithConfig(t *testing.T) {
 }
 
 func TestPush(t *testing.T) {
-	bh := New(comp)
+	dh := New(comp)
 
-	bh.Push()
-	bh.Push(30)
-	bh.Push(10, 20)
+	dh.Push()
+	dh.Push(30, 10, 20, 5, 2, 1)
 
-	if l := bh.Length(); l != 3 {
-		t.Errorf("Expected %v Got %v", 3, l)
+	if l := dh.Length(); l != 6 {
+		t.Errorf("Expected %v Got %v", 6, l)
+	}
+
+	if val, ok := dh.Peek(); val != 1 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 1, true, val, ok)
 	}
 }
 
 func TestPop(t *testing.T) {
-	bh := New(comp)
+	dh := New(comp)
 
-	bh.Push(10, 30, 20)
+	dh.Push(30, 10, 20, 5, 2, 1)
 
-	if val, ok := bh.Pop(); val != 10 || !ok {
+	if val, ok := dh.Pop(); val != 1 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 1, true, val, ok)
+	}
+
+	if val, ok := dh.Pop(); val != 2 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 2, true, val, ok)
+	}
+
+	if val, ok := dh.Pop(); val != 5 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 5, true, val, ok)
+	}
+
+	if val, ok := dh.Pop(); val != 10 || !ok {
 		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
 	}
 
-	if val, ok := bh.Pop(); val != 20 || !ok {
+	if val, ok := dh.Pop(); val != 20 || !ok {
 		t.Errorf("Expected %v, %v Got %v, %v", 20, true, val, ok)
 	}
+
+	if val, ok := dh.Pop(); val != 30 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 30, true, val, ok)
+	}
+
+	if val, ok := dh.Pop(); val != nil || ok {
+		t.Errorf("Expected %v, %v Got %v, %v", nil, false, val, ok)
+	}
+
+	if str := dh.String(); str != "[]" {
+		t.Errorf("Expected %v Got %v", "[]", str)
+	}
+
 }
 
 func TestPeek(t *testing.T) {

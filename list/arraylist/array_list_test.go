@@ -109,7 +109,7 @@ func TestSet(t *testing.T) {
 func TestRemove(t *testing.T) {
 	al := New()
 
-	al.Append(10.5, 11.5, 12.5)
+	al.Append(1, 2, 20, 10, 30, 5)
 
 	// Invalid case
 	if val, ok := al.Remove(-1); val != nil || ok {
@@ -117,14 +117,34 @@ func TestRemove(t *testing.T) {
 	}
 
 	// Valid Case
-	if val, ok := al.Remove(1); val == nil || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 11.5, true, val, ok)
+	if val, ok := al.Remove(1); val != 2 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 2, true, val, ok)
 	}
-	if len := al.Length(); len != 2 {
-		t.Errorf("Expected %v Got %v", 2, len)
+
+	if len := al.Length(); len != 5 {
+		t.Errorf("Expected %v Got %v", 5, len)
 	}
-	if val, ok := al.Get(1); val == nil || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 12.5, true, val, ok)
+
+	if val, ok := al.Get(1); val != 20 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 20, true, val, ok)
+	}
+
+	// Remove head while it has next node
+	if val, ok := al.Remove(0); val != 1 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 1, true, val, ok)
+	}
+
+	// Remove head when it's the only node
+	if val, ok := al.Remove(0); val != 20 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 20, true, val, ok)
+	}
+
+	if val, ok := al.Remove(al.Length() - 1); val != 5 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 5, true, val, ok)
+	}
+
+	if str := al.String(); str != "[10 30]" {
+		t.Errorf("Expected %v Got %v", "[10 30]", str)
 	}
 }
 

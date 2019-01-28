@@ -44,18 +44,33 @@ func TestPush(t *testing.T) {
 	dh := New(comp)
 
 	dh.Push()
-	dh.Push(30)
-	dh.Push(10, 20)
+	dh.Push(30, 10, 20, 5, 2, 1)
 
-	if l := dh.Length(); l != 3 {
-		t.Errorf("Expected %v Got %v", 3, l)
+	if l := dh.Length(); l != 6 {
+		t.Errorf("Expected %v Got %v", 6, l)
+	}
+
+	if val, ok := dh.Peek(); val != 1 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 1, true, val, ok)
 	}
 }
 
 func TestPop(t *testing.T) {
 	dh := New(comp)
 
-	dh.Push(30, 10, 20)
+	dh.Push(30, 10, 20, 5, 2, 1)
+
+	if val, ok := dh.Pop(); val != 1 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 1, true, val, ok)
+	}
+
+	if val, ok := dh.Pop(); val != 2 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 2, true, val, ok)
+	}
+
+	if val, ok := dh.Pop(); val != 5 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 5, true, val, ok)
+	}
 
 	if val, ok := dh.Pop(); val != 10 || !ok {
 		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
@@ -64,6 +79,15 @@ func TestPop(t *testing.T) {
 	if val, ok := dh.Pop(); val != 20 || !ok {
 		t.Errorf("Expected %v, %v Got %v, %v", 20, true, val, ok)
 	}
+
+	if val, ok := dh.Pop(); val != 30 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 30, true, val, ok)
+	}
+
+	if val, ok := dh.Pop(); val != nil || ok {
+		t.Errorf("Expected %v, %v Got %v, %v", nil, false, val, ok)
+	}
+
 }
 
 func TestPeek(t *testing.T) {

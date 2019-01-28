@@ -14,8 +14,9 @@ func (bh *BinaryHeap) pop() (interface{}, bool) {
 		return nil, false
 	}
 
-	last, _ := bh.list.Remove(bh.list.Length() - 1)
 	first, _ := bh.list.Get(0)
+	last, _ := bh.list.Remove(bh.list.Length() - 1)
+
 	bh.list.Set(0, last)
 	bh.percolateDown(0)
 
@@ -36,13 +37,18 @@ func (bh *BinaryHeap) length() int {
 
 func (bh *BinaryHeap) percolateUp(idx int) {
 	x, _ := bh.list.Get(idx)
-	p, _ := bh.list.Get(idx / 2)
 
-	for bh.compare(p, x) == bh.variant {
-		bh.list.Swap(idx, idx/2)
+	for idx > -1 {
+		pidx := (idx - 1) / 2
+		p, _ := bh.list.Get(pidx)
 
-		idx = idx / 2
-		p, _ = bh.list.Get(idx / 2)
+		if bh.compare(p, x) == bh.variant {
+			bh.list.Swap(idx, pidx)
+
+			idx = pidx
+			continue
+		}
+		break
 	}
 }
 

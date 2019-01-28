@@ -73,5 +73,5 @@ func (bh *BinaryHeap) Length() int {
 
 // String returns the string representation of the heap
 func (bh *BinaryHeap) String() string {
-	return bh.list.String()
+	return bh.string()
 }

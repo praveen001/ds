@@ -64,21 +64,17 @@ func (dl *DoublyLinkedList) remove(index int) (interface{}, bool) {
 			value = elem.value
 
 			if elem.next != nil {
-				dl.head = elem.next
 				elem.prev = nil
-			} else {
-				dl.head = nil
 			}
+			dl.head = elem.next
 		} else {
 			elem := dl.getElemByIdx(index)
 			value = elem.value
 
 			if elem.next != nil {
 				elem.next.prev = elem.prev
-				elem.prev.next = elem.next
-			} else {
-				elem.prev = nil
 			}
+			elem.prev.next = elem.next
 		}
 
 		dl.size--
