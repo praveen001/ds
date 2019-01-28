@@ -102,7 +102,7 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 				} else if bt.compare(parent.key, key) == 1 {
 					parent.left = node.left
 				} else {
-					parent.right = node.right
+					parent.right = node.left
 				}
 				bt.readjust(s)
 				return true

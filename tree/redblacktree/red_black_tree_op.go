@@ -85,7 +85,7 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 				} else if rbt.compare(parent.value, value) == 1 {
 					parent.left = node.left
 				} else {
-					parent.right = node.right
+					parent.right = node.left
 				}
 				return true
 			}
