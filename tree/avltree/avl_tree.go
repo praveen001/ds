@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/tree"
 
 	"github.com/praveen001/ds/utils"
 )
@@ -87,7 +88,7 @@ func (at *AvlTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (at *AvlTree) Min() (*Node, bool) {
+func (at *AvlTree) Min() (tree.Node, bool) {
 	at.RLock()
 	defer at.RUnlock()
 
@@ -97,7 +98,7 @@ func (at *AvlTree) Min() (*Node, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (at *AvlTree) Max() (*Node, bool) {
+func (at *AvlTree) Max() (tree.Node, bool) {
 	at.RLock()
 	defer at.RUnlock()
 

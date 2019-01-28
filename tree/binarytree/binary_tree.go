@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/tree"
 
 	"github.com/praveen001/ds/utils"
 )
@@ -78,7 +79,7 @@ func (bt *BinaryTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (bt *BinaryTree) Min() (*Node, bool) {
+func (bt *BinaryTree) Min() (tree.Node, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
 
@@ -88,7 +89,7 @@ func (bt *BinaryTree) Min() (*Node, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (bt *BinaryTree) Max() (*Node, bool) {
+func (bt *BinaryTree) Max() (tree.Node, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
 

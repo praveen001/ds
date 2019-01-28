@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/tree"
 	"github.com/praveen001/ds/utils"
 )
 
@@ -79,7 +80,7 @@ func (rbt *RedBlackTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (rbt *RedBlackTree) Min() (*Node, bool) {
+func (rbt *RedBlackTree) Min() (tree.Node, bool) {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
@@ -89,7 +90,7 @@ func (rbt *RedBlackTree) Min() (*Node, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (rbt *RedBlackTree) Max() (*Node, bool) {
+func (rbt *RedBlackTree) Max() (tree.Node, bool) {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
