@@ -79,8 +79,8 @@ func TestHeight(t *testing.T) {
 func TestMin(t *testing.T) {
 	at := New(utils.IntComparator)
 
-	if m, ok := at.Min(); m != nil || ok {
-		t.Errorf("Expected %v, %v Got %v, %v", nil, false, m, ok)
+	if _, ok := at.Min(); ok {
+		t.Errorf("Expected %v Got %v", false, ok)
 	}
 
 	at.Set(100, 100)
@@ -88,16 +88,16 @@ func TestMin(t *testing.T) {
 	at.Set(20, 20)
 	at.Set(5, 5)
 
-	if m, ok := at.Min(); m.value != 5 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 5, true, m.value, ok)
+	if m, ok := at.Min(); m.Value() != 5 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 5, true, m.Value(), ok)
 	}
 }
 
 func TestMax(t *testing.T) {
 	at := New(utils.IntComparator)
 
-	if m, ok := at.Max(); m != nil || ok {
-		t.Errorf("Expected %v, %v Got %v, %v", nil, false, m, ok)
+	if _, ok := at.Max(); ok {
+		t.Errorf("Expected %v Got %v", false, ok)
 	}
 
 	at.Set(5, 5)
@@ -105,8 +105,8 @@ func TestMax(t *testing.T) {
 	at.Set(100, 100)
 	at.Set(20, 20)
 
-	if m, ok := at.Max(); m.value != 100 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 100, true, m.value, ok)
+	if m, ok := at.Max(); m.Value() != 100 || !ok {
+		t.Errorf("Expected %v, %v Got %v, %v", 100, true, m.Value(), ok)
 	}
 }
 
