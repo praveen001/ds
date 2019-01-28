@@ -7,6 +7,16 @@ import (
 	"github.com/praveen001/ds/utils"
 )
 
+// Key of the node
+func (x *Node) Key() interface{} {
+	return x.key
+}
+
+// Value of the node
+func (x *Node) Value() interface{} {
+	return x.value
+}
+
 func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 	if x.left != nil {
 		x.left.inOrder(ll)

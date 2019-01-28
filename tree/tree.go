@@ -40,3 +40,9 @@ type Tree interface {
 	// PostOrder returns a list.List with all values in post order
 	PostOrder() list.List
 }
+
+// Node ..
+type Node interface {
+	Key() interface{}
+	Value() interface{}
+}

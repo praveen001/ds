@@ -23,6 +23,7 @@ type RedBlackTree struct {
 // Node represents a node in red-black tree
 type Node struct {
 	height int
+	key    interface{}
 	value  interface{}
 	parent *Node
 	left   *Node
