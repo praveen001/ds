@@ -118,7 +118,7 @@ func (rbt *RedBlackTree) height() int {
 	return rbt.root.height
 }
 
-func (rbt *RedBlackTree) min() (interface{}, bool) {
+func (rbt *RedBlackTree) min() (*Node, bool) {
 	if rbt.length() == 0 {
 		return nil, false
 	}
@@ -126,13 +126,13 @@ func (rbt *RedBlackTree) min() (interface{}, bool) {
 	node := rbt.root
 	for {
 		if node.left == nil {
-			return node.value, true
+			return node, true
 		}
 		node = node.left
 	}
 }
 
-func (rbt *RedBlackTree) max() (interface{}, bool) {
+func (rbt *RedBlackTree) max() (*Node, bool) {
 	if rbt.length() == 0 {
 		return nil, false
 	}
@@ -140,7 +140,7 @@ func (rbt *RedBlackTree) max() (interface{}, bool) {
 	node := rbt.root
 	for {
 		if node.right == nil {
-			return node.value, true
+			return node, true
 		}
 		node = node.right
 	}

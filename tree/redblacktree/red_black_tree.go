@@ -78,7 +78,7 @@ func (rbt *RedBlackTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (rbt *RedBlackTree) Min() (interface{}, bool) {
+func (rbt *RedBlackTree) Min() (*Node, bool) {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
@@ -88,7 +88,7 @@ func (rbt *RedBlackTree) Min() (interface{}, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (rbt *RedBlackTree) Max() (interface{}, bool) {
+func (rbt *RedBlackTree) Max() (*Node, bool) {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
