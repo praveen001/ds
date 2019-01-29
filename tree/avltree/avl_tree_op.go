@@ -89,14 +89,8 @@ func (at *AvlTree) get(key interface{}) (interface{}, bool) {
 }
 
 func (at *AvlTree) remove(key interface{}) bool {
-	if at.length() == 0 {
-		return false
-	}
-
-	at.size--
 	var parent *Node
 	s := stack.New()
-
 	node := at.root
 	for node != nil {
 		s.Push(node)
@@ -107,36 +101,15 @@ func (at *AvlTree) remove(key interface{}) bool {
 			parent = node
 			node = node.right
 		} else {
-			if node.left == nil && node.right == nil {
-				if parent == nil {
-					at.root = nil
+			if !hasLeft(node) || !hasRight(node) {
+				if ch := child(node); parent == nil {
+					at.root = ch
 				} else if at.compare(parent.key, key) == 1 {
-					parent.left = nil
+					parent.left = ch
 				} else {
-					parent.right = nil
+					parent.right = ch
 				}
-				at.rebalance(s)
-				return true
-			}
-
-			if node.left == nil {
-				if parent == nil {
-					at.root = node.right
-				} else if at.compare(parent.key, key) == 1 {
-					parent.left = node.right
-				} else {
-					parent.right = node.right
-				}
-				at.rebalance(s)
-				return true
-			} else if node.right == nil {
-				if parent == nil {
-					at.root = node.left
-				} else if at.compare(parent.key, key) == 1 {
-					parent.left = node.left
-				} else {
-					parent.right = node.left
-				}
+				at.size--
 				at.rebalance(s)
 				return true
 			}
@@ -149,22 +122,18 @@ func (at *AvlTree) remove(key interface{}) bool {
 				min = min.left
 			}
 
-			node.value = min.value
-			node.key = min.key
-
+			node.key, node.value = min.key, min.value
 			key = min.key
 			parent = node
 			node = node.right
-
 		}
 	}
 
-	at.size++
 	return false
 }
 
 func (at *AvlTree) height() int {
-	if at.root == nil {
+	if at.Length() == 0 {
 		return 0
 	}
 	return at.root.height
@@ -199,26 +168,17 @@ func (at *AvlTree) max() (*Node, bool) {
 }
 
 func (at *AvlTree) contains(key interface{}) bool {
-	if at.length() == 0 {
-		return false
-	}
-
 	node := at.root
-	for {
+	for node != nil {
 		if comp := at.compare(node.key, key); comp == -1 {
-			if node.right == nil {
-				return false
-			}
 			node = node.right
 		} else if comp == 1 {
-			if node.left == nil {
-				return false
-			}
 			node = node.left
 		} else {
 			return true
 		}
 	}
+	return false
 }
 
 func (at *AvlTree) length() int {

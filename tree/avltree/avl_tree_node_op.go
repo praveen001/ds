@@ -75,3 +75,29 @@ func (x *Node) recomputeBFactor() int {
 		return x.left.height - x.right.height
 	}
 }
+
+func hasLeft(x *Node) bool {
+	if x.left == nil {
+		return false
+	}
+	return true
+}
+
+func hasRight(x *Node) bool {
+	if x.right == nil {
+		return false
+	}
+	return true
+}
+
+func child(x *Node) *Node {
+	if x == nil {
+		return nil
+	}
+	c := x.left
+	if c == nil {
+		c = x.right
+	}
+
+	return c
+}
