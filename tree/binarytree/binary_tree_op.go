@@ -19,13 +19,13 @@ func (bt *BinaryTree) set(key, value interface{}) bool {
 	for {
 		s.Push(node)
 		if comp := bt.compare(node.key, key); comp == -1 {
-			if node.right == nil {
+			if !hasRight(node) {
 				node.right = newNode(key, value)
 				break
 			}
 			node = node.right
 		} else if comp == 1 {
-			if node.left == nil {
+			if !hasLeft(node) {
 				node.left = newNode(key, value)
 				break
 			}
@@ -104,59 +104,20 @@ func (bt *BinaryTree) height() int {
 	}
 
 	return bt.root.height
-	// q := queue.New()
-	// q.Enqueue(bt.root)
-	// height := 0
-
-	// for {
-	// 	nodeCount := q.Length()
-	// 	if nodeCount == 0 {
-	// 		break
-	// 	}
-
-	// 	height++
-	// 	for i := 0; i < nodeCount; i++ {
-	// 		n, _ := q.Dequeue()
-	// 		node := n.(*Node)
-
-	// 		if node.left != nil {
-	// 			q.Enqueue(node.left)
-	// 		}
-	// 		if node.right != nil {
-	// 			q.Enqueue(node.right)
-	// 		}
-	// 	}
-	// }
-
-	// return height
 }
 
-func (bt *BinaryTree) min() (*Node, bool) {
-	if bt.length() == 0 {
-		return nil, false
+func (bt *BinaryTree) min() (node *Node, ok bool) {
+	for node = bt.root; hasLeft(node); node = node.left {
+		ok = true
 	}
-
-	node := bt.root
-	for {
-		if node.left == nil {
-			return node, true
-		}
-		node = node.left
-	}
+	return
 }
 
-func (bt *BinaryTree) max() (*Node, bool) {
-	if bt.length() == 0 {
-		return nil, false
+func (bt *BinaryTree) max() (node *Node, ok bool) {
+	for node = bt.root; hasRight(node); node = node.right {
+		ok = true
 	}
-
-	node := bt.root
-	for {
-		if node.right == nil {
-			return node, true
-		}
-		node = node.right
-	}
+	return
 }
 
 func (bt *BinaryTree) contains(key interface{}) bool {

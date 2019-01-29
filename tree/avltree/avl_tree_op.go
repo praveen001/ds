@@ -20,19 +20,17 @@ func (at *AvlTree) set(key, value interface{}) bool {
 	for {
 		s.Push(node)
 		if comp := at.compare(node.key, key); comp == 1 {
-			if node.left == nil {
+			if !hasLeft(node) {
 				node.left = newNode(key, value)
 				break
-			} else {
-				node = node.left
 			}
+			node = node.left
 		} else if comp == -1 {
-			if node.right == nil {
+			if !hasRight(node) {
 				node.right = newNode(key, value)
 				break
-			} else {
-				node = node.right
 			}
+			node = node.right
 		} else {
 			return false
 		}
@@ -139,32 +137,18 @@ func (at *AvlTree) height() int {
 	return at.root.height
 }
 
-func (at *AvlTree) min() (*Node, bool) {
-	if at.length() == 0 {
-		return nil, false
+func (at *AvlTree) min() (node *Node, ok bool) {
+	for node = at.root; hasLeft(node); node = node.left {
+		ok = true
 	}
-
-	node := at.root
-	for {
-		if node.left == nil {
-			return node, true
-		}
-		node = node.left
-	}
+	return
 }
 
-func (at *AvlTree) max() (*Node, bool) {
-	if at.length() == 0 {
-		return nil, false
+func (at *AvlTree) max() (node *Node, ok bool) {
+	for node = at.root; hasRight(node); node = node.right {
+		ok = true
 	}
-
-	node := at.root
-	for {
-		if node.right == nil {
-			return node, true
-		}
-		node = node.right
-	}
+	return
 }
 
 func (at *AvlTree) contains(key interface{}) bool {

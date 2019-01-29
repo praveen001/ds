@@ -77,14 +77,14 @@ func (x *Node) recomputeBFactor() int {
 }
 
 func hasLeft(x *Node) bool {
-	if x.left == nil {
+	if x == nil || x.left == nil {
 		return false
 	}
 	return true
 }
 
 func hasRight(x *Node) bool {
-	if x.right == nil {
+	if x == nil || x.right == nil {
 		return false
 	}
 	return true
