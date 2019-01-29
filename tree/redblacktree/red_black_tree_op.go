@@ -3,7 +3,6 @@ package redblacktree
 import (
 	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
-	"github.com/praveen001/ds/stack"
 )
 
 func (rbt *RedBlackTree) add(value interface{}) bool {
@@ -41,55 +40,24 @@ func (rbt *RedBlackTree) add(value interface{}) bool {
 }
 
 func (rbt *RedBlackTree) remove(value interface{}) bool {
-	if rbt.length() == 0 {
-		return false
-	}
-
-	rbt.size--
-	var parent *Node
-	s := stack.New()
-
 	node := rbt.root
 	for node != nil {
-		s.Push(node)
 		if comp := rbt.compare(node.value, value); comp == 1 {
-			parent = node
 			node = node.left
 		} else if comp == -1 {
-			parent = node
 			node = node.right
 		} else {
-			if node.left == nil && node.right == nil {
+			if !hasLeft(node) || !hasRight(node) {
 				rbt.deletionRebalance(node)
-				if parent == nil {
-					rbt.root = nil
-				} else if rbt.compare(parent.value, value) == 1 {
-					parent.left = nil
-				} else {
-					parent.right = nil
-				}
-				return true
-			}
 
-			if node.left == nil {
-				rbt.deletionRebalance(node)
-				if parent == nil {
-					rbt.root = node.right
-				} else if rbt.compare(parent.value, value) == 1 {
-					parent.left = node.right
+				if ch := child(node); node.parent == nil {
+					rbt.root = ch
+				} else if rbt.compare(node.parent.value, value) == 1 {
+					node.parent.left = ch
 				} else {
-					parent.right = node.right
+					node.parent.right = ch
 				}
-				return true
-			} else if node.right == nil {
-				rbt.deletionRebalance(node)
-				if parent == nil {
-					rbt.root = node.left
-				} else if rbt.compare(parent.value, value) == 1 {
-					parent.left = node.left
-				} else {
-					parent.right = node.left
-				}
+				rbt.size--
 				return true
 			}
 
@@ -100,16 +68,12 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 				}
 				min = min.left
 			}
-
 			node.value = min.value
 			value = min.value
-			parent = node
 			node = node.right
-
 		}
 	}
 
-	rbt.size++
 	return false
 }
 
@@ -150,26 +114,17 @@ func (rbt *RedBlackTree) max() (*Node, bool) {
 }
 
 func (rbt *RedBlackTree) contains(value interface{}) bool {
-	if rbt.length() == 0 {
-		return false
-	}
-
 	node := rbt.root
-	for {
+	for node != nil {
 		if comp := rbt.compare(node.value, value); comp == -1 {
-			if node.right == nil {
-				return false
-			}
 			node = node.right
 		} else if comp == 1 {
-			if node.left == nil {
-				return false
-			}
 			node = node.left
 		} else {
 			return true
 		}
 	}
+	return false
 }
 
 func (rbt *RedBlackTree) length() int {

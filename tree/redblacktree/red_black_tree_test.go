@@ -84,9 +84,17 @@ func TestRedBlackTree(t *testing.T) {
 		t.Errorf("Expected %v Got %v", "[7(black, 4) 11(red, 1) 14(black, 5) 15(black, 1)]", str)
 	}
 
+	if ok := rbt.Contains(10); ok {
+		t.Errorf("Expected %v Got %v", false, ok)
+	}
+
 	// Insert Right-Left Rotation Case
 	rbt.Add(10)
 	if str := rbt.InOrder().String(); str != "[7(red, 1) 10(black, 2) 11(red, 1) 14(black, 5) 15(black, 1)]" {
 		t.Errorf("Expected %v Got %v", "[7(red, 1) 10(black, 2) 11(red, 1) 14(black, 5) 15(black, 1)]", str)
+	}
+
+	if ok := rbt.Contains(10); !ok {
+		t.Errorf("Expected %v Got %v", true, ok)
 	}
 }

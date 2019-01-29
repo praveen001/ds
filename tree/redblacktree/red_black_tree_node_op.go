@@ -139,3 +139,15 @@ func isRoot(x *Node) bool {
 	}
 	return false
 }
+
+func child(x *Node) *Node {
+	if x == nil {
+		return nil
+	}
+	c := x.left
+	if c == nil {
+		c = x.right
+	}
+
+	return c
+}
