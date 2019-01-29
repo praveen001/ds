@@ -94,6 +94,47 @@ func (x *Node) isRoot() bool {
 	return false
 }
 
+func (x *Node) hasLeft() bool {
+	if x.left == nil {
+		return false
+	}
+	return true
+}
+
+func (x *Node) hasRight() bool {
+	if x.right == nil {
+		return false
+	}
+	return true
+}
+
+func (x *Node) isLeaf() bool {
+	if x.left == nil && x.right == nil {
+		return true
+	}
+	return false
+}
+
+func (x *Node) isLeft() bool {
+	if x.parent == nil {
+		return false
+	}
+	if x.parent.right == x {
+		return false
+	}
+	return true
+}
+
+func (x *Node) isRight() bool {
+	if x.parent == nil {
+		return false
+	}
+	if x.parent.left == x {
+		return false
+	}
+	return true
+}
+
 func (x *Node) leftRotate() *Node {
 	y := x.right
 	z := y.left

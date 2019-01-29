@@ -67,6 +67,7 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 				} else {
 					parent.right = nil
 				}
+				rbt.deletionRebalance(node)
 				return true
 			}
 
@@ -78,6 +79,7 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 				} else {
 					parent.right = node.right
 				}
+				rbt.deletionRebalance(node)
 				return true
 			} else if node.right == nil {
 				if parent == nil {
@@ -87,6 +89,7 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 				} else {
 					parent.right = node.left
 				}
+				rbt.deletionRebalance(node)
 				return true
 			}
 
@@ -288,5 +291,104 @@ func (rbt *RedBlackTree) rebalance(x *Node) {
 
 		}
 		p, g, u = rbt.getNeigbours(x)
+	}
+}
+
+func (rbt *RedBlackTree) deletionRebalance(n *Node) {
+	// No need to rebalance if deleted node is red
+	if n.isRed() {
+		return
+	}
+
+	// If it has one red child, just change the color
+	if !n.hasRight() && n.hasLeft() && n.left.isRed() {
+		n.left.toBlack()
+		return
+	}
+	if !n.hasLeft() && n.hasRight() && n.right.isRed() {
+		n.right.toBlack()
+		return
+	}
+
+	for {
+		// Case 1
+		if n.isRoot() {
+			n.toBlack() // To be safe
+			return      // Terminal case
+		}
+
+		p := n.parent
+		s := n.left
+		if p.left == n {
+			s = p.right
+		}
+		sx := s.left
+		sy := s.right
+
+		// Case 2:
+		if p.isBlack() && s.isRed() && sx.isBlack() && sy.isBlack() {
+			p.toRed()
+			s.toBlack()
+			if s.isLeft() {
+				s.parent.left = p.rightRotate()
+			} else {
+				s.parent.right = p.leftRotate()
+			}
+		}
+
+		// Case 3:
+		if p.isBlack() && s.isBlack() && sx.isBlack() && sy.isBlack() {
+			s.toRed()
+
+			n = p
+			continue
+		}
+
+		// Case 4: (no mirror)
+		if p.isRed() && s.isBlack() && sx.isBlack() && sy.isBlack() {
+			p.toBlack()
+			s.toRed()
+			return // This is terminal case
+		}
+
+		// Case 5: (has mirror)
+		if p.isBlack() && s.isBlack() && sx.isRed() && sx.isBlack() {
+			nr := s.rightRotate()
+			s.parent.right = nr
+			sx.color, s.color = s.color, sx.color
+		}
+		// if n.isLeft() && s.isBlack() && sx.isRed() && sy.isBlack() {
+		// 	s.toRed()
+		// 	sx.toBlack()
+		// 	p.rightRotate()
+		// }
+
+		// Case 6: (has mirror)
+		if s.isBlack() {
+			var nr *Node
+
+			// Rotate
+			if sy.isRed() {
+				nr = s.leftRotate()
+			} else if sx.isRed() {
+				nr = s.rightRotate()
+			}
+			if s.parent.left == s {
+				s.parent.left = nr
+			} else {
+				s.parent.right = nr
+			}
+
+			// Recolouring
+			s.toBlack()
+			p.toBlack() // Safety
+			if sy.isRed() {
+				sy.toBlack()
+			} else if sx.isRed() {
+				sx.toBlack()
+			}
+
+			return // Terminal case
+		}
 	}
 }
