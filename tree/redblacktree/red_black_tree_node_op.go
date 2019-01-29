@@ -65,6 +65,60 @@ func (x *Node) recomputeHeight() {
 	}
 }
 
+func toRed(x *Node) {
+	x.color = red
+}
+
+func toBlack(x *Node) {
+	x.color = black
+}
+
+func hasLeft(x *Node) bool {
+	if x.left == nil {
+		return false
+	}
+	return true
+}
+
+func hasRight(x *Node) bool {
+	if x.right == nil {
+		return false
+	}
+	return true
+}
+
+func isLeft(x *Node) bool {
+	if x.parent == nil {
+		return false
+	}
+	if x.parent.right == x {
+		return false
+	}
+	return true
+}
+
+func isRight(x *Node) bool {
+	if x.parent == nil {
+		return false
+	}
+	if x.parent.left == x {
+		return false
+	}
+	return true
+}
+
+func sibling(x *Node) *Node {
+	if x.parent == nil {
+		return nil
+	}
+	s := x.parent.left
+	if s == x {
+		s = x.parent.right
+	}
+
+	return s
+}
+
 func isRed(x *Node) bool {
 	if x != nil && x.color == red {
 		return true
@@ -79,116 +133,9 @@ func isBlack(x *Node) bool {
 	return false
 }
 
-func (x *Node) toRed() {
-	x.color = red
-}
-
-func (x *Node) toBlack() {
-	x.color = black
-}
-
-func (x *Node) isRoot() bool {
+func isRoot(x *Node) bool {
 	if x.parent == nil {
 		return true
 	}
 	return false
-}
-
-func (x *Node) hasLeft() bool {
-	if x.left == nil {
-		return false
-	}
-	return true
-}
-
-func (x *Node) hasRight() bool {
-	if x.right == nil {
-		return false
-	}
-	return true
-}
-
-func (x *Node) isLeft() bool {
-	if x.parent == nil {
-		return false
-	}
-	if x.parent.right == x {
-		return false
-	}
-	return true
-}
-
-func (x *Node) isRight() bool {
-	if x.parent == nil {
-		return false
-	}
-	if x.parent.left == x {
-		return false
-	}
-	return true
-}
-
-func (rbt *RedBlackTree) rightRotate(x *Node) {
-	y := x.left
-	z := y.right
-
-	y.right = x
-	y.parent = x.parent
-
-	x.left = z
-	x.parent = y
-
-	if z != nil {
-		z.parent = x
-	}
-
-	x.recomputeHeight()
-	y.recomputeHeight()
-
-	if y.parent == nil {
-		rbt.root = y
-	} else if y.parent.left == x {
-		y.parent.left = y
-	} else {
-		y.parent.right = y
-	}
-}
-
-func (rbt *RedBlackTree) leftRotate(x *Node) {
-	y := x.right
-	z := y.left
-
-	y.left = x
-	y.parent = x.parent
-
-	x.right = z
-	x.parent = y
-
-	if z != nil {
-		z.parent = x
-		z.recomputeHeight()
-	}
-
-	x.recomputeHeight()
-	y.recomputeHeight()
-
-	if y.parent == nil {
-		rbt.root = y
-	} else if y.parent.left == x {
-		y.parent.left = y
-	} else {
-		y.parent.right = y
-	}
-}
-
-func (x *Node) sibling() *Node {
-	if x.parent == nil {
-		return nil
-	}
-	s := x.parent.left
-	if s == x {
-		s = x.parent.right
-	}
-
-	return s
 }

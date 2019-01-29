@@ -1,8 +1,6 @@
 package redblacktree
 
 import (
-	"fmt"
-
 	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
 	"github.com/praveen001/ds/stack"
@@ -39,7 +37,6 @@ func (rbt *RedBlackTree) add(value interface{}) bool {
 	}
 	rbt.size++
 	rbt.rebalance(newElem)
-	fmt.Println("INSERTED")
 	return true
 }
 
@@ -255,11 +252,11 @@ func (rbt *RedBlackTree) rebalance(x *Node) {
 
 		// Case 3
 		if u != nil && isRed(u) { // Has a RED uncle?
-			p.toBlack()
-			u.toBlack()
+			toBlack(p)
+			toBlack(u)
 
-			if !g.isRoot() {
-				g.toRed()
+			if !isRoot(g) {
+				toRed(g)
 			}
 
 			x = g
@@ -312,12 +309,12 @@ func (rbt *RedBlackTree) deletionRebalance(n *Node) {
 	}
 
 	// If it has one red child, just change the color
-	if !n.hasRight() && n.hasLeft() && isRed(n.left) {
-		n.left.toBlack()
+	if !hasRight(n) && hasLeft(n) && isRed(n.left) {
+		toBlack(n.left)
 		return
 	}
-	if !n.hasLeft() && n.hasRight() && isRed(n.right) {
-		n.right.toBlack()
+	if !hasLeft(n) && hasRight(n) && isRed(n.right) {
+		toBlack(n.right)
 		return
 	}
 
@@ -326,23 +323,23 @@ func (rbt *RedBlackTree) deletionRebalance(n *Node) {
 }
 
 func (rbt *RedBlackTree) deleteCase1(n *Node) {
-	if !n.isRoot() {
+	if !isRoot(n) {
 		rbt.deleteCase2(n)
 	}
 }
 
 func (rbt *RedBlackTree) deleteCase2(n *Node) {
 	p := n.parent
-	s := n.sibling()
+	s := sibling(n)
 	sx := s.left
 	sy := s.right
 
 	// Case 2:
 	if isBlack(p) && isRed(s) && isBlack(sx) && isBlack(sy) {
-		p.toRed()
-		s.toBlack()
+		toRed(p)
+		toBlack(s)
 
-		if n.isLeft() {
+		if isLeft(n) {
 			rbt.leftRotate(p)
 		} else {
 			rbt.rightRotate(p)
@@ -354,13 +351,13 @@ func (rbt *RedBlackTree) deleteCase2(n *Node) {
 
 func (rbt *RedBlackTree) deleteCase3(n *Node) {
 	p := n.parent
-	s := n.sibling()
+	s := sibling(n)
 	sx := s.left
 	sy := s.right
 
 	// Case 3:
 	if isBlack(p) && isBlack(s) && isBlack(sx) && isBlack(sy) {
-		s.toRed()
+		toRed(s)
 
 		n = p
 		// continue
@@ -371,14 +368,14 @@ func (rbt *RedBlackTree) deleteCase3(n *Node) {
 
 func (rbt *RedBlackTree) deleteCase4(n *Node) {
 	p := n.parent
-	s := n.sibling()
+	s := sibling(n)
 	sx := s.left
 	sy := s.right
 
 	// Case 4:
 	if isRed(p) && isBlack(s) && isBlack(sx) && isBlack(sy) {
-		p.toBlack()
-		s.toRed()
+		toBlack(p)
+		toRed(s)
 		return // This is terminal case
 	}
 
@@ -387,18 +384,18 @@ func (rbt *RedBlackTree) deleteCase4(n *Node) {
 
 func (rbt *RedBlackTree) deleteCase5(n *Node) {
 	p := n.parent
-	s := n.sibling()
+	s := sibling(n)
 	sx := s.left
 	sy := s.right
 
 	// Case 5: (has mirror)
-	if isBlack(p) && n.isLeft() && isBlack(s) && isRed(sx) && isBlack(sy) {
-		s.toRed()
-		sx.toBlack()
+	if isBlack(p) && isLeft(n) && isBlack(s) && isRed(sx) && isBlack(sy) {
+		toRed(s)
+		toBlack(sx)
 		rbt.rightRotate(s)
-	} else if isBlack(p) && n.isRight() && isBlack(s) && isBlack(sx) && isRed(sy) {
-		s.toRed()
-		sy.toBlack()
+	} else if isBlack(p) && isRight(n) && isBlack(s) && isBlack(sx) && isRed(sy) {
+		toRed(s)
+		toBlack(sy)
 		rbt.leftRotate(s)
 	}
 
@@ -407,7 +404,7 @@ func (rbt *RedBlackTree) deleteCase5(n *Node) {
 
 func (rbt *RedBlackTree) deleteCase6(n *Node) {
 	p := n.parent
-	s := n.sibling()
+	s := sibling(n)
 	sx := s.left
 	sy := s.right
 
@@ -418,15 +415,68 @@ func (rbt *RedBlackTree) deleteCase6(n *Node) {
 		// Rotate
 		if isRed(sy) {
 			rbt.leftRotate(p)
-			sy.toBlack()
+			toBlack(sy)
 		} else if isRed(sx) {
 			rbt.rightRotate(p)
-			sx.toBlack()
+			toBlack(sx)
 		}
 
 		s.color = p.color
-		p.toBlack()
+		toBlack(p)
 
 		// Terminal Case
+	}
+}
+
+func (rbt *RedBlackTree) rightRotate(x *Node) {
+	y := x.left
+	z := y.right
+
+	y.right = x
+	y.parent = x.parent
+
+	x.left = z
+	x.parent = y
+
+	if z != nil {
+		z.parent = x
+	}
+
+	x.recomputeHeight()
+	y.recomputeHeight()
+
+	if y.parent == nil {
+		rbt.root = y
+	} else if y.parent.left == x {
+		y.parent.left = y
+	} else {
+		y.parent.right = y
+	}
+}
+
+func (rbt *RedBlackTree) leftRotate(x *Node) {
+	y := x.right
+	z := y.left
+
+	y.left = x
+	y.parent = x.parent
+
+	x.right = z
+	x.parent = y
+
+	if z != nil {
+		z.parent = x
+		z.recomputeHeight()
+	}
+
+	x.recomputeHeight()
+	y.recomputeHeight()
+
+	if y.parent == nil {
+		rbt.root = y
+	} else if y.parent.left == x {
+		y.parent.left = y
+	} else {
+		y.parent.right = y
 	}
 }
