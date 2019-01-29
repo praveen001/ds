@@ -56,14 +56,8 @@ func (bt *BinaryTree) get(key interface{}) (interface{}, bool) {
 }
 
 func (bt *BinaryTree) remove(key interface{}) bool {
-	if bt.length() == 0 {
-		return false
-	}
-
-	bt.size--
 	var parent *Node
 	s := stack.New()
-
 	node := bt.root
 	for node != nil {
 		s.Push(node)
@@ -74,37 +68,15 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 			parent = node
 			node = node.right
 		} else {
-			if node.left == nil && node.right == nil {
-				if parent == nil {
-					bt.root = nil
+			if !hasLeft(node) || !hasRight(node) {
+				if ch := child(node); parent == nil {
+					bt.root = ch
 				} else if bt.compare(parent.key, key) == 1 {
-					parent.left = nil
+					parent.left = ch
 				} else {
-					parent.right = nil
+					parent.right = ch
 				}
-				bt.readjust(s)
-				return true
-			}
-
-			if node.left == nil {
-				if parent == nil {
-					bt.root = node.right
-				} else if bt.compare(parent.key, key) == 1 {
-					parent.left = node.right
-				} else {
-					parent.right = node.right
-				}
-				bt.readjust(s)
-				return true
-			} else if node.right == nil {
-				if parent == nil {
-					bt.root = node.left
-				} else if bt.compare(parent.key, key) == 1 {
-					parent.left = node.left
-				} else {
-					parent.right = node.left
-				}
-				bt.readjust(s)
+				bt.size--
 				return true
 			}
 
@@ -116,17 +88,13 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 				min = min.left
 			}
 
-			node.key = min.key
-			node.value = min.value
-
+			node.key, node.value = min.key, min.value
 			key = min.key
 			parent = node
 			node = node.right
-
 		}
 	}
 
-	bt.size++
 	return false
 }
 
@@ -192,26 +160,17 @@ func (bt *BinaryTree) max() (*Node, bool) {
 }
 
 func (bt *BinaryTree) contains(key interface{}) bool {
-	if bt.length() == 0 {
-		return false
-	}
-
 	node := bt.root
-	for {
+	for node != nil {
 		if comp := bt.compare(node.key, key); comp == -1 {
-			if node.right == nil {
-				return false
-			}
 			node = node.right
 		} else if comp == 1 {
-			if node.left == nil {
-				return false
-			}
 			node = node.left
 		} else {
 			return true
 		}
 	}
+	return false
 }
 
 func (bt *BinaryTree) length() int {
