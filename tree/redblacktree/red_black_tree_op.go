@@ -232,14 +232,16 @@ func (rbt *RedBlackTree) getNeigbours(x *Node) (p, g, u *Node) {
 }
 
 func (rbt *RedBlackTree) rebalance(x *Node) {
-	p, g, u := rbt.getNeigbours(x)
 	for {
+		p, g, u := rbt.getNeigbours(x)
+
 		if p == nil || g == nil {
 			return
 		}
 		p.recomputeHeight()
 		g.recomputeHeight()
 
+		// Case 2
 		if p.isBlack() {
 			return
 		}
@@ -253,44 +255,44 @@ func (rbt *RedBlackTree) rebalance(x *Node) {
 			}
 
 			x = g
-		} else {
-			var nr *Node
-
-			// Left-Left Case - Need Right Rotation
-			if rbt.compare(g.value, p.value) == 1 && rbt.compare(p.value, x.value) == 1 {
-				nr = g.rightRotate()
-			}
-
-			// Left-Right Case - Need Left Rotation, then Right Rotation
-			if rbt.compare(g.value, p.value) == 1 && rbt.compare(p.value, x.value) == -1 {
-				g.left = g.left.leftRotate()
-				p = x
-				nr = g.rightRotate()
-			}
-
-			// Right-Right Case - Need Left Rotation
-			if rbt.compare(g.value, p.value) == -1 && rbt.compare(p.value, x.value) == -1 {
-				nr = g.leftRotate()
-			}
-
-			// Right-Left Case - Need right rotation, then left rotation
-			if rbt.compare(g.value, p.value) == -1 && rbt.compare(p.value, x.value) == 1 {
-				g.right = g.right.rightRotate()
-				p = x
-				nr = g.leftRotate()
-			}
-			g.color, p.color = p.color, g.color
-
-			if nr.parent == nil {
-				rbt.root = nr
-			} else if rbt.compare(nr.parent.value, nr.value) == 1 {
-				nr.parent.left = nr
-			} else {
-				nr.parent.right = nr
-			}
-
+			continue
 		}
-		p, g, u = rbt.getNeigbours(x)
+
+		var nr *Node
+
+		// Left-Left Case - Need Right Rotation
+		if rbt.compare(g.value, p.value) == 1 && rbt.compare(p.value, x.value) == 1 {
+			nr = g.rightRotate()
+		}
+
+		// Left-Right Case - Need Left Rotation, then Right Rotation
+		if rbt.compare(g.value, p.value) == 1 && rbt.compare(p.value, x.value) == -1 {
+			g.left = g.left.leftRotate()
+			p = x
+			nr = g.rightRotate()
+		}
+
+		// Right-Right Case - Need Left Rotation
+		if rbt.compare(g.value, p.value) == -1 && rbt.compare(p.value, x.value) == -1 {
+			nr = g.leftRotate()
+		}
+
+		// Right-Left Case - Need right rotation, then left rotation
+		if rbt.compare(g.value, p.value) == -1 && rbt.compare(p.value, x.value) == 1 {
+			g.right = g.right.rightRotate()
+			p = x
+			nr = g.leftRotate()
+		}
+		g.color, p.color = p.color, g.color
+
+		if nr.parent == nil {
+			rbt.root = nr
+		} else if rbt.compare(nr.parent.value, nr.value) == 1 {
+			nr.parent.left = nr
+		} else {
+			nr.parent.right = nr
+		}
+
 	}
 }
 
