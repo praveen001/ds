@@ -329,10 +329,56 @@ func main() {
 	rbt.Add(15)
 	rbt.Add(5)
 	rbt.Add(8)
+	rbt.Add(4)
 
 	fmt.Println(rbt.InOrder())
 
 	fmt.Println("------------------")
-	rbt.Add(4)
-	fmt.Println(rbt.InOrder())
+
+	rbt.Remove(4)
+	fmt.Println("Deleted 4", rbt.InOrder())
+
+	fmt.Println("------------------")
+
+	rbt.Remove(5)
+	fmt.Println("Deleted 5", rbt.InOrder())
+
+	fmt.Println("------------------")
+
+	rbt.Remove(8)
+	fmt.Println("Deleted 8", rbt.InOrder())
+
+	fmt.Println("------------------")
+
+	rbt.Remove(1)
+	fmt.Println("Deleted 1 & 2", rbt.InOrder())
+	fmt.Println("------------------")
+
+	rbt.Remove(2)
+	fmt.Println("Deleted 1 & 2", rbt.InOrder())
+	fmt.Println("------------------")
+
+	rbt.Add(10)
+	fmt.Println("Added 10", rbt.InOrder())
+	fmt.Println("------------------")
+
+	rbt.Remove(11)
+	fmt.Println("Remove 11", rbt.InOrder())
+	fmt.Println("------------------")
+
+	rbt.Remove(7)
+	fmt.Println("Remove 7", rbt.InOrder())
+	fmt.Println("------------------")
+
+	rbt.Remove(15)
+	fmt.Println("Remove 15", rbt.InOrder())
+	fmt.Println("------------------")
+
+	rbt.Add(20)
+	fmt.Println("Add 20", rbt.InOrder())
+	fmt.Println("------------------")
+
+	rbt.Add(25)
+	fmt.Println("Add 25", rbt.InOrder())
+	fmt.Println("------------------")
 }
