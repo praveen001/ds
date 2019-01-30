@@ -6,10 +6,10 @@ type List interface {
 	Len() int
 
 	// Front returns the first element of list or nil if the list is empty
-	Front() interface{}
+	Front() (interface{}, bool)
 
 	// Back returns the last element of the list or nil if the list is empty
-	Back() interface{}
+	Back() (interface{}, bool)
 
 	// PushFront inserts a new element with value v at the front of the list
 	PushFront(v interface{})
@@ -17,9 +17,12 @@ type List interface {
 	// PushBack inserts a new element with value v at the back of the list
 	PushBack(v interface{})
 
-	// Insert inserts a new element with value v at the given index i.
+	// Set a new element with value v at the given index i.
 	// if index i is out of bound, it returns false, otherwise true
-	Insert(i int, v interface{}) (ok bool)
+	Set(i int, v interface{}) (ok bool)
+
+	// Get ..
+	Get(i int) (v interface{}, ok bool)
 
 	// Remove the element at given index i. Returns true if element was removed otherwise false.
 	Remove(i int) (v interface{}, ok bool)
@@ -49,9 +52,6 @@ type List interface {
 
 	// Swap two values at two given indexes
 	Swap(a, b int) bool
-
-	// At ..
-	At(i int) (interface{}, bool)
 
 	// String ..
 	String() string

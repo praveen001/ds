@@ -41,7 +41,7 @@ func (q *Queue) Dequeue() (interface{}, bool) {
 
 // Peek returns the first value without remove it from the queue
 func (q *Queue) Peek() (interface{}, bool) {
-	return q.list.At(0)
+	return q.list.Get(0)
 }
 
 // Len returns the total number of values in queue

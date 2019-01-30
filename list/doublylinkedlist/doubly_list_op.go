@@ -10,11 +10,11 @@ func (dl *DoublyLinkedList) len() int {
 	return dl.size
 }
 
-func (dl *DoublyLinkedList) front() interface{} {
+func (dl *DoublyLinkedList) front() (interface{}, bool) {
 	return dl.get(0)
 }
 
-func (dl *DoublyLinkedList) back() interface{} {
+func (dl *DoublyLinkedList) back() (interface{}, bool) {
 	return dl.get(dl.len() - 1)
 }
 
@@ -44,8 +44,23 @@ func (dl *DoublyLinkedList) pushBack(v interface{}) {
 	dl.size++
 }
 
-func (dl *DoublyLinkedList) insert(i int, v interface{}) bool {
-	return dl.set(i, v)
+func (dl *DoublyLinkedList) set(i int, v interface{}) bool {
+	if dl.withInRange(i) {
+		elem := dl.getElemByIdx(i)
+		elem.value = v
+		return true
+	}
+
+	return false
+}
+
+func (dl *DoublyLinkedList) get(index int) (interface{}, bool) {
+	if dl.withInRange(index) {
+		elem := dl.getElemByIdx(index)
+		return elem.value, true
+	}
+
+	return nil, false
 }
 
 func (dl *DoublyLinkedList) remove(i int) (interface{}, bool) {
@@ -74,13 +89,6 @@ func (dl *DoublyLinkedList) remove(i int) (interface{}, bool) {
 		return value, true
 	}
 
-	return nil, false
-}
-
-func (dl *DoublyLinkedList) at(i int) (interface{}, bool) {
-	if dl.withInRange(i) {
-		return dl.get(i), true
-	}
 	return nil, false
 }
 
@@ -152,25 +160,6 @@ func (dl *DoublyLinkedList) swap(a, b int) bool {
 		return true
 	}
 	return false
-}
-
-func (dl *DoublyLinkedList) set(index int, value interface{}) bool {
-	if dl.withInRange(index) {
-		elem := dl.getElemByIdx(index)
-		elem.value = value
-		return true
-	}
-
-	return false
-}
-
-func (dl *DoublyLinkedList) get(index int) interface{} {
-	if dl.withInRange(index) {
-		elem := dl.getElemByIdx(index)
-		return elem.value
-	}
-
-	return nil
 }
 
 // getElemByIdx returns the element at the given index

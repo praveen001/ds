@@ -32,7 +32,7 @@ func (al *ArrayList) Len() int {
 }
 
 // Front returns the first element of list or nil if the list is empty
-func (al *ArrayList) Front() interface{} {
+func (al *ArrayList) Front() (interface{}, bool) {
 	al.rlock()
 	defer al.runlock()
 
@@ -40,7 +40,7 @@ func (al *ArrayList) Front() interface{} {
 }
 
 // Back returns the last element of the list or nil if the list is empty
-func (al *ArrayList) Back() interface{} {
+func (al *ArrayList) Back() (interface{}, bool) {
 	al.rlock()
 	defer al.runlock()
 
@@ -63,13 +63,21 @@ func (al *ArrayList) PushBack(v interface{}) {
 	al.pushBack(v)
 }
 
-// Insert inserts a new element with value v at the given index i.
+// Set inserts a new element with value v at the given index i.
 // if index i is out of bound, it returns false, otherwise true
-func (al *ArrayList) Insert(i int, v interface{}) (ok bool) {
+func (al *ArrayList) Set(i int, v interface{}) (ok bool) {
 	al.lock()
 	defer al.unlock()
 
-	return al.insert(i, v)
+	return al.set(i, v)
+}
+
+// Get ..
+func (al *ArrayList) Get(i int) (v interface{}, ok bool) {
+	al.rlock()
+	defer al.unlock()
+
+	return al.get(i)
 }
 
 // Remove the element at given index i. Returns true if element was removed otherwise false.
@@ -78,14 +86,6 @@ func (al *ArrayList) Remove(i int) (v interface{}, ok bool) {
 	defer al.unlock()
 
 	return al.remove(i)
-}
-
-// At ..
-func (al *ArrayList) At(i int) (v interface{}, ok bool) {
-	al.rlock()
-	defer al.unlock()
-
-	return al.at(i)
 }
 
 // Clear the list

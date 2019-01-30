@@ -14,17 +14,17 @@ func (bh *BinaryHeap) pop() (interface{}, bool) {
 		return nil, false
 	}
 
-	first, _ := bh.list.At(0)
+	first, _ := bh.list.Get(0)
 	last, _ := bh.list.Remove(bh.list.Len() - 1)
 
-	bh.list.Insert(0, last)
+	bh.list.Set(0, last)
 	bh.percolateDown(0)
 
 	return first, true
 }
 
 func (bh *BinaryHeap) peek() (interface{}, bool) {
-	return bh.list.At(0)
+	return bh.list.Get(0)
 }
 
 func (bh *BinaryHeap) clear() {
@@ -36,11 +36,11 @@ func (bh *BinaryHeap) len() int {
 }
 
 func (bh *BinaryHeap) percolateUp(idx int) {
-	x, _ := bh.list.At(idx)
+	x, _ := bh.list.Get(idx)
 
 	for idx > -1 {
 		pidx := (idx - 1) / 2
-		p, _ := bh.list.At(pidx)
+		p, _ := bh.list.Get(pidx)
 
 		if bh.compare(p, x) == bh.variant {
 			bh.list.Swap(idx, pidx)
@@ -53,17 +53,17 @@ func (bh *BinaryHeap) percolateUp(idx int) {
 }
 
 func (bh *BinaryHeap) percolateDown(idx int) {
-	x, _ := bh.list.At(idx)
+	x, _ := bh.list.Get(idx)
 
 	for idx < bh.list.Len() {
 		c := idx*2 + 1
-		if lchv, ok := bh.list.At(c); ok {
+		if lchv, ok := bh.list.Get(c); ok {
 
-			if rchv, ok := bh.list.At(c + 1); ok && bh.compare(lchv, rchv) == bh.variant {
+			if rchv, ok := bh.list.Get(c + 1); ok && bh.compare(lchv, rchv) == bh.variant {
 				c = c + 1
 			}
 
-			if mchv, _ := bh.list.At(c); bh.compare(x, mchv) == bh.variant {
+			if mchv, _ := bh.list.Get(c); bh.compare(x, mchv) == bh.variant {
 				bh.list.Swap(idx, c)
 			} else {
 				break

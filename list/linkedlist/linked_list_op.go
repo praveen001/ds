@@ -10,11 +10,11 @@ func (ll *LinkedList) len() int {
 	return ll.size
 }
 
-func (ll *LinkedList) front() interface{} {
+func (ll *LinkedList) front() (interface{}, bool) {
 	return ll.get(0)
 }
 
-func (ll *LinkedList) back() interface{} {
+func (ll *LinkedList) back() (interface{}, bool) {
 	return ll.get(ll.len() - 1)
 }
 
@@ -41,8 +41,23 @@ func (ll *LinkedList) pushBack(v interface{}) {
 	ll.size++
 }
 
-func (ll *LinkedList) insert(i int, v interface{}) bool {
-	return ll.set(i, v)
+func (ll *LinkedList) set(i int, v interface{}) bool {
+	if ll.withInRange(i) {
+		elem := ll.getElemByIdx(i)
+		elem.value = v
+		return true
+	}
+
+	return false
+}
+
+func (ll *LinkedList) get(index int) (interface{}, bool) {
+	if ll.withInRange(index) {
+		elem := ll.getElemByIdx(index)
+		return elem.value, true
+	}
+
+	return nil, false
 }
 
 func (ll *LinkedList) remove(i int) (interface{}, bool) {
@@ -65,13 +80,6 @@ func (ll *LinkedList) remove(i int) (interface{}, bool) {
 		return value, true
 	}
 
-	return nil, false
-}
-
-func (ll *LinkedList) at(i int) (interface{}, bool) {
-	if ll.withInRange(i) {
-		return ll.get(i), true
-	}
 	return nil, false
 }
 
@@ -143,25 +151,6 @@ func (ll *LinkedList) swap(a, b int) bool {
 		return true
 	}
 	return false
-}
-
-func (ll *LinkedList) set(index int, value interface{}) bool {
-	if ll.withInRange(index) {
-		elem := ll.getElemByIdx(index)
-		elem.value = value
-		return true
-	}
-
-	return false
-}
-
-func (ll *LinkedList) get(index int) interface{} {
-	if ll.withInRange(index) {
-		elem := ll.getElemByIdx(index)
-		return elem.value
-	}
-
-	return nil
 }
 
 // getElemByIdx returns the element at the given index

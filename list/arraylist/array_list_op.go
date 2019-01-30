@@ -10,11 +10,11 @@ func (al *ArrayList) len() int {
 	return al.size
 }
 
-func (al *ArrayList) front() interface{} {
+func (al *ArrayList) front() (interface{}, bool) {
 	return al.get(0)
 }
 
-func (al *ArrayList) back() interface{} {
+func (al *ArrayList) back() (interface{}, bool) {
 	return al.get(al.len() - 1)
 }
 
@@ -31,8 +31,19 @@ func (al *ArrayList) pushBack(v interface{}) {
 	al.size++
 }
 
-func (al *ArrayList) insert(i int, v interface{}) bool {
-	return al.set(i, v)
+func (al *ArrayList) set(i int, v interface{}) bool {
+	if al.withInRange(i) {
+		al.elements[i] = v
+		return true
+	}
+	return false
+}
+
+func (al *ArrayList) get(i int) (interface{}, bool) {
+	if al.withInRange(i) {
+		return al.elements[i], true
+	}
+	return nil, false
 }
 
 func (al *ArrayList) remove(index int) (interface{}, bool) {
@@ -50,13 +61,6 @@ func (al *ArrayList) remove(index int) (interface{}, bool) {
 		return value, true
 	}
 
-	return nil, false
-}
-
-func (al *ArrayList) at(i int) (interface{}, bool) {
-	if al.withInRange(i) {
-		return al.get(i), true
-	}
 	return nil, false
 }
 
@@ -110,21 +114,6 @@ func (al *ArrayList) swap(a, b int) bool {
 		return true
 	}
 	return false
-}
-
-func (al *ArrayList) set(i int, v interface{}) bool {
-	if al.withInRange(i) {
-		al.elements[i] = v
-		return true
-	}
-	return false
-}
-
-func (al *ArrayList) get(i int) interface{} {
-	if al.withInRange(i) {
-		return al.elements[i]
-	}
-	return nil
 }
 
 func (al *ArrayList) withInRange(index int) bool {

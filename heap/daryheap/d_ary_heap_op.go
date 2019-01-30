@@ -14,17 +14,17 @@ func (dh *DAryHeap) pop() (interface{}, bool) {
 		return nil, false
 	}
 
-	first, _ := dh.list.At(0)
+	first, _ := dh.list.Get(0)
 	last, _ := dh.list.Remove(dh.list.Len() - 1)
 
-	dh.list.Insert(0, last)
+	dh.list.Set(0, last)
 	dh.percolateDown(0)
 
 	return first, true
 }
 
 func (dh *DAryHeap) peek() (interface{}, bool) {
-	return dh.list.At(0)
+	return dh.list.Get(0)
 }
 
 func (dh *DAryHeap) clear() {
@@ -36,11 +36,11 @@ func (dh *DAryHeap) len() int {
 }
 
 func (dh *DAryHeap) percolateUp(idx int) {
-	x, _ := dh.list.At(idx)
+	x, _ := dh.list.Get(idx)
 
 	for idx > -1 {
 		pidx := (idx - 1) / dh.d
-		p, _ := dh.list.At(pidx)
+		p, _ := dh.list.Get(pidx)
 
 		if dh.compare(p, x) == dh.variant {
 			dh.list.Swap(idx, pidx)
@@ -54,19 +54,19 @@ func (dh *DAryHeap) percolateUp(idx int) {
 }
 
 func (dh *DAryHeap) percolateDown(idx int) {
-	x, _ := dh.list.At(idx)
+	x, _ := dh.list.Get(idx)
 
 	for idx < dh.list.Len() {
 		c := idx*dh.d + 1
 
 		maxIdx := c
-		max, ok := dh.list.At(c)
+		max, ok := dh.list.Get(c)
 		if !ok {
 			return
 		}
 
 		for i := 1; i < dh.d; i++ {
-			if chv, ok := dh.list.At(c); ok {
+			if chv, ok := dh.list.Get(c); ok {
 				if dh.compare(max, chv) == dh.variant {
 					max = chv
 					maxIdx = c

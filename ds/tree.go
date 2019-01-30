@@ -33,8 +33,8 @@ type Tree interface {
 	// Contains return true if key exists in tree, otherwise false
 	Contains(key interface{}) bool
 
-	// Length returns the total number of nodes in tree
-	Length() int
+	// Len returns the total number of nodes in tree
+	Len() int
 
 	// Clear all the nodes from tree
 	Clear()

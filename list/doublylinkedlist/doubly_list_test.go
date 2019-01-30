@@ -28,7 +28,7 @@ func TestFront(t *testing.T) {
 	dl.PushBack(10)
 	dl.PushBack(20)
 
-	if v := dl.Front(); v != 10 {
+	if v, _ := dl.Front(); v != 10 {
 		t.Errorf("Expected front to be %v, but got %v", 10, v)
 	}
 }
@@ -39,7 +39,7 @@ func TestBack(t *testing.T) {
 	dl.PushBack(10)
 	dl.PushBack(20)
 
-	if v := dl.Back(); v != 20 {
+	if v, _ := dl.Back(); v != 20 {
 		t.Errorf("Expected back to be %v, but got %v", 20, v)
 	}
 }
@@ -51,7 +51,7 @@ func TestPushFront(t *testing.T) {
 	dl.PushBack(20)
 	dl.PushFront(-10)
 
-	if v, _ := dl.At(0); v != -10 {
+	if v, _ := dl.Get(0); v != -10 {
 		t.Errorf("Expected front to be %v, but got %v", -10, v)
 	}
 }
@@ -63,20 +63,20 @@ func TestPushBack(t *testing.T) {
 	dl.PushBack(20)
 	dl.PushFront(-10)
 
-	if v := dl.Back(); v != 20 {
+	if v, _ := dl.Back(); v != 20 {
 		t.Errorf("Expected back to be %v, but got %v", 20, v)
 	}
 }
 
-func TestInsert(t *testing.T) {
+func TestSet(t *testing.T) {
 	dl := New()
 
 	dl.PushFront(10)
 	dl.PushBack(20)
 	dl.PushFront(-10)
-	dl.Insert(1, 100)
+	dl.Set(1, 100)
 
-	if v, _ := dl.At(1); v != 100 {
+	if v, _ := dl.Get(1); v != 100 {
 		t.Errorf("Expected value to be %v, but got %v", 100, v)
 	}
 }
@@ -89,7 +89,7 @@ func TestRemove(t *testing.T) {
 	dl.PushFront(-10)
 	dl.Remove(1)
 
-	if v, _ := dl.At(1); v != 20 {
+	if v, _ := dl.Get(1); v != 20 {
 		t.Errorf("Expected value to be %v, but got %v", 20, v)
 	}
 }
@@ -100,7 +100,7 @@ func TestAt(t *testing.T) {
 	dl.PushBack(10)
 	dl.PushBack(20)
 
-	if v, _ := dl.At(1); v != 20 {
+	if v, _ := dl.Get(1); v != 20 {
 		t.Errorf("Expected value to be %v, but got %v", 20, v)
 	}
 }
@@ -131,7 +131,7 @@ func TestPushBackList(t *testing.T) {
 		t.Errorf("Expected length to be %v, but got %v", 2, l)
 	}
 
-	if v := dl.Back(); v != 20 {
+	if v, _ := dl.Back(); v != 20 {
 		t.Errorf("Expected back to be %v, but got %v", 20, v)
 	}
 }
@@ -149,7 +149,7 @@ func TestPushFrontList(t *testing.T) {
 		t.Errorf("Expected length to be %v, but got %v", 2, l)
 	}
 
-	if v := dl.Front(); v != 20 {
+	if v, _ := dl.Front(); v != 20 {
 		t.Errorf("Expected front to be %v, but got %v", 20, v)
 	}
 }
@@ -210,7 +210,7 @@ func TestSwap(t *testing.T) {
 
 	dl.Swap(0, 1)
 
-	if a, _ := dl.At(0); a != 20 {
+	if a, _ := dl.Get(0); a != 20 {
 		t.Errorf("Expected %v, but got %v", 20, a)
 	}
 }

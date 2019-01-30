@@ -39,7 +39,7 @@ func (dl *DoublyLinkedList) Len() int {
 }
 
 // Front returns the first element of list or nil if the list is empty
-func (dl *DoublyLinkedList) Front() interface{} {
+func (dl *DoublyLinkedList) Front() (interface{}, bool) {
 	dl.rlock()
 	defer dl.runlock()
 
@@ -47,7 +47,7 @@ func (dl *DoublyLinkedList) Front() interface{} {
 }
 
 // Back returns the last element of the list or nil if the list is empty
-func (dl *DoublyLinkedList) Back() interface{} {
+func (dl *DoublyLinkedList) Back() (interface{}, bool) {
 	dl.rlock()
 	defer dl.runlock()
 
@@ -70,13 +70,21 @@ func (dl *DoublyLinkedList) PushBack(v interface{}) {
 	dl.pushBack(v)
 }
 
-// Insert inserts a new element with value v at the given index i.
+// Set inserts a new element with value v at the given index i.
 // if index i is out of bound, it returns false, otherwise true
-func (dl *DoublyLinkedList) Insert(i int, v interface{}) (ok bool) {
+func (dl *DoublyLinkedList) Set(i int, v interface{}) (ok bool) {
 	dl.lock()
 	defer dl.unlock()
 
-	return dl.insert(i, v)
+	return dl.set(i, v)
+}
+
+// Get ..
+func (dl *DoublyLinkedList) Get(i int) (v interface{}, ok bool) {
+	dl.rlock()
+	defer dl.unlock()
+
+	return dl.get(i)
 }
 
 // Remove the element at given index i. Returns true if element was removed otherwise false.
@@ -85,14 +93,6 @@ func (dl *DoublyLinkedList) Remove(i int) (v interface{}, ok bool) {
 	defer dl.unlock()
 
 	return dl.remove(i)
-}
-
-// At ..
-func (dl *DoublyLinkedList) At(i int) (v interface{}, ok bool) {
-	dl.rlock()
-	defer dl.unlock()
-
-	return dl.at(i)
 }
 
 // Clear the list

@@ -38,7 +38,7 @@ func (ll *LinkedList) Len() int {
 }
 
 // Front returns the first element of list or nil if the list is empty
-func (ll *LinkedList) Front() interface{} {
+func (ll *LinkedList) Front() (interface{}, bool) {
 	ll.rlock()
 	defer ll.runlock()
 
@@ -46,7 +46,7 @@ func (ll *LinkedList) Front() interface{} {
 }
 
 // Back returns the last element of the list or nil if the list is empty
-func (ll *LinkedList) Back() interface{} {
+func (ll *LinkedList) Back() (interface{}, bool) {
 	ll.rlock()
 	defer ll.runlock()
 
@@ -69,13 +69,21 @@ func (ll *LinkedList) PushBack(v interface{}) {
 	ll.pushBack(v)
 }
 
-// Insert inserts a new element with value v at the given index i.
+// Set inserts a new element with value v at the given index i.
 // if index i is out of bound, it returns false, otherwise true
-func (ll *LinkedList) Insert(i int, v interface{}) (ok bool) {
+func (ll *LinkedList) Set(i int, v interface{}) (ok bool) {
 	ll.lock()
 	defer ll.unlock()
 
-	return ll.insert(i, v)
+	return ll.set(i, v)
+}
+
+// Get ..
+func (ll *LinkedList) Get(i int) (v interface{}, ok bool) {
+	ll.rlock()
+	defer ll.unlock()
+
+	return ll.get(i)
 }
 
 // Remove the element at given index i. Returns true if element was removed otherwise false.
@@ -84,14 +92,6 @@ func (ll *LinkedList) Remove(i int) (v interface{}, ok bool) {
 	defer ll.unlock()
 
 	return ll.remove(i)
-}
-
-// At ..
-func (ll *LinkedList) At(i int) (v interface{}, ok bool) {
-	ll.rlock()
-	defer ll.unlock()
-
-	return ll.at(i)
 }
 
 // Clear the list
