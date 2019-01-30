@@ -81,10 +81,7 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 			}
 
 			min := node.right
-			for {
-				if min.left == nil {
-					break
-				}
+			for hasLeft(min) {
 				min = min.left
 			}
 
