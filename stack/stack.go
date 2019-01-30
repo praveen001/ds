@@ -1,18 +1,18 @@
 package stack
 
 import (
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
 // Stack ..
 type Stack struct {
-	list list.List
+	list ds.List
 }
 
 // Config config for stack
 type Config struct {
-	List list.List
+	List ds.List
 }
 
 // New creates a new stack and returns it

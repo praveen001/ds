@@ -3,7 +3,7 @@ package arraylist
 import (
 	"sync"
 
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 )
 
 // ArrayList holds the set of elements in a slice
@@ -98,7 +98,7 @@ func (al *ArrayList) Clear() {
 
 // PushBackList inserts a copy of an other list at the back of list l.
 // The lists l and other may be the same. They must not be nil.
-func (al *ArrayList) PushBackList(l list.List) {
+func (al *ArrayList) PushBackList(l ds.List) {
 	al.lock()
 	defer al.unlock()
 
@@ -107,7 +107,7 @@ func (al *ArrayList) PushBackList(l list.List) {
 
 // PushFrontList inserts a copy of an other list at the front of list l.
 // The lists l and other may be the same. They must not be nil.
-func (al *ArrayList) PushFrontList(l list.List) {
+func (al *ArrayList) PushFrontList(l ds.List) {
 	al.lock()
 	defer al.unlock()
 
@@ -139,7 +139,7 @@ func (al *ArrayList) Values() []interface{} {
 }
 
 // Clone creates a shallow copy and returns the reference
-func (al *ArrayList) Clone() list.List {
+func (al *ArrayList) Clone() ds.List {
 	al.rlock()
 	defer al.runlock()
 

@@ -1,4 +1,4 @@
-package maps
+package ds
 
 // Map ..
 type Map interface {
@@ -20,8 +20,8 @@ type Map interface {
 	// Contains return whether given key exists in map
 	Contains(key interface{}) bool
 
-	// Length returns total number of entries in map
-	Length() int
+	// Len returns total number of entries in map
+	Len() int
 
 	// Clear removes all the entries from map
 	Clear()

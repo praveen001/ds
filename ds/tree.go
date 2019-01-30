@@ -1,6 +1,4 @@
-package tree
-
-import "github.com/praveen001/ds/list"
+package ds
 
 // Tree ..
 type Tree interface {
@@ -41,14 +39,14 @@ type Tree interface {
 	// Clear all the nodes from tree
 	Clear()
 
-	// InOrder returns a list.List with all values in-order
-	InOrder() list.List
+	// InOrder returns a ds.List with all values in-order
+	InOrder() List
 
-	// PreOrder returns a list.List with all values in pre order
-	PreOrder() list.List
+	// PreOrder returns a ds.List with all values in pre order
+	PreOrder() List
 
-	// PostOrder returns a list.List with all values in post order
-	PostOrder() list.List
+	// PostOrder returns a ds.List with all values in post order
+	PostOrder() List
 }
 
 // Node ..

@@ -3,7 +3,7 @@ package doublylinkedlist
 import (
 	"sync"
 
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 )
 
 // DoublyLinkedList holds the set of elements in a slice
@@ -105,7 +105,7 @@ func (dl *DoublyLinkedList) Clear() {
 
 // PushBackList inserts a copy of an other list at the back of list l.
 // The lists l and other may be the same. They must not be nil.
-func (dl *DoublyLinkedList) PushBackList(l list.List) {
+func (dl *DoublyLinkedList) PushBackList(l ds.List) {
 	dl.lock()
 	defer dl.unlock()
 
@@ -114,7 +114,7 @@ func (dl *DoublyLinkedList) PushBackList(l list.List) {
 
 // PushFrontList inserts a copy of an other list at the front of list l.
 // The lists l and other may be the same. They must not be nil.
-func (dl *DoublyLinkedList) PushFrontList(l list.List) {
+func (dl *DoublyLinkedList) PushFrontList(l ds.List) {
 	dl.lock()
 	defer dl.unlock()
 
@@ -146,7 +146,7 @@ func (dl *DoublyLinkedList) Values() []interface{} {
 }
 
 // Clone creates a shallow copy and returns the reference
-func (dl *DoublyLinkedList) Clone() list.List {
+func (dl *DoublyLinkedList) Clone() ds.List {
 	dl.rlock()
 	defer dl.runlock()
 

@@ -19,13 +19,13 @@ func TestSet(t *testing.T) {
 
 	at.Set(10, 10)
 
-	if l := at.Length(); l != 1 {
+	if l := at.Len(); l != 1 {
 		t.Errorf("Expected %v Got %v", 1, l)
 	}
 
 	at.Set(10, 10)
 	at.Set(20, 20)
-	if l := at.Length(); l != 2 {
+	if l := at.Len(); l != 2 {
 		t.Errorf("Expected %v Got %v", 2, l)
 	}
 }
@@ -133,10 +133,10 @@ func TestContains(t *testing.T) {
 	}
 }
 
-func TestLength(t *testing.T) {
+func TestLen(t *testing.T) {
 	at := New(utils.IntComparator)
 
-	if l := at.Length(); l != 0 {
+	if l := at.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 
@@ -145,13 +145,13 @@ func TestLength(t *testing.T) {
 	at.Set(100, 100)
 	at.Set(20, 20)
 
-	if l := at.Length(); l != 4 {
+	if l := at.Len(); l != 4 {
 		t.Errorf("Expected %v Got %v", 4, l)
 	}
 
 	at.Remove(10)
 
-	if l := at.Length(); l != 3 {
+	if l := at.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 }
@@ -159,7 +159,7 @@ func TestLength(t *testing.T) {
 func TestClear(t *testing.T) {
 	at := New(utils.IntComparator)
 
-	if l := at.Length(); l != 0 {
+	if l := at.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 
@@ -168,13 +168,13 @@ func TestClear(t *testing.T) {
 	at.Set(100, 100)
 	at.Set(20, 20)
 
-	if l := at.Length(); l != 4 {
+	if l := at.Len(); l != 4 {
 		t.Errorf("Expected %v Got %v", 4, l)
 	}
 
 	at.Clear()
 
-	if l := at.Length(); l != 0 {
+	if l := at.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 
@@ -256,7 +256,7 @@ func TestLeftRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 2, h)
 	}
 
-	if l := at.Length(); l != 3 {
+	if l := at.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 
@@ -286,7 +286,7 @@ func TestLeftRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 3, h)
 	}
 
-	if l := at.Length(); l != 5 {
+	if l := at.Len(); l != 5 {
 		t.Errorf("Expected %v Got %v", 5, l)
 	}
 
@@ -313,7 +313,7 @@ func TestLeftRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 3, h)
 	}
 
-	if l := at.Length(); l != 3 {
+	if l := at.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 
@@ -342,7 +342,7 @@ func TestRightRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 2, h)
 	}
 
-	if l := at.Length(); l != 3 {
+	if l := at.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 
@@ -372,7 +372,7 @@ func TestRightRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 3, h)
 	}
 
-	if l := at.Length(); l != 5 {
+	if l := at.Len(); l != 5 {
 		t.Errorf("Expected %v Got %v", 5, l)
 	}
 
@@ -400,7 +400,7 @@ func TestRightRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 2, h)
 	}
 
-	if l := at.Length(); l != 3 {
+	if l := at.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 
@@ -429,7 +429,7 @@ func TestRightLeftRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 2, h)
 	}
 
-	if l := at.Length(); l != 3 {
+	if l := at.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 
@@ -459,7 +459,7 @@ func TestRightLeftRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 3, h)
 	}
 
-	if l := at.Length(); l != 5 {
+	if l := at.Len(); l != 5 {
 		t.Errorf("Expected %v Got %v", 5, l)
 	}
 
@@ -492,7 +492,7 @@ func TestRightLeftRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 3, h)
 	}
 
-	if l := at.Length(); l != 6 {
+	if l := at.Len(); l != 6 {
 		t.Errorf("Expected %v Got %v", 6, l)
 	}
 
@@ -521,7 +521,7 @@ func TestLeftRightRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 2, h)
 	}
 
-	if l := at.Length(); l != 3 {
+	if l := at.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 
@@ -551,7 +551,7 @@ func TestLeftRightRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 3, h)
 	}
 
-	if l := at.Length(); l != 5 {
+	if l := at.Len(); l != 5 {
 		t.Errorf("Expected %v Got %v", 5, l)
 	}
 
@@ -584,7 +584,7 @@ func TestLeftRightRotate(t *testing.T) {
 		t.Errorf("Expected %v Got %v", 3, h)
 	}
 
-	if l := at.Length(); l != 6 {
+	if l := at.Len(); l != 6 {
 		t.Errorf("Expected %v Got %v", 6, l)
 	}
 

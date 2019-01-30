@@ -1,23 +1,22 @@
 package binaryheap
 
 import (
-	"github.com/praveen001/ds/heap"
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/utils"
 
-	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
 // BinaryHeap is a binary heap implementation using linked list internally.
 type BinaryHeap struct {
-	list    list.List
+	list    ds.List
 	compare utils.CompareFunc
 	variant int
 }
 
 // Config for binary heap.
 type Config struct {
-	List       list.List
+	List       ds.List
 	Comparator utils.CompareFunc
 	Variant    int
 }
@@ -27,7 +26,7 @@ func New(fn utils.CompareFunc) *BinaryHeap {
 	return &BinaryHeap{
 		list:    linkedlist.New(),
 		compare: fn,
-		variant: heap.MinHeap,
+		variant: ds.MinHeap,
 	}
 }
 

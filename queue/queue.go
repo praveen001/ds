@@ -1,18 +1,18 @@
 package queue
 
 import (
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
 // Queue ..
 type Queue struct {
-	list list.List
+	list ds.List
 }
 
 // Config for queue
 type Config struct {
-	List list.List
+	List ds.List
 }
 
 // New creates a new queue and returns it

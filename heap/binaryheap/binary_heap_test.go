@@ -3,7 +3,7 @@ package binaryheap
 import (
 	"testing"
 
-	"github.com/praveen001/ds/heap"
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
@@ -31,7 +31,7 @@ func TestNewWithConfig(t *testing.T) {
 	bh := NewWithConfig(&Config{
 		List:       linkedlist.New(),
 		Comparator: comp,
-		Variant:    heap.MinHeap,
+		Variant:    ds.MinHeap,
 	})
 
 	if bh == nil {

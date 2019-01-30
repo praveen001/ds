@@ -3,8 +3,7 @@ package redblacktree
 import (
 	"sync"
 
-	"github.com/praveen001/ds/list"
-	"github.com/praveen001/ds/tree"
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/utils"
 )
 
@@ -80,7 +79,7 @@ func (rbt *RedBlackTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (rbt *RedBlackTree) Min() (tree.Node, bool) {
+func (rbt *RedBlackTree) Min() (ds.Node, bool) {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
@@ -90,7 +89,7 @@ func (rbt *RedBlackTree) Min() (tree.Node, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (rbt *RedBlackTree) Max() (tree.Node, bool) {
+func (rbt *RedBlackTree) Max() (ds.Node, bool) {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
@@ -105,8 +104,8 @@ func (rbt *RedBlackTree) Contains(value interface{}) bool {
 	return rbt.contains(value)
 }
 
-// Length returns the total number of nodes in tree
-func (rbt *RedBlackTree) Length() int {
+// Len returns the total number of nodes in tree
+func (rbt *RedBlackTree) Len() int {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
@@ -121,24 +120,24 @@ func (rbt *RedBlackTree) Clear() {
 	rbt.clear()
 }
 
-// InOrder returns a list.List with all values in-order
-func (rbt *RedBlackTree) InOrder() list.List {
+// InOrder returns a ds.List with all values in-order
+func (rbt *RedBlackTree) InOrder() ds.List {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
 	return rbt.inOrder()
 }
 
-// PreOrder returns a list.List with all values in pre order
-func (rbt *RedBlackTree) PreOrder() list.List {
+// PreOrder returns a ds.List with all values in pre order
+func (rbt *RedBlackTree) PreOrder() ds.List {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
 	return rbt.preOrder()
 }
 
-// PostOrder returns a list.List with all values in post order
-func (rbt *RedBlackTree) PostOrder() list.List {
+// PostOrder returns a ds.List with all values in post order
+func (rbt *RedBlackTree) PostOrder() ds.List {
 	rbt.RLock()
 	defer rbt.RUnlock()
 

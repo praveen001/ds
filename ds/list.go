@@ -1,4 +1,4 @@
-package list
+package ds
 
 // List interface is implemented by all list data structures.
 type List interface {

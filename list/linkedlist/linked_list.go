@@ -3,7 +3,7 @@ package linkedlist
 import (
 	"sync"
 
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 )
 
 // LinkedList holds the set of elements in a slice
@@ -104,7 +104,7 @@ func (ll *LinkedList) Clear() {
 
 // PushBackList inserts a copy of an other list at the back of list l.
 // The lists l and other may be the same. They must not be nil.
-func (ll *LinkedList) PushBackList(l list.List) {
+func (ll *LinkedList) PushBackList(l ds.List) {
 	ll.lock()
 	defer ll.unlock()
 
@@ -113,7 +113,7 @@ func (ll *LinkedList) PushBackList(l list.List) {
 
 // PushFrontList inserts a copy of an other list at the front of list l.
 // The lists l and other may be the same. They must not be nil.
-func (ll *LinkedList) PushFrontList(l list.List) {
+func (ll *LinkedList) PushFrontList(l ds.List) {
 	ll.lock()
 	defer ll.unlock()
 
@@ -145,7 +145,7 @@ func (ll *LinkedList) Values() []interface{} {
 }
 
 // Clone creates a shallow copy and returns the reference
-func (ll *LinkedList) Clone() list.List {
+func (ll *LinkedList) Clone() ds.List {
 	ll.rlock()
 	defer ll.runlock()
 

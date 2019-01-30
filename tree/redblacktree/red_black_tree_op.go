@@ -1,7 +1,7 @@
 package redblacktree
 
 import (
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
@@ -136,7 +136,7 @@ func (rbt *RedBlackTree) clear() {
 	rbt.size = 0
 }
 
-func (rbt *RedBlackTree) inOrder() list.List {
+func (rbt *RedBlackTree) inOrder() ds.List {
 	ll := linkedlist.New()
 
 	if rbt.length() != 0 {
@@ -146,20 +146,20 @@ func (rbt *RedBlackTree) inOrder() list.List {
 	return ll
 }
 
-func (rbt *RedBlackTree) preOrder() list.List {
+func (rbt *RedBlackTree) preOrder() ds.List {
 	ll := linkedlist.New()
 
-	if rbt.Length() != 0 {
+	if rbt.Len() != 0 {
 		rbt.root.preOrder(ll)
 	}
 
 	return ll
 }
 
-func (rbt *RedBlackTree) postOrder() list.List {
+func (rbt *RedBlackTree) postOrder() ds.List {
 	ll := linkedlist.New()
 
-	if rbt.Length() != 0 {
+	if rbt.Len() != 0 {
 		rbt.root.postOrder(ll)
 	}
 

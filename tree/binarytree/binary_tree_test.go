@@ -19,13 +19,13 @@ func TestSet(t *testing.T) {
 
 	bt.Set(10, 10)
 
-	if l := bt.Length(); l != 1 {
+	if l := bt.Len(); l != 1 {
 		t.Errorf("Expected %v Got %v", 1, l)
 	}
 
 	bt.Set(10, 10)
 	bt.Set(20, 20)
-	if l := bt.Length(); l != 2 {
+	if l := bt.Len(); l != 2 {
 		t.Errorf("Expected %v Got %v", 2, l)
 	}
 }
@@ -133,10 +133,10 @@ func TestContains(t *testing.T) {
 	}
 }
 
-func TestLength(t *testing.T) {
+func TestLen(t *testing.T) {
 	bt := New(utils.IntComparator)
 
-	if l := bt.Length(); l != 0 {
+	if l := bt.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 
@@ -145,13 +145,13 @@ func TestLength(t *testing.T) {
 	bt.Set(100, 100)
 	bt.Set(20, 20)
 
-	if l := bt.Length(); l != 4 {
+	if l := bt.Len(); l != 4 {
 		t.Errorf("Expected %v Got %v", 4, l)
 	}
 
 	bt.Remove(10)
 
-	if l := bt.Length(); l != 3 {
+	if l := bt.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 }
@@ -159,7 +159,7 @@ func TestLength(t *testing.T) {
 func TestClear(t *testing.T) {
 	bt := New(utils.IntComparator)
 
-	if l := bt.Length(); l != 0 {
+	if l := bt.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 
@@ -168,13 +168,13 @@ func TestClear(t *testing.T) {
 	bt.Set(100, 100)
 	bt.Set(20, 20)
 
-	if l := bt.Length(); l != 4 {
+	if l := bt.Len(); l != 4 {
 		t.Errorf("Expected %v Got %v", 4, l)
 	}
 
 	bt.Clear()
 
-	if l := bt.Length(); l != 0 {
+	if l := bt.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 

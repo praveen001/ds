@@ -18,7 +18,7 @@ func (hm *HashMap) remove(key interface{}) bool {
 }
 
 func (hm *HashMap) keys() []interface{} {
-	ks := make([]interface{}, hm.length())
+	ks := make([]interface{}, hm.len())
 
 	i := 0
 	for k := range hm.m {
@@ -30,7 +30,7 @@ func (hm *HashMap) keys() []interface{} {
 }
 
 func (hm *HashMap) values() []interface{} {
-	vals := make([]interface{}, hm.length())
+	vals := make([]interface{}, hm.len())
 
 	i := 0
 	for _, v := range hm.m {
@@ -47,7 +47,7 @@ func (hm *HashMap) contains(key interface{}) bool {
 	return ok
 }
 
-func (hm *HashMap) length() int {
+func (hm *HashMap) len() int {
 	return len(hm.m)
 }
 

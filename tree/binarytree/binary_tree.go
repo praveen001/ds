@@ -3,8 +3,7 @@ package binarytree
 import (
 	"sync"
 
-	"github.com/praveen001/ds/list"
-	"github.com/praveen001/ds/tree"
+	"github.com/praveen001/ds/ds"
 
 	"github.com/praveen001/ds/utils"
 )
@@ -79,7 +78,7 @@ func (bt *BinaryTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (bt *BinaryTree) Min() (tree.Node, bool) {
+func (bt *BinaryTree) Min() (ds.Node, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
 
@@ -89,7 +88,7 @@ func (bt *BinaryTree) Min() (tree.Node, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (bt *BinaryTree) Max() (tree.Node, bool) {
+func (bt *BinaryTree) Max() (ds.Node, bool) {
 	bt.RLock()
 	defer bt.RUnlock()
 
@@ -104,12 +103,12 @@ func (bt *BinaryTree) Contains(value interface{}) bool {
 	return bt.contains(value)
 }
 
-// Length returns the total number of nodes in tree
-func (bt *BinaryTree) Length() int {
+// Len returns the total number of nodes in tree
+func (bt *BinaryTree) Len() int {
 	bt.RLock()
 	defer bt.RUnlock()
 
-	return bt.length()
+	return bt.len()
 }
 
 // Clear all the nodes from tree
@@ -120,24 +119,24 @@ func (bt *BinaryTree) Clear() {
 	bt.clear()
 }
 
-// InOrder returns a list.List with all values in-order
-func (bt *BinaryTree) InOrder() list.List {
+// InOrder returns a ds.List with all values in-order
+func (bt *BinaryTree) InOrder() ds.List {
 	bt.RLock()
 	defer bt.RUnlock()
 
 	return bt.inOrder()
 }
 
-// PreOrder returns a list.List with all values in pre order
-func (bt *BinaryTree) PreOrder() list.List {
+// PreOrder returns a ds.List with all values in pre order
+func (bt *BinaryTree) PreOrder() ds.List {
 	bt.RLock()
 	defer bt.RUnlock()
 
 	return bt.preOrder()
 }
 
-// PostOrder returns a list.List with all values in post order
-func (bt *BinaryTree) PostOrder() list.List {
+// PostOrder returns a ds.List with all values in post order
+func (bt *BinaryTree) PostOrder() ds.List {
 	bt.RLock()
 	defer bt.RUnlock()
 

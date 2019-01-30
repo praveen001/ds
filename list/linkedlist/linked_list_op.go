@@ -3,7 +3,7 @@ package linkedlist
 import (
 	"fmt"
 
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 )
 
 func (ll *LinkedList) len() int {
@@ -81,13 +81,13 @@ func (ll *LinkedList) clear() {
 	ll.size = 0
 }
 
-func (ll *LinkedList) pushBackList(l list.List) {
+func (ll *LinkedList) pushBackList(l ds.List) {
 	for _, v := range l.Values() {
 		ll.pushBack(v)
 	}
 }
 
-func (ll *LinkedList) pushFrontList(l list.List) {
+func (ll *LinkedList) pushFrontList(l ds.List) {
 	for _, v := range l.Values() {
 		ll.pushFront(v)
 	}

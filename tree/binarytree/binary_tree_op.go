@@ -1,7 +1,7 @@
 package binarytree
 
 import (
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/list/linkedlist"
 	"github.com/praveen001/ds/stack"
 )
@@ -99,7 +99,7 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 }
 
 func (bt *BinaryTree) height() int {
-	if bt.length() == 0 {
+	if bt.len() == 0 {
 		return 0
 	}
 
@@ -134,7 +134,7 @@ func (bt *BinaryTree) contains(key interface{}) bool {
 	return false
 }
 
-func (bt *BinaryTree) length() int {
+func (bt *BinaryTree) len() int {
 	return bt.size
 }
 
@@ -143,30 +143,30 @@ func (bt *BinaryTree) clear() {
 	bt.size = 0
 }
 
-func (bt *BinaryTree) inOrder() list.List {
+func (bt *BinaryTree) inOrder() ds.List {
 	ll := linkedlist.New()
 
-	if bt.length() != 0 {
+	if bt.len() != 0 {
 		bt.root.inOrder(ll)
 	}
 
 	return ll
 }
 
-func (bt *BinaryTree) preOrder() list.List {
+func (bt *BinaryTree) preOrder() ds.List {
 	ll := linkedlist.New()
 
-	if bt.Length() != 0 {
+	if bt.len() != 0 {
 		bt.root.preOrder(ll)
 	}
 
 	return ll
 }
 
-func (bt *BinaryTree) postOrder() list.List {
+func (bt *BinaryTree) postOrder() ds.List {
 	ll := linkedlist.New()
 
-	if bt.Length() != 0 {
+	if bt.len() != 0 {
 		bt.root.postOrder(ll)
 	}
 

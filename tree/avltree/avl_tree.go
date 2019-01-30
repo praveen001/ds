@@ -3,8 +3,7 @@ package avltree
 import (
 	"sync"
 
-	"github.com/praveen001/ds/list"
-	"github.com/praveen001/ds/tree"
+	"github.com/praveen001/ds/ds"
 
 	"github.com/praveen001/ds/utils"
 )
@@ -88,7 +87,7 @@ func (at *AvlTree) Height() int {
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
-func (at *AvlTree) Min() (tree.Node, bool) {
+func (at *AvlTree) Min() (ds.Node, bool) {
 	at.RLock()
 	defer at.RUnlock()
 
@@ -98,7 +97,7 @@ func (at *AvlTree) Min() (tree.Node, bool) {
 // Max returns the maximum value present in the tree
 //
 // Returns false if tree is empty
-func (at *AvlTree) Max() (tree.Node, bool) {
+func (at *AvlTree) Max() (ds.Node, bool) {
 	at.RLock()
 	defer at.RUnlock()
 
@@ -113,8 +112,8 @@ func (at *AvlTree) Contains(key interface{}) bool {
 	return at.contains(key)
 }
 
-// Length returns the total number of nodes in tree
-func (at *AvlTree) Length() int {
+// Len returns the total number of nodes in tree
+func (at *AvlTree) Len() int {
 	at.RLock()
 	defer at.RUnlock()
 
@@ -129,24 +128,24 @@ func (at *AvlTree) Clear() {
 	at.clear()
 }
 
-// InOrder returns a list.List with all values in-order
-func (at *AvlTree) InOrder() list.List {
+// InOrder returns a ds.List with all values in-order
+func (at *AvlTree) InOrder() ds.List {
 	at.RLock()
 	defer at.RUnlock()
 
 	return at.inOrder()
 }
 
-// PreOrder returns a list.List with all values in pre order
-func (at *AvlTree) PreOrder() list.List {
+// PreOrder returns a ds.List with all values in pre order
+func (at *AvlTree) PreOrder() ds.List {
 	at.RLock()
 	defer at.RUnlock()
 
 	return at.preOrder()
 }
 
-// PostOrder returns a list.List with all values in post order
-func (at *AvlTree) PostOrder() list.List {
+// PostOrder returns a ds.List with all values in post order
+func (at *AvlTree) PostOrder() ds.List {
 	at.RLock()
 	defer at.RUnlock()
 

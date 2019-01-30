@@ -1,9 +1,9 @@
 package avltree
 
 import (
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/stack"
 
-	"github.com/praveen001/ds/list"
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
@@ -131,7 +131,7 @@ func (at *AvlTree) remove(key interface{}) bool {
 }
 
 func (at *AvlTree) height() int {
-	if at.Length() == 0 {
+	if at.Len() == 0 {
 		return 0
 	}
 	return at.root.height
@@ -174,7 +174,7 @@ func (at *AvlTree) clear() {
 	at.size = 0
 }
 
-func (at *AvlTree) inOrder() list.List {
+func (at *AvlTree) inOrder() ds.List {
 	ll := linkedlist.New()
 
 	if at.length() != 0 {
@@ -184,20 +184,20 @@ func (at *AvlTree) inOrder() list.List {
 	return ll
 }
 
-func (at *AvlTree) preOrder() list.List {
+func (at *AvlTree) preOrder() ds.List {
 	ll := linkedlist.New()
 
-	if at.Length() != 0 {
+	if at.Len() != 0 {
 		at.root.preOrder(ll)
 	}
 
 	return ll
 }
 
-func (at *AvlTree) postOrder() list.List {
+func (at *AvlTree) postOrder() ds.List {
 	ll := linkedlist.New()
 
-	if at.Length() != 0 {
+	if at.Len() != 0 {
 		at.root.postOrder(ll)
 	}
 

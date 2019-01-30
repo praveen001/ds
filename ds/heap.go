@@ -1,4 +1,4 @@
-package heap
+package ds
 
 // MinHeap used to configure heap as Min Heap
 const MinHeap = 1

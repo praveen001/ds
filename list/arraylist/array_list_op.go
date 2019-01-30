@@ -3,7 +3,7 @@ package arraylist
 import (
 	"fmt"
 
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 )
 
 func (al *ArrayList) len() int {
@@ -65,12 +65,12 @@ func (al *ArrayList) clear() {
 	al.size = 0
 }
 
-func (al *ArrayList) pushBackList(l list.List) {
+func (al *ArrayList) pushBackList(l ds.List) {
 	al.elements = append(al.elements, l.Values()...)
 	al.size += l.Len()
 }
 
-func (al *ArrayList) pushFrontList(l list.List) {
+func (al *ArrayList) pushFrontList(l ds.List) {
 	al.elements = append(l.Values(), al.elements...)
 	al.size += l.Len()
 }

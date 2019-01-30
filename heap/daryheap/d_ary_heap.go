@@ -1,14 +1,14 @@
 package daryheap
 
 import (
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/list/doublylinkedlist"
 	"github.com/praveen001/ds/utils"
 )
 
 // DAryHeap is a d-ary heap implementation using linked list internally
 type DAryHeap struct {
-	list    list.List
+	list    ds.List
 	compare utils.CompareFunc
 	d       int
 	variant int
@@ -16,7 +16,7 @@ type DAryHeap struct {
 
 // Config for d-ary heap
 type Config struct {
-	List       list.List
+	List       ds.List
 	Comparator utils.CompareFunc
 	D          int
 	Variant    int

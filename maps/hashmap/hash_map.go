@@ -63,12 +63,12 @@ func (hm *HashMap) Contains(key interface{}) bool {
 	return hm.contains(key)
 }
 
-// Length returns total number of entries in hashmap
-func (hm *HashMap) Length() int {
+// Len returns total number of entries in hashmap
+func (hm *HashMap) Len() int {
 	hm.RLock()
 	defer hm.RUnlock()
 
-	return hm.length()
+	return hm.len()
 }
 
 // Clear removes all the entries from hashmap

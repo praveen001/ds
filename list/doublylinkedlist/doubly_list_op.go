@@ -3,7 +3,7 @@ package doublylinkedlist
 import (
 	"fmt"
 
-	"github.com/praveen001/ds/list"
+	"github.com/praveen001/ds/ds"
 )
 
 func (dl *DoublyLinkedList) len() int {
@@ -90,13 +90,13 @@ func (dl *DoublyLinkedList) clear() {
 	dl.size = 0
 }
 
-func (dl *DoublyLinkedList) pushBackList(l list.List) {
+func (dl *DoublyLinkedList) pushBackList(l ds.List) {
 	for _, v := range l.Values() {
 		dl.pushBack(v)
 	}
 }
 
-func (dl *DoublyLinkedList) pushFrontList(l list.List) {
+func (dl *DoublyLinkedList) pushFrontList(l ds.List) {
 	for _, v := range l.Values() {
 		dl.pushFront(v)
 	}
