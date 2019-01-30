@@ -1,366 +1,215 @@
 package linkedlist
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNew(t *testing.T) {
-	al := New()
-	if al == nil {
+	ll := New()
+	if ll == nil {
 		t.Errorf("New didn't create new array list \n")
 	}
 }
 
-func TestAppend(t *testing.T) {
-	al := New()
+func TestLen(t *testing.T) {
+	ll := New()
 
-	// Empty append
-	al.Append()
-	if len := al.Length(); len != 0 {
-		t.Errorf("Expected %v Got %v", 0, len)
-	}
+	ll.PushBack(10)
+	ll.PushFront(20)
 
-	// Single append
-	al.Append(10)
-	if len := al.Length(); len != 1 {
-		t.Errorf("Expected %v Got %v", 1, len)
-	}
-	if val, ok := al.Get(0); val != 10 || !ok {
-		t.Errorf("Expected %v Got %v", 10, val)
-	}
-
-	// Multiple append
-	al.Append(20, 30)
-	if len := al.Length(); len != 3 {
-		t.Errorf("Expected %v Got %v", 3, len)
-	}
-
-	if val, ok := al.Get(al.Length() - 1); val != 30 || !ok {
-		t.Errorf("Expected %v Got %v", 30, val)
+	if l := ll.Len(); l != 2 {
+		t.Errorf("Expected length to be %v, but got %v", 2, l)
 	}
 }
 
-func TestPrepend(t *testing.T) {
-	al := New()
+func TestFront(t *testing.T) {
+	ll := New()
 
-	// Empty prepend
-	al.Prepend()
-	if len := al.Length(); len != 0 {
-		t.Errorf("Expected %v Got %v", 0, len)
-	}
+	ll.PushBack(10)
+	ll.PushBack(20)
 
-	// Single prepend
-	al.Prepend(10)
-	if len := al.Length(); len != 1 {
-		t.Errorf("Expected %v Got %v", 1, len)
-	}
-	if val, ok := al.Get(0); val != 10 || !ok {
-		t.Errorf("Expected %v, %v got %v, %v", 10, true, val, ok)
-	}
-
-	// Multiple prepend
-	al.Prepend(20, 30)
-	if len := al.Length(); len != 3 {
-		t.Errorf("Expected %v Got %v", 3, len)
-	}
-	if val, ok := al.Get(0); val != 20 || !ok {
-		t.Errorf("Expected %v, %v got %v, %v", 20, true, val, ok)
+	if v := ll.Front(); v != 10 {
+		t.Errorf("Expected front to be %v, but got %v", 10, v)
 	}
 }
 
-func TestGet(t *testing.T) {
-	al := New()
+func TestBack(t *testing.T) {
+	ll := New()
 
-	al.Append("aa", "bb", "cc")
+	ll.PushBack(10)
+	ll.PushBack(20)
 
-	// Left out of bound
-	if val, ok := al.Get(-1); val != nil || ok {
-		t.Errorf("Expected %v, %v got %v, %v", nil, false, val, ok)
-	}
-
-	// Right out of bound
-	if val, ok := al.Get(al.Length()); val != nil || ok {
-		t.Errorf("Expected %v, %v got %v, %v", nil, false, val, ok)
-	}
-
-	// valid case
-	if val, ok := al.Get(0); val != "aa" || !ok {
-		t.Errorf("Expected %v, %v got %v %v", "aa", true, val, ok)
+	if v := ll.Back(); v != 20 {
+		t.Errorf("Expected back to be %v, but got %v", 20, v)
 	}
 }
 
-func TestSet(t *testing.T) {
-	al := New()
+func TestPushFront(t *testing.T) {
+	ll := New()
 
-	al.Append(10, 20, 30)
+	ll.PushFront(10)
+	ll.PushBack(20)
+	ll.PushFront(-10)
 
-	// Invalid case
-	if ok := al.Set(-1, 0); ok {
-		t.Errorf("Expected %v Got %v", false, ok)
+	if v, _ := ll.At(0); v != -10 {
+		t.Errorf("Expected front to be %v, but got %v", -10, v)
 	}
+}
 
-	// Valid case
-	if ok := al.Set(1, 1000); !ok {
-		t.Errorf("Expected %v Got %v", true, ok)
+func TestPushBack(t *testing.T) {
+	ll := New()
+
+	ll.PushFront(10)
+	ll.PushBack(20)
+	ll.PushFront(-10)
+
+	if v := ll.Back(); v != 20 {
+		t.Errorf("Expected back to be %v, but got %v", 20, v)
 	}
-	if val, ok := al.Get(1); val != 1000 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 1000, true, val, ok)
+}
+
+func TestInsert(t *testing.T) {
+	ll := New()
+
+	ll.PushFront(10)
+	ll.PushBack(20)
+	ll.PushFront(-10)
+	ll.Insert(1, 100)
+
+	if v, _ := ll.At(1); v != 100 {
+		t.Errorf("Expected value to be %v, but got %v", 100, v)
 	}
 }
 
 func TestRemove(t *testing.T) {
-	al := New()
+	ll := New()
 
-	al.Append(1, 2, 20, 10, 30, 5)
+	ll.PushFront(10)
+	ll.PushBack(20)
+	ll.PushFront(-10)
+	ll.Remove(1)
 
-	// Invalid case
-	if val, ok := al.Remove(-1); val != nil || ok {
-		t.Errorf("Expected %v, %v Got %v, %v", nil, false, val, ok)
-	}
-
-	// Valid Case
-	if val, ok := al.Remove(1); val != 2 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 2, true, val, ok)
-	}
-
-	if len := al.Length(); len != 5 {
-		t.Errorf("Expected %v Got %v", 5, len)
-	}
-
-	if val, ok := al.Get(1); val != 20 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 20, true, val, ok)
-	}
-
-	// Remove head while it has next node
-	if val, ok := al.Remove(0); val != 1 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 1, true, val, ok)
-	}
-
-	// Remove head when it's the only node
-	if val, ok := al.Remove(0); val != 20 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 20, true, val, ok)
-	}
-
-	if val, ok := al.Remove(al.Length() - 1); val != 5 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 5, true, val, ok)
-	}
-
-	if str := al.String(); str != "[10 30]" {
-		t.Errorf("Expected %v Got %v", "[10 30]", str)
+	if v, _ := ll.At(1); v != 20 {
+		t.Errorf("Expected value to be %v, but got %v", 20, v)
 	}
 }
 
-func TestContains(t *testing.T) {
-	al := New()
+func TestAt(t *testing.T) {
+	ll := New()
 
-	al.Append(10, 20, 30)
+	ll.PushBack(10)
+	ll.PushBack(20)
 
-	// Not found
-	if ok := al.Contains(40); ok {
-		t.Errorf("Expected %v Got %v", false, ok)
-	}
-
-	// Found
-	if ok := al.Contains(30); !ok {
-		t.Errorf("Expected %v Got %v", true, ok)
-	}
-}
-
-func TestIndexOf(t *testing.T) {
-	al := New()
-
-	al.Append(10, 20, 30)
-
-	// Not found
-	if idx := al.IndexOf(40); idx != -1 {
-		t.Errorf("Expected %v Got %v", -1, idx)
-	}
-
-	// Found
-	if idx := al.IndexOf(30); idx != 2 {
-		t.Errorf("Expected %v Got %v", 2, idx)
-	}
-}
-
-func TestValues(t *testing.T) {
-	al := New()
-
-	al.Append(10, 20, 30)
-	values := al.Values()
-
-	if l := len(values); l != 3 {
-		t.Errorf("Expected %v Got %v", 3, l)
-	}
-
-	if values[0] != 10 {
-		t.Errorf("Expected %v Got %v", 10, values[0])
-	}
-
-	if values[2] != 30 {
-		t.Errorf("Expected %v Got %v", 30, values[2])
-	}
-}
-
-func TestLength(t *testing.T) {
-	al := New()
-
-	al.Append(10, 20, 30)
-	if len := al.Length(); len != 3 {
-		t.Errorf("Expected %v Got %v", 3, len)
+	if v, _ := ll.At(1); v != 20 {
+		t.Errorf("Expected value to be %v, but got %v", 20, v)
 	}
 }
 
 func TestClear(t *testing.T) {
-	al := New()
+	ll := New()
 
-	al.Append(10, 20, 30)
-	al.Clear()
+	ll.PushBack(10)
+	ll.PushBack(20)
 
-	if len := al.Length(); len != 0 {
-		t.Errorf("Expected %v Got %v", 0, len)
-	}
+	ll.Clear()
 
-	if val, ok := al.Get(0); val != nil || ok {
-		t.Errorf("Expected %v, %v Got %v, %v", nil, false, val, ok)
+	if l := ll.Len(); l != 0 {
+		t.Errorf("Expected length to be %v, but got %v", 0, l)
 	}
 }
 
-func TestWithInRange(t *testing.T) {
-	al := New()
+func TestPushBackList(t *testing.T) {
+	ll := New()
+	ll.PushBack(10)
 
-	al.Append(10, 20, 30)
-
-	// Invalid case
-	if ok := al.WithInRange(-1); ok {
-		t.Errorf("Expected %v Got %v", false, ok)
-	}
-
-	// Valid case
-	if ok := al.WithInRange(2); !ok {
-		t.Errorf("Expected %v Got %v", true, ok)
-	}
-}
-
-func TestString(t *testing.T) {
-	al := New()
-
-	al.Append(10, 20, 30)
-
-	if str := al.String(); str != "[10 20 30]" {
-		t.Errorf("Expected %v Got %v", "[10 20 30]", str)
-	}
-}
-
-func TestFilter(t *testing.T) {
-	al := New()
-
-	al.Append(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-
-	nal := al.Filter(func(a interface{}) bool {
-		if a.(int)%2 == 0 {
-			return true
-		}
-		return false
-	})
-
-	if l := nal.Length(); l != 5 {
-		t.Errorf("Expected %v Got %v", 5, l)
-	}
-
-	if l := al.Length(); l != 10 {
-		t.Errorf("Expected %v Got %v", 10, l)
-	}
-}
-
-func TestMap(t *testing.T) {
-	al := New()
-
-	al.Append(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-
-	nal := al.Map(func(a interface{}) interface{} {
-		return a.(int) * 2
-	})
-
-	if l := nal.Length(); l != 10 {
-		t.Errorf("Expected %v Got %v", 10, l)
-	}
-
-	if val, ok := nal.Get(0); val != 2 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 2, true, val, ok)
-	}
-
-	if val, ok := al.Get(0); val != 1 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 1, true, val, ok)
-	}
-}
-
-func TestConcat(t *testing.T) {
-	al := New()
 	al2 := New()
-	al3 := New()
+	al2.PushBack(20)
 
-	al.Append(10, 20, 30)
-	al2.Append(40, 50, 60)
-	al3.Append(70, 80, 90)
+	ll.PushBackList(al2)
 
-	nal := al.Concat(al2, al3)
+	if l := ll.Len(); l != 2 {
+		t.Errorf("Expected length to be %v, but got %v", 2, l)
+	}
 
-	if l := nal.Length(); l != 9 {
-		t.Errorf("Expected %v Got %v", 9, nal)
+	if v := ll.Back(); v != 20 {
+		t.Errorf("Expected back to be %v, but got %v", 20, v)
+	}
+}
+
+func TestPushFrontList(t *testing.T) {
+	ll := New()
+	ll.PushBack(10)
+
+	al2 := New()
+	al2.PushBack(20)
+
+	ll.PushFrontList(al2)
+
+	if l := ll.Len(); l != 2 {
+		t.Errorf("Expected length to be %v, but got %v", 2, l)
+	}
+
+	if v := ll.Front(); v != 20 {
+		t.Errorf("Expected front to be %v, but got %v", 20, v)
+	}
+}
+
+func TestContains(t *testing.T) {
+	ll := New()
+
+	ll.PushBack(10)
+	ll.PushBack(20)
+
+	if ok := ll.Contains(20); ok != true {
+		t.Errorf("Expected %v, but got %v", true, ok)
+	}
+}
+
+func TestIndexOf(t *testing.T) {
+	ll := New()
+
+	ll.PushBack(10)
+	ll.PushBack(20)
+
+	if i := ll.IndexOf(20); i != 1 {
+		t.Errorf("Expected %v, but got %v", 1, i)
+	}
+}
+
+func TestValues(t *testing.T) {
+	ll := New()
+
+	ll.PushBack(10)
+	ll.PushBack(20)
+
+	values := ll.Values()
+	if values[0] != 10 || values[1] != 20 {
+		t.Errorf("Expected %v, but got %v", []interface{}{10, 20}, values)
 	}
 }
 
 func TestClone(t *testing.T) {
-	al := New()
+	ll := New()
 
-	al.Append(10, 20, 30)
-	nal := al.Clone()
+	ll.PushBack(10)
+	ll.PushBack(20)
 
-	if l := nal.Length(); l != 3 {
-		t.Errorf("Expected %v Got %v", 3, l)
-	}
+	cl := ll.Clone()
+	cl.PushBack(30)
 
-	if val, ok := nal.Get(0); val != 10 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
-	}
-
-	nal.Clear()
-
-	if l := al.Length(); l != 3 {
-		t.Errorf("Expected %v Got %v", 3, l)
+	if l := ll.Len(); l != 2 {
+		t.Errorf("Expected %v, but got %v", 2, l)
 	}
 }
-
-func TestReverse(t *testing.T) {
-	al := New()
-
-	al.Append(10, 20, 30)
-	nal := al.Reverse()
-
-	if val, ok := nal.Get(0); val != 30 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 30, true, val, ok)
-	}
-
-	if val, ok := nal.Get(2); val != 10 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
-	}
-}
-
 func TestSwap(t *testing.T) {
-	al := New()
+	ll := New()
 
-	al.Append(10, 20, 30)
+	ll.PushBack(10)
+	ll.PushBack(20)
 
-	// Invalid case
-	if ok := al.Swap(-1, 2); ok {
-		t.Errorf("Expected %v, Got %v", false, ok)
-	}
+	ll.Swap(0, 1)
 
-	al.Swap(0, 2)
-
-	if val, ok := al.Get(0); val != 30 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 30, true, val, ok)
-	}
-
-	if val, ok := al.Get(2); val != 10 || !ok {
-		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
+	if a, _ := ll.At(0); a != 20 {
+		t.Errorf("Expected %v, but got %v", 20, a)
 	}
 }

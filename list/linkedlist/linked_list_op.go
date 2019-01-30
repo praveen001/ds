@@ -4,75 +4,93 @@ import (
 	"fmt"
 
 	"github.com/praveen001/ds/list"
-	"github.com/praveen001/ds/utils"
 )
 
-func (ll *LinkedList) append(values ...interface{}) {
-	for _, value := range values {
-		newElem := &element{value: value}
-
-		if ll.size == 0 {
-			ll.head = newElem
-		} else {
-			ll.tail.next = newElem
-		}
-
-		ll.tail = newElem
-		ll.size++
-	}
+func (ll *LinkedList) len() int {
+	return ll.size
 }
 
-func (ll *LinkedList) prepend(values ...interface{}) {
-	n := ll.head
-	for i := 0; i < len(values); i++ {
-		h := &element{value: values[len(values)-1-i]}
-		h.next = n
-		ll.head = h
-		n = h
-	}
-	ll.size += len(values)
+func (ll *LinkedList) front() interface{} {
+	return ll.get(0)
 }
 
-func (ll *LinkedList) get(index int) (interface{}, bool) {
-	if ll.withInRange(index) {
-		elem := ll.getElemByIdx(index)
-		return elem.value, true
-	}
-
-	return nil, false
+func (ll *LinkedList) back() interface{} {
+	return ll.get(ll.len() - 1)
 }
 
-func (ll *LinkedList) set(index int, value interface{}) bool {
-	if ll.withInRange(index) {
-		elem := ll.getElemByIdx(index)
-		elem.value = value
-		return true
-	}
+func (ll *LinkedList) pushFront(v interface{}) {
+	elem := &element{v, ll.head}
 
-	return false
+	if ll.len() == 0 {
+		ll.tail = elem
+	}
+	ll.head = elem
+
+	ll.size++
 }
 
-func (ll *LinkedList) remove(index int) (interface{}, bool) {
-	if ll.withInRange(index) {
+func (ll *LinkedList) pushBack(v interface{}) {
+	elem := &element{v, nil}
+
+	if ll.len() == 0 {
+		ll.head = elem
+	} else {
+		ll.tail.next = elem
+	}
+	ll.tail = elem
+	ll.size++
+}
+
+func (ll *LinkedList) insert(i int, v interface{}) bool {
+	return ll.set(i, v)
+}
+
+func (ll *LinkedList) remove(i int) (interface{}, bool) {
+	if ll.withInRange(i) {
 		var value interface{}
-		if index == 0 {
+
+		if i == 0 {
 			elem := ll.head
 			value = elem.value
 
 			ll.head = elem.next
 		} else {
-			elem := ll.getElemByIdx(index - 1)
+			elem := ll.getElemByIdx(i - 1)
 			value = elem.next.value
 
 			elem.next = elem.next.next
 		}
-
 		ll.size--
 
 		return value, true
 	}
 
 	return nil, false
+}
+
+func (ll *LinkedList) at(i int) (interface{}, bool) {
+	if ll.withInRange(i) {
+		return ll.get(i), true
+	}
+	return nil, false
+}
+
+func (ll *LinkedList) clear() {
+	ll.head = nil
+	ll.tail = nil
+	ll.size = 0
+}
+
+func (ll *LinkedList) pushBackList(l list.List) {
+	for _, v := range l.Values() {
+		ll.pushBack(v)
+	}
+}
+
+func (ll *LinkedList) pushFrontList(l list.List) {
+	for _, v := range l.Values() {
+		ll.pushFront(v)
+	}
 }
 
 func (ll *LinkedList) contains(value interface{}) bool {
@@ -98,7 +116,7 @@ func (ll *LinkedList) indexOf(value interface{}) int {
 }
 
 func (ll *LinkedList) values() []interface{} {
-	arr := make([]interface{}, ll.length())
+	arr := make([]interface{}, ll.len())
 	index := 0
 
 	for elem := ll.head; elem != nil; elem = elem.next {
@@ -109,14 +127,51 @@ func (ll *LinkedList) values() []interface{} {
 	return arr
 }
 
-func (ll *LinkedList) length() int {
-	return ll.size
+func (ll *LinkedList) clone() *LinkedList {
+	nal := New()
+	nal.pushFrontList(ll)
+
+	return nal
 }
 
-func (ll *LinkedList) clear() {
-	ll.head = nil
-	ll.tail = nil
-	ll.size = 0
+func (ll *LinkedList) swap(a, b int) bool {
+	if ll.withInRange(a) && ll.withInRange(b) {
+		an := ll.getElemByIdx(a)
+		bn := ll.getElemByIdx(b)
+
+		an.value, bn.value = bn.value, an.value
+		return true
+	}
+	return false
+}
+
+func (ll *LinkedList) set(index int, value interface{}) bool {
+	if ll.withInRange(index) {
+		elem := ll.getElemByIdx(index)
+		elem.value = value
+		return true
+	}
+
+	return false
+}
+
+func (ll *LinkedList) get(index int) interface{} {
+	if ll.withInRange(index) {
+		elem := ll.getElemByIdx(index)
+		return elem.value
+	}
+
+	return nil
+}
+
+// getElemByIdx returns the element at the given index
+func (ll *LinkedList) getElemByIdx(index int) *element {
+	elem := ll.head
+	for i := 0; i < index; i++ {
+		elem = elem.next
+	}
+
+	return elem
 }
 
 func (ll *LinkedList) withInRange(index int) bool {
@@ -133,73 +188,4 @@ func (ll *LinkedList) string() string {
 	}
 	str += "]"
 	return str
-}
-
-// getElemByIdx returns the element at the given index
-func (ll *LinkedList) getElemByIdx(index int) *element {
-	elem := ll.head
-	for i := 0; i < index; i++ {
-		elem = elem.next
-	}
-
-	return elem
-}
-
-func (ll *LinkedList) filter(fn utils.FilterFunc) *LinkedList {
-	nal := New()
-	for elem := ll.head; elem != nil; elem = elem.next {
-		if fn(elem.value) {
-			nal.append(elem.value)
-		}
-	}
-
-	return nal
-}
-
-func (ll *LinkedList) mp(fn utils.MapFunc) *LinkedList {
-	nal := New()
-	for elem := ll.head; elem != nil; elem = elem.next {
-		nal.append(fn(elem.value))
-	}
-
-	return nal
-}
-
-func (ll *LinkedList) concat(lists ...list.List) *LinkedList {
-	nal := ll.clone()
-	for _, ls := range lists {
-		nal.append(ls.Values()...)
-	}
-
-	return nal
-}
-
-func (ll *LinkedList) clone() *LinkedList {
-	nal := New()
-	nal.append(ll.values()...)
-
-	return nal
-}
-
-func (ll *LinkedList) reverse() *LinkedList {
-	nal := New()
-	for elem := ll.head; elem != nil; elem = elem.next {
-		nal.prepend(elem.value)
-	}
-
-	return nal
-}
-
-func (ll *LinkedList) swap(a, b int) bool {
-	valA, validA := ll.get(a)
-	valB, validB := ll.get(b)
-
-	if !validA || !validB {
-		return false
-	}
-
-	ll.set(a, valB)
-	ll.set(b, valA)
-
-	return true
 }

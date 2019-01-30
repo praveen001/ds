@@ -66,9 +66,9 @@ func (bh *BinaryHeap) Clear() {
 	bh.clear()
 }
 
-// Length gives the number of values in heap
-func (bh *BinaryHeap) Length() int {
-	return bh.length()
+// Len gives the number of values in heap
+func (bh *BinaryHeap) Len() int {
+	return bh.len()
 }
 
 // String returns the string representation of the heap

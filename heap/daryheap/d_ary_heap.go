@@ -68,9 +68,9 @@ func (dh *DAryHeap) Clear() {
 	dh.clear()
 }
 
-// Length gives the number of values in heap
-func (dh *DAryHeap) Length() int {
-	return dh.length()
+// Len gives the number of values in heap
+func (dh *DAryHeap) Len() int {
+	return dh.len()
 }
 
 // String returns the string representation of the heap

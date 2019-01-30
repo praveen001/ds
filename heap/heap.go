@@ -26,8 +26,8 @@ type Heap interface {
 	// Clear removes all the values from heap
 	Clear()
 
-	// Length gives the number of values in heap
-	Length() int
+	// Len gives the number of values in heap
+	Len() int
 
 	// String returns the string representation of the heap
 	String() string

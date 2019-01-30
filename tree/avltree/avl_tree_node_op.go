@@ -20,7 +20,7 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 		x.left.inOrder(ll)
 	}
 
-	ll.Append(x.value)
+	ll.PushBack(x.value)
 
 	if x.right != nil {
 		x.right.inOrder(ll)
@@ -28,7 +28,7 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 }
 
 func (x *Node) preOrder(ll *linkedlist.LinkedList) {
-	ll.Append(x.value)
+	ll.PushBack(x.value)
 
 	if x.left != nil {
 		x.left.preOrder(ll)
@@ -48,7 +48,7 @@ func (x *Node) postOrder(ll *linkedlist.LinkedList) {
 		x.right.postOrder(ll)
 	}
 
-	ll.Append(x.value)
+	ll.PushBack(x.value)
 }
 
 func (x *Node) recomputeHeight() {

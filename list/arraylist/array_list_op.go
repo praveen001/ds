@@ -4,34 +4,35 @@ import (
 	"fmt"
 
 	"github.com/praveen001/ds/list"
-	"github.com/praveen001/ds/utils"
 )
 
-func (al *ArrayList) append(values ...interface{}) {
-	al.elements = append(al.elements, values...)
-	al.size += len(values)
+func (al *ArrayList) len() int {
+	return al.size
 }
 
-func (al *ArrayList) prepend(values ...interface{}) {
-	al.elements = append(values, al.elements...)
-	al.size += len(values)
+func (al *ArrayList) front() interface{} {
+	return al.get(0)
 }
 
-func (al *ArrayList) get(index int) (interface{}, bool) {
-	if al.withInRange(index) {
-		return al.elements[index], true
-	}
-
-	return nil, false
+func (al *ArrayList) back() interface{} {
+	return al.get(al.len() - 1)
 }
 
-func (al *ArrayList) set(index int, value interface{}) bool {
-	if al.withInRange(index) {
-		al.elements[index] = value
-		return true
-	}
+func (al *ArrayList) pushFront(v interface{}) {
+	nal := make([]interface{}, al.size+1)
+	copy(nal, []interface{}{v})
+	copy(nal[1:], al.elements)
+	al.elements = nal
+	al.size++
+}
 
-	return false
+func (al *ArrayList) pushBack(v interface{}) {
+	al.elements = append(al.elements, v)
+	al.size++
+}
+
+func (al *ArrayList) insert(i int, v interface{}) bool {
+	return al.set(i, v)
 }
 
 func (al *ArrayList) remove(index int) (interface{}, bool) {
@@ -50,6 +51,28 @@ func (al *ArrayList) remove(index int) (interface{}, bool) {
 	}
 
 	return nil, false
+}
+
+func (al *ArrayList) at(i int) (interface{}, bool) {
+	if al.withInRange(i) {
+		return al.get(i), true
+	}
+	return nil, false
+}
+
+func (al *ArrayList) clear() {
+	al.elements = make([]interface{}, 0)
+	al.size = 0
+}
+
+func (al *ArrayList) pushBackList(l list.List) {
+	al.elements = append(al.elements, l.Values()...)
+	al.size += l.Len()
+}
+
+func (al *ArrayList) pushFrontList(l list.List) {
+	al.elements = append(l.Values(), al.elements...)
+	al.size += l.Len()
 }
 
 func (al *ArrayList) contains(value interface{}) bool {
@@ -74,13 +97,34 @@ func (al *ArrayList) values() []interface{} {
 	return al.elements
 }
 
-func (al *ArrayList) length() int {
-	return al.size
+func (al *ArrayList) clone() *ArrayList {
+	nal := New()
+	nal.pushFrontList(al)
+
+	return nal
 }
 
-func (al *ArrayList) clear() {
-	al.elements = make([]interface{}, 0)
-	al.size = 0
+func (al *ArrayList) swap(a, b int) bool {
+	if al.withInRange(a) && al.withInRange(b) {
+		al.elements[a], al.elements[b] = al.elements[b], al.elements[a]
+		return true
+	}
+	return false
+}
+
+func (al *ArrayList) set(i int, v interface{}) bool {
+	if al.withInRange(i) {
+		al.elements[i] = v
+		return true
+	}
+	return false
+}
+
+func (al *ArrayList) get(i int) interface{} {
+	if al.withInRange(i) {
+		return al.elements[i]
+	}
+	return nil
 }
 
 func (al *ArrayList) withInRange(index int) bool {
@@ -89,63 +133,4 @@ func (al *ArrayList) withInRange(index int) bool {
 
 func (al *ArrayList) string() string {
 	return fmt.Sprintf("%v", al.elements)
-}
-
-func (al *ArrayList) filter(fn utils.FilterFunc) *ArrayList {
-	nal := New()
-	for _, value := range al.values() {
-		if fn(value) {
-			nal.Append(value)
-		}
-	}
-
-	return nal
-}
-
-func (al *ArrayList) mp(fn utils.MapFunc) *ArrayList {
-	nal := New()
-	for _, value := range al.values() {
-		nal.append(fn(value))
-	}
-
-	return nal
-}
-
-func (al *ArrayList) concat(lists ...list.List) *ArrayList {
-	nal := al.clone()
-	for _, ls := range lists {
-		nal.append(ls.Values()...)
-	}
-
-	return nal
-}
-
-func (al *ArrayList) clone() *ArrayList {
-	nal := New()
-	nal.append(al.values()...)
-
-	return nal
-}
-
-func (al *ArrayList) reverse() *ArrayList {
-	nal := New()
-	for _, value := range al.values() {
-		nal.prepend(value)
-	}
-
-	return nal
-}
-
-func (al *ArrayList) swap(a, b int) bool {
-	valA, validA := al.get(a)
-	valB, validB := al.get(b)
-
-	if !validA || !validB {
-		return false
-	}
-
-	al.set(a, valB)
-	al.set(b, valA)
-
-	return true
 }

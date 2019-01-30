@@ -3,8 +3,6 @@ package arraylist
 import (
 	"sync"
 
-	"github.com/praveen001/ds/utils"
-
 	"github.com/praveen001/ds/list"
 )
 
@@ -16,7 +14,8 @@ import (
 type ArrayList struct {
 	elements []interface{}
 	size     int
-	sync.RWMutex
+	mtx      sync.RWMutex
+	sync     bool
 }
 
 // New creates a new empty list and return it's reference.
@@ -24,175 +23,165 @@ func New() *ArrayList {
 	return &ArrayList{}
 }
 
-// Append a set of new values at the end of the list
-func (al *ArrayList) Append(values ...interface{}) {
-	al.Lock()
-	defer al.Unlock()
+// Len returns the number of elements in list
+func (al *ArrayList) Len() int {
+	al.rlock()
+	defer al.runlock()
 
-	al.append(values...)
+	return al.len()
 }
 
-// Prepend a set of new values at the beginning of the list
-func (al *ArrayList) Prepend(values ...interface{}) {
-	al.Lock()
-	defer al.Unlock()
+// Front returns the first element of list or nil if the list is empty
+func (al *ArrayList) Front() interface{} {
+	al.rlock()
+	defer al.runlock()
 
-	al.prepend(values...)
+	return al.front()
 }
 
-// Get the value at an index.
-//
-// Returns the value present at the index, if index is out of bound it will return nil.
-//
-// Second argument will be false if index is out of bound, otherwise it will be true.
-func (al *ArrayList) Get(index int) (interface{}, bool) {
-	al.RLock()
-	defer al.RUnlock()
+// Back returns the last element of the list or nil if the list is empty
+func (al *ArrayList) Back() interface{} {
+	al.rlock()
+	defer al.runlock()
 
-	return al.get(index)
+	return al.back()
 }
 
-// Set a value at an index
-//
-// Returns false if index is out of bound, otherwise it will be true.
-func (al *ArrayList) Set(index int, value interface{}) bool {
-	al.Lock()
-	defer al.Unlock()
+// PushFront inserts a new element with value v at the front of the list
+func (al *ArrayList) PushFront(v interface{}) {
+	al.lock()
+	defer al.unlock()
 
-	return al.set(index, value)
+	al.pushFront(v)
 }
 
-// Remove the value at an index
-//
-// Returns the removed value present, if index is out of bound it will return nil.
-//
-// Second argument will be false if index is out of bound, otherwise it will be true.
-func (al *ArrayList) Remove(index int) (interface{}, bool) {
-	al.Lock()
-	defer al.Unlock()
+// PushBack inserts a new element with value v at the front of the list
+func (al *ArrayList) PushBack(v interface{}) {
+	al.lock()
+	defer al.unlock()
 
-	return al.remove(index)
+	al.pushBack(v)
 }
 
-// Contains returns true if the given value exists in the list, otherwise false
-func (al *ArrayList) Contains(value interface{}) bool {
-	al.RLock()
-	defer al.RUnlock()
+// Insert inserts a new element with value v at the given index i.
+// if index i is out of bound, it returns false, otherwise true
+func (al *ArrayList) Insert(i int, v interface{}) (ok bool) {
+	al.lock()
+	defer al.unlock()
 
-	return al.contains(value)
+	return al.insert(i, v)
 }
 
-// IndexOf returns the index of the given value if it exists, otherwise it returns -1
-func (al *ArrayList) IndexOf(value interface{}) int {
-	al.RLock()
-	defer al.RUnlock()
+// Remove the element at given index i. Returns true if element was removed otherwise false.
+func (al *ArrayList) Remove(i int) (v interface{}, ok bool) {
+	al.lock()
+	defer al.unlock()
 
-	return al.indexOf(value)
+	return al.remove(i)
 }
 
-// Values returns all the values in the list as a slice
-func (al *ArrayList) Values() []interface{} {
-	al.RLock()
-	defer al.RUnlock()
+// At ..
+func (al *ArrayList) At(i int) (v interface{}, ok bool) {
+	al.rlock()
+	defer al.unlock()
 
-	return al.values()
-}
-
-// Length returns the total number of elements in the list
-func (al *ArrayList) Length() int {
-	al.RLock()
-	defer al.RUnlock()
-
-	return al.length()
+	return al.at(i)
 }
 
 // Clear the list
 func (al *ArrayList) Clear() {
-	al.Lock()
-	defer al.Unlock()
+	al.lock()
+	defer al.unlock()
 
 	al.clear()
 }
 
-// WithInRange returns true if the given index is valid, otherwise false
-func (al *ArrayList) WithInRange(index int) bool {
-	al.RLock()
-	defer al.RUnlock()
+// PushBackList inserts a copy of an other list at the back of list l.
+// The lists l and other may be the same. They must not be nil.
+func (al *ArrayList) PushBackList(l list.List) {
+	al.lock()
+	defer al.unlock()
 
-	return al.withInRange(index)
+	al.pushBackList(l)
 }
 
-// String returns the string representation of the list
-func (al *ArrayList) String() string {
-	al.RLock()
-	defer al.RUnlock()
+// PushFrontList inserts a copy of an other list at the front of list l.
+// The lists l and other may be the same. They must not be nil.
+func (al *ArrayList) PushFrontList(l list.List) {
+	al.lock()
+	defer al.unlock()
 
-	return al.string()
+	al.pushFrontList(l)
 }
 
-// Filter creates a new list with every value that passes uitls.FilterFunc
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (al *ArrayList) Filter(fn utils.FilterFunc) list.List {
-	al.RLock()
-	defer al.RUnlock()
+// Contains returns true if the given value exists in the list, otherwise false
+func (al *ArrayList) Contains(v interface{}) bool {
+	al.rlock()
+	defer al.runlock()
 
-	return al.filter(fn)
+	return al.contains(v)
 }
 
-// Concat joins two or more lists together
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (al *ArrayList) Concat(lists ...list.List) list.List {
-	al.Lock()
-	defer al.Unlock()
+// IndexOf returns the index of the given value v if it exists, otherwise it returns -1
+func (al *ArrayList) IndexOf(v interface{}) int {
+	al.rlock()
+	defer al.runlock()
 
-	return al.concat(lists...)
+	return al.indexOf(v)
 }
 
-// Reverse the order of items in the list
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (al *ArrayList) Reverse() list.List {
-	al.RLock()
-	defer al.RUnlock()
+// Values returns all the values in the list as a slice
+func (al *ArrayList) Values() []interface{} {
+	al.rlock()
+	defer al.runlock()
 
-	return al.reverse()
-}
-
-// Sort arrange the values in ascending or descending order
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (al *ArrayList) Sort(utils.CompareFunc) {
-
-}
-
-// Map creates a new list with values returned by the MapFunc
-//
-// Each value in the list is passed to the MapFunc, and values returned by MapFunc are used to construct a new list.
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (al *ArrayList) Map(fn utils.MapFunc) list.List {
-	al.RLock()
-	defer al.RUnlock()
-
-	return al.mp(fn)
+	return al.values()
 }
 
 // Clone creates a shallow copy and returns the reference
 func (al *ArrayList) Clone() list.List {
-	al.RLock()
-	defer al.RUnlock()
+	al.rlock()
+	defer al.runlock()
 
 	return al.clone()
 }
 
 // Swap two values at two given indexes
-//
-// Returns false if swap doesn't succeed, otherwise true
 func (al *ArrayList) Swap(a, b int) bool {
-	al.Lock()
-	defer al.Unlock()
+	al.rlock()
+	defer al.runlock()
 
 	return al.swap(a, b)
+}
+
+// String returns the string representation of the list
+func (al *ArrayList) String() string {
+	al.rlock()
+	defer al.runlock()
+
+	return al.string()
+}
+
+func (al *ArrayList) lock() {
+	if al.sync {
+		al.mtx.Lock()
+	}
+}
+
+func (al *ArrayList) unlock() {
+	if al.sync {
+		al.mtx.Unlock()
+	}
+}
+
+func (al *ArrayList) rlock() {
+	if al.sync {
+		al.mtx.RLock()
+	}
+}
+
+func (al *ArrayList) runlock() {
+	if al.sync {
+		al.mtx.RUnlock()
+	}
 }

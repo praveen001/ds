@@ -2,45 +2,45 @@ package binaryheap
 
 func (bh *BinaryHeap) push(values ...interface{}) bool {
 	for _, value := range values {
-		bh.list.Append(value)
-		bh.percolateUp(bh.list.Length() - 1)
+		bh.list.PushBack(value)
+		bh.percolateUp(bh.list.Len() - 1)
 	}
 
 	return true
 }
 
 func (bh *BinaryHeap) pop() (interface{}, bool) {
-	if bh.list.Length() == 0 {
+	if bh.list.Len() == 0 {
 		return nil, false
 	}
 
-	first, _ := bh.list.Get(0)
-	last, _ := bh.list.Remove(bh.list.Length() - 1)
+	first, _ := bh.list.At(0)
+	last, _ := bh.list.Remove(bh.list.Len() - 1)
 
-	bh.list.Set(0, last)
+	bh.list.Insert(0, last)
 	bh.percolateDown(0)
 
 	return first, true
 }
 
 func (bh *BinaryHeap) peek() (interface{}, bool) {
-	return bh.list.Get(0)
+	return bh.list.At(0)
 }
 
 func (bh *BinaryHeap) clear() {
 	bh.list.Clear()
 }
 
-func (bh *BinaryHeap) length() int {
-	return bh.list.Length()
+func (bh *BinaryHeap) len() int {
+	return bh.list.Len()
 }
 
 func (bh *BinaryHeap) percolateUp(idx int) {
-	x, _ := bh.list.Get(idx)
+	x, _ := bh.list.At(idx)
 
 	for idx > -1 {
 		pidx := (idx - 1) / 2
-		p, _ := bh.list.Get(pidx)
+		p, _ := bh.list.At(pidx)
 
 		if bh.compare(p, x) == bh.variant {
 			bh.list.Swap(idx, pidx)
@@ -53,17 +53,17 @@ func (bh *BinaryHeap) percolateUp(idx int) {
 }
 
 func (bh *BinaryHeap) percolateDown(idx int) {
-	x, _ := bh.list.Get(idx)
+	x, _ := bh.list.At(idx)
 
-	for idx < bh.list.Length() {
+	for idx < bh.list.Len() {
 		c := idx*2 + 1
-		if lchv, ok := bh.list.Get(c); ok {
+		if lchv, ok := bh.list.At(c); ok {
 
-			if rchv, ok := bh.list.Get(c + 1); ok && bh.compare(lchv, rchv) == bh.variant {
+			if rchv, ok := bh.list.At(c + 1); ok && bh.compare(lchv, rchv) == bh.variant {
 				c = c + 1
 			}
 
-			if mchv, _ := bh.list.Get(c); bh.compare(x, mchv) == bh.variant {
+			if mchv, _ := bh.list.At(c); bh.compare(x, mchv) == bh.variant {
 				bh.list.Swap(idx, c)
 			} else {
 				break

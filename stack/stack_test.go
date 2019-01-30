@@ -30,7 +30,7 @@ func TestPush(t *testing.T) {
 	s.Push(10)
 	s.Push(20)
 
-	if l := s.Length(); l != 2 {
+	if l := s.Len(); l != 2 {
 		t.Errorf("Expected %v Got %v", 2, l)
 	}
 }
@@ -55,7 +55,7 @@ func TestPop(t *testing.T) {
 		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
 	}
 
-	if l := s.Length(); l != 0 {
+	if l := s.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 }
@@ -76,21 +76,21 @@ func TestPeek(t *testing.T) {
 		t.Errorf("Expected %v, %v Got %v, %v", 20, true, val, ok)
 	}
 
-	if l := s.Length(); l != 2 {
+	if l := s.Len(); l != 2 {
 		t.Errorf("Expected %v Got %v", 2, l)
 	}
 }
 
-func TestLength(t *testing.T) {
+func TestLen(t *testing.T) {
 	s := New()
 
-	if l := s.Length(); l != 0 {
+	if l := s.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 
 	s.Push(10)
 
-	if l := s.Length(); l != 1 {
+	if l := s.Len(); l != 1 {
 		t.Errorf("Expected %v Got %v", 1, l)
 	}
 }
@@ -100,13 +100,13 @@ func TestClear(t *testing.T) {
 
 	s.Push(10)
 
-	if l := s.Length(); l != 1 {
+	if l := s.Len(); l != 1 {
 		t.Errorf("Expected %v Got %v", 1, l)
 	}
 
 	s.Clear()
 
-	if l := s.Length(); l != 0 {
+	if l := s.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 }

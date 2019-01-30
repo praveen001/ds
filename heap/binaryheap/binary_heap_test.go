@@ -45,7 +45,7 @@ func TestPush(t *testing.T) {
 	dh.Push()
 	dh.Push(30, 10, 20, 5, 2, 1)
 
-	if l := dh.Length(); l != 6 {
+	if l := dh.Len(); l != 6 {
 		t.Errorf("Expected %v Got %v", 6, l)
 	}
 
@@ -102,7 +102,7 @@ func TestPeek(t *testing.T) {
 		t.Errorf("Expected %v, %v Got %v, %v", 10, true, val, ok)
 	}
 
-	if l := bh.Length(); l != 3 {
+	if l := bh.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 
@@ -116,23 +116,23 @@ func TestClear(t *testing.T) {
 
 	bh.Push(10, 20, 30)
 
-	if l := bh.Length(); l != 3 {
+	if l := bh.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 
 	bh.Clear()
 
-	if l := bh.Length(); l != 0 {
+	if l := bh.Len(); l != 0 {
 		t.Errorf("Expected %v Got %v", 0, l)
 	}
 }
 
-func TestLength(t *testing.T) {
+func TestLen(t *testing.T) {
 	bh := New(comp)
 
 	bh.Push(10, 20, 30)
 
-	if l := bh.Length(); l != 3 {
+	if l := bh.Len(); l != 3 {
 		t.Errorf("Expected %v Got %v", 3, l)
 	}
 }

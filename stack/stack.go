@@ -31,23 +31,23 @@ func NewWithConfig(c *Config) *Stack {
 
 // Push the value to the top of stack
 func (s *Stack) Push(value interface{}) *Stack {
-	s.list.Append(value)
+	s.list.PushBack(value)
 	return s
 }
 
 // Pop removes the element from the top of the stack, and returns it
 func (s *Stack) Pop() (interface{}, bool) {
-	return s.list.Remove(s.list.Length() - 1)
+	return s.list.Remove(s.list.Len() - 1)
 }
 
 // Peek returns the top element without removing it
 func (s *Stack) Peek() (interface{}, bool) {
-	return s.list.Get(s.list.Length() - 1)
+	return s.list.At(s.list.Len() - 1)
 }
 
-// Length returns the total values in the stack
-func (s *Stack) Length() int {
-	return s.list.Length()
+// Len returns the total values in the stack
+func (s *Stack) Len() int {
+	return s.list.Len()
 }
 
 // Clear clears the stack

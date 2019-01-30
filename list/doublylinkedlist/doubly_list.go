@@ -4,7 +4,6 @@ import (
 	"sync"
 
 	"github.com/praveen001/ds/list"
-	"github.com/praveen001/ds/utils"
 )
 
 // DoublyLinkedList holds the set of elements in a slice
@@ -16,7 +15,8 @@ type DoublyLinkedList struct {
 	head *element
 	tail *element
 	size int
-	sync.RWMutex
+	mtx  sync.RWMutex
+	sync bool
 }
 
 type element struct {
@@ -30,175 +30,165 @@ func New() *DoublyLinkedList {
 	return &DoublyLinkedList{}
 }
 
-// Append a set of new values at the end of the list
-func (dl *DoublyLinkedList) Append(values ...interface{}) {
-	dl.Lock()
-	defer dl.Unlock()
+// Len returns the number of elements in list
+func (dl *DoublyLinkedList) Len() int {
+	dl.rlock()
+	defer dl.runlock()
 
-	dl.append(values...)
+	return dl.len()
 }
 
-// Prepend a set of new values at the beginning of the list
-func (dl *DoublyLinkedList) Prepend(values ...interface{}) {
-	dl.Lock()
-	defer dl.Unlock()
+// Front returns the first element of list or nil if the list is empty
+func (dl *DoublyLinkedList) Front() interface{} {
+	dl.rlock()
+	defer dl.runlock()
 
-	dl.prepend(values...)
+	return dl.front()
 }
 
-// Get the value at an index.
-//
-// Returns the value present at the index, if index is out of bound it will return nil.
-//
-// Second argument will be false if index is out of bound, otherwise it will be true.
-func (dl *DoublyLinkedList) Get(index int) (interface{}, bool) {
-	dl.RLock()
-	defer dl.RUnlock()
+// Back returns the last element of the list or nil if the list is empty
+func (dl *DoublyLinkedList) Back() interface{} {
+	dl.rlock()
+	defer dl.runlock()
 
-	return dl.get(index)
+	return dl.back()
 }
 
-// Set a value at an index
-//
-// Returns false if index is out of bound, otherwise it will be true.
-func (dl *DoublyLinkedList) Set(index int, value interface{}) bool {
-	dl.Lock()
-	defer dl.Unlock()
+// PushFront inserts a new element with value v at the front of the list
+func (dl *DoublyLinkedList) PushFront(v interface{}) {
+	dl.lock()
+	defer dl.unlock()
 
-	return dl.set(index, value)
+	dl.pushFront(v)
 }
 
-// Remove the value at an index
-//
-// Returns the removed value present, if index is out of bound it will return nil.
-//
-// Second argument will be false if index is out of bound, otherwise it will be true.
-func (dl *DoublyLinkedList) Remove(index int) (interface{}, bool) {
-	dl.Lock()
-	defer dl.Unlock()
+// PushBack inserts a new element with value v at the front of the list
+func (dl *DoublyLinkedList) PushBack(v interface{}) {
+	dl.lock()
+	defer dl.unlock()
 
-	return dl.remove(index)
+	dl.pushBack(v)
 }
 
-// Contains returns true if the given value exists in the list, otherwise false
-func (dl *DoublyLinkedList) Contains(value interface{}) bool {
-	dl.RLock()
-	defer dl.RUnlock()
+// Insert inserts a new element with value v at the given index i.
+// if index i is out of bound, it returns false, otherwise true
+func (dl *DoublyLinkedList) Insert(i int, v interface{}) (ok bool) {
+	dl.lock()
+	defer dl.unlock()
 
-	return dl.contains(value)
+	return dl.insert(i, v)
 }
 
-// IndexOf returns the index of the given value if it exists, otherwise it returns -1
-func (dl *DoublyLinkedList) IndexOf(value interface{}) int {
-	dl.RLock()
-	defer dl.RUnlock()
+// Remove the element at given index i. Returns true if element was removed otherwise false.
+func (dl *DoublyLinkedList) Remove(i int) (v interface{}, ok bool) {
+	dl.lock()
+	defer dl.unlock()
 
-	return dl.indexOf(value)
+	return dl.remove(i)
 }
 
-// Values returns all the values in the list as a slice
-func (dl *DoublyLinkedList) Values() []interface{} {
-	dl.RLock()
-	defer dl.RUnlock()
+// At ..
+func (dl *DoublyLinkedList) At(i int) (v interface{}, ok bool) {
+	dl.rlock()
+	defer dl.unlock()
 
-	return dl.values()
-}
-
-// Length returns the total number of elements in the list
-func (dl *DoublyLinkedList) Length() int {
-	dl.RLock()
-	defer dl.RUnlock()
-
-	return dl.length()
+	return dl.at(i)
 }
 
 // Clear the list
 func (dl *DoublyLinkedList) Clear() {
-	dl.Lock()
-	defer dl.Unlock()
+	dl.lock()
+	defer dl.unlock()
 
 	dl.clear()
 }
 
-// WithInRange returns true if the given index is valid, otherwise false
-func (dl *DoublyLinkedList) WithInRange(index int) bool {
-	dl.RLock()
-	defer dl.RUnlock()
+// PushBackList inserts a copy of an other list at the back of list l.
+// The lists l and other may be the same. They must not be nil.
+func (dl *DoublyLinkedList) PushBackList(l list.List) {
+	dl.lock()
+	defer dl.unlock()
 
-	return dl.withInRange(index)
+	dl.pushBackList(l)
 }
 
-// String returns the string representation of the list
-func (dl *DoublyLinkedList) String() string {
-	dl.RLock()
-	defer dl.RUnlock()
+// PushFrontList inserts a copy of an other list at the front of list l.
+// The lists l and other may be the same. They must not be nil.
+func (dl *DoublyLinkedList) PushFrontList(l list.List) {
+	dl.lock()
+	defer dl.unlock()
 
-	return dl.string()
+	dl.pushFrontList(l)
 }
 
-// Filter creates a new list with every value that passes uitls.FilterFunc
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (dl *DoublyLinkedList) Filter(fn utils.FilterFunc) list.List {
-	dl.RLock()
-	defer dl.RUnlock()
+// Contains returns true if the given value exists in the list, otherwise false
+func (dl *DoublyLinkedList) Contains(v interface{}) bool {
+	dl.rlock()
+	defer dl.runlock()
 
-	return dl.filter(fn)
+	return dl.contains(v)
 }
 
-// Concat joins two or more lists together
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (dl *DoublyLinkedList) Concat(lists ...list.List) list.List {
-	dl.RLock()
-	defer dl.RUnlock()
+// IndexOf returns the index of the given value v if it exists, otherwise it returns -1
+func (dl *DoublyLinkedList) IndexOf(v interface{}) int {
+	dl.rlock()
+	defer dl.runlock()
 
-	return dl.concat(lists...)
+	return dl.indexOf(v)
 }
 
-// Reverse the order of items in the list
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (dl *DoublyLinkedList) Reverse() list.List {
-	dl.RLock()
-	defer dl.RUnlock()
+// Values returns all the values in the list as a slice
+func (dl *DoublyLinkedList) Values() []interface{} {
+	dl.rlock()
+	defer dl.runlock()
 
-	return dl.reverse()
-}
-
-// Sort arrange the values in ascending or descending order
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (dl *DoublyLinkedList) Sort(utils.CompareFunc) {
-
-}
-
-// Map creates a new list with values returned by the MapFunc
-//
-// Each value in the list is passed to the MapFunc, and values returned by MapFunc are used to construct a new list.
-//
-// It doesn't mutate the list, instead it creates a new list and returns it's reference.
-func (dl *DoublyLinkedList) Map(fn utils.MapFunc) list.List {
-	dl.RLock()
-	defer dl.RUnlock()
-
-	return dl.mp(fn)
+	return dl.values()
 }
 
 // Clone creates a shallow copy and returns the reference
 func (dl *DoublyLinkedList) Clone() list.List {
-	dl.RLock()
-	defer dl.RUnlock()
+	dl.rlock()
+	defer dl.runlock()
 
 	return dl.clone()
 }
 
 // Swap two values at two given indexes
-//
-// Returns false if swap doesn't succeed, otherwise true
 func (dl *DoublyLinkedList) Swap(a, b int) bool {
-	dl.Lock()
-	defer dl.Unlock()
+	dl.rlock()
+	defer dl.runlock()
 
 	return dl.swap(a, b)
+}
+
+// String returns the string representation of the list
+func (dl *DoublyLinkedList) String() string {
+	dl.rlock()
+	defer dl.runlock()
+
+	return dl.string()
+}
+
+func (dl *DoublyLinkedList) lock() {
+	if dl.sync {
+		dl.mtx.Lock()
+	}
+}
+
+func (dl *DoublyLinkedList) unlock() {
+	if dl.sync {
+		dl.mtx.Unlock()
+	}
+}
+
+func (dl *DoublyLinkedList) rlock() {
+	if dl.sync {
+		dl.mtx.RLock()
+	}
+}
+
+func (dl *DoublyLinkedList) runlock() {
+	if dl.sync {
+		dl.mtx.RUnlock()
+	}
 }

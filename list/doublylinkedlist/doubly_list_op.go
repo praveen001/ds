@@ -4,62 +4,55 @@ import (
 	"fmt"
 
 	"github.com/praveen001/ds/list"
-	"github.com/praveen001/ds/utils"
 )
 
-func (dl *DoublyLinkedList) append(values ...interface{}) {
-	for _, value := range values {
-		newElem := &element{value: value}
-
-		if dl.length() == 0 {
-			dl.head = newElem
-		} else {
-			dl.tail.next = newElem
-			newElem.prev = dl.tail
-		}
-
-		dl.tail = newElem
-		dl.size++
-	}
+func (dl *DoublyLinkedList) len() int {
+	return dl.size
 }
 
-func (dl *DoublyLinkedList) prepend(values ...interface{}) {
-	n := dl.head
-	for i := 0; i < len(values); i++ {
-		h := &element{value: values[len(values)-1-i]}
-		h.next = n
-		if n != nil {
-			n.prev = h
-		}
-		dl.head = h
-		n = h
-	}
-	dl.size += len(values)
+func (dl *DoublyLinkedList) front() interface{} {
+	return dl.get(0)
 }
 
-func (dl *DoublyLinkedList) get(index int) (interface{}, bool) {
-	if dl.withInRange(index) {
-		elem := dl.getElemByIdx(index)
-		return elem.value, true
-	}
-
-	return nil, false
+func (dl *DoublyLinkedList) back() interface{} {
+	return dl.get(dl.len() - 1)
 }
 
-func (dl *DoublyLinkedList) set(index int, value interface{}) bool {
-	if dl.withInRange(index) {
-		elem := dl.getElemByIdx(index)
-		elem.value = value
-		return true
-	}
+func (dl *DoublyLinkedList) pushFront(v interface{}) {
+	elem := &element{v, dl.head, nil}
 
-	return false
+	if dl.len() == 0 {
+		dl.tail = elem
+	} else {
+		dl.head.prev = elem
+	}
+	dl.head = elem
+
+	dl.size++
 }
 
-func (dl *DoublyLinkedList) remove(index int) (interface{}, bool) {
-	if dl.withInRange(index) {
+func (dl *DoublyLinkedList) pushBack(v interface{}) {
+	elem := &element{v, nil, dl.tail}
+
+	if dl.len() == 0 {
+		dl.head = elem
+	} else {
+		dl.tail.next = elem
+	}
+	dl.tail = elem
+
+	dl.size++
+}
+
+func (dl *DoublyLinkedList) insert(i int, v interface{}) bool {
+	return dl.set(i, v)
+}
+
+func (dl *DoublyLinkedList) remove(i int) (interface{}, bool) {
+	if dl.withInRange(i) {
 		var value interface{}
-		if index == 0 {
+
+		if i == 0 {
 			elem := dl.head
 			value = elem.value
 
@@ -68,7 +61,7 @@ func (dl *DoublyLinkedList) remove(index int) (interface{}, bool) {
 			}
 			dl.head = elem.next
 		} else {
-			elem := dl.getElemByIdx(index)
+			elem := dl.getElemByIdx(i)
 			value = elem.value
 
 			if elem.next != nil {
@@ -76,13 +69,37 @@ func (dl *DoublyLinkedList) remove(index int) (interface{}, bool) {
 			}
 			elem.prev.next = elem.next
 		}
-
 		dl.size--
 
 		return value, true
 	}
 
 	return nil, false
+}
+
+func (dl *DoublyLinkedList) at(i int) (interface{}, bool) {
+	if dl.withInRange(i) {
+		return dl.get(i), true
+	}
+	return nil, false
+}
+
+func (dl *DoublyLinkedList) clear() {
+	dl.head = nil
+	dl.tail = nil
+	dl.size = 0
+}
+
+func (dl *DoublyLinkedList) pushBackList(l list.List) {
+	for _, v := range l.Values() {
+		dl.pushBack(v)
+	}
+}
+
+func (dl *DoublyLinkedList) pushFrontList(l list.List) {
+	for _, v := range l.Values() {
+		dl.pushFront(v)
+	}
 }
 
 func (dl *DoublyLinkedList) contains(value interface{}) bool {
@@ -108,7 +125,7 @@ func (dl *DoublyLinkedList) indexOf(value interface{}) int {
 }
 
 func (dl *DoublyLinkedList) values() []interface{} {
-	arr := make([]interface{}, dl.length())
+	arr := make([]interface{}, dl.len())
 	index := 0
 
 	for elem := dl.head; elem != nil; elem = elem.next {
@@ -119,14 +136,51 @@ func (dl *DoublyLinkedList) values() []interface{} {
 	return arr
 }
 
-func (dl *DoublyLinkedList) length() int {
-	return dl.size
+func (dl *DoublyLinkedList) clone() *DoublyLinkedList {
+	nal := New()
+	nal.pushFrontList(dl)
+
+	return nal
 }
 
-func (dl *DoublyLinkedList) clear() {
-	dl.head = nil
-	dl.tail = nil
-	dl.size = 0
+func (dl *DoublyLinkedList) swap(a, b int) bool {
+	if dl.withInRange(a) && dl.withInRange(b) {
+		an := dl.getElemByIdx(a)
+		bn := dl.getElemByIdx(b)
+
+		an.value, bn.value = bn.value, an.value
+		return true
+	}
+	return false
+}
+
+func (dl *DoublyLinkedList) set(index int, value interface{}) bool {
+	if dl.withInRange(index) {
+		elem := dl.getElemByIdx(index)
+		elem.value = value
+		return true
+	}
+
+	return false
+}
+
+func (dl *DoublyLinkedList) get(index int) interface{} {
+	if dl.withInRange(index) {
+		elem := dl.getElemByIdx(index)
+		return elem.value
+	}
+
+	return nil
+}
+
+// getElemByIdx returns the element at the given index
+func (dl *DoublyLinkedList) getElemByIdx(index int) *element {
+	elem := dl.head
+	for i := 0; i < index; i++ {
+		elem = elem.next
+	}
+
+	return elem
 }
 
 func (dl *DoublyLinkedList) withInRange(index int) bool {
@@ -143,73 +197,4 @@ func (dl *DoublyLinkedList) string() string {
 	}
 	str += "]"
 	return str
-}
-
-// getElemByIdx returns the element at the given index
-func (dl *DoublyLinkedList) getElemByIdx(index int) *element {
-	elem := dl.head
-	for i := 0; i < index; i++ {
-		elem = elem.next
-	}
-
-	return elem
-}
-
-func (dl *DoublyLinkedList) filter(fn utils.FilterFunc) *DoublyLinkedList {
-	nal := New()
-	for elem := dl.head; elem != nil; elem = elem.next {
-		if fn(elem.value) {
-			nal.append(elem.value)
-		}
-	}
-
-	return nal
-}
-
-func (dl *DoublyLinkedList) mp(fn utils.MapFunc) *DoublyLinkedList {
-	nal := New()
-	for elem := dl.head; elem != nil; elem = elem.next {
-		nal.append(fn(elem.value))
-	}
-
-	return nal
-}
-
-func (dl *DoublyLinkedList) concat(lists ...list.List) *DoublyLinkedList {
-	nal := dl.clone()
-	for _, ls := range lists {
-		nal.append(ls.Values()...)
-	}
-
-	return nal
-}
-
-func (dl *DoublyLinkedList) clone() *DoublyLinkedList {
-	nal := New()
-	nal.append(dl.values()...)
-
-	return nal
-}
-
-func (dl *DoublyLinkedList) reverse() *DoublyLinkedList {
-	nal := New()
-	for elem := dl.tail; elem != nil; elem = elem.prev {
-		nal.append(elem.value)
-	}
-
-	return nal
-}
-
-func (dl *DoublyLinkedList) swap(a, b int) bool {
-	valA, validA := dl.get(a)
-	valB, validB := dl.get(b)
-
-	if !validA || !validB {
-		return false
-	}
-
-	dl.set(a, valB)
-	dl.set(b, valA)
-
-	return true
 }

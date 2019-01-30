@@ -22,7 +22,7 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 		x.left.inOrder(ll)
 	}
 
-	ll.Append(fmt.Sprintf("%v(%v, %v)", x.value, x.color, x.height))
+	ll.PushBack(fmt.Sprintf("%v(%v, %v)", x.value, x.color, x.height))
 
 	if x.right != nil {
 		x.right.inOrder(ll)
@@ -30,7 +30,7 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 }
 
 func (x *Node) preOrder(ll *linkedlist.LinkedList) {
-	ll.Append([]interface{}{x.value, x.height})
+	ll.PushBack([]interface{}{x.value, x.height})
 
 	if x.left != nil {
 		x.left.preOrder(ll)
@@ -50,7 +50,7 @@ func (x *Node) postOrder(ll *linkedlist.LinkedList) {
 		x.right.postOrder(ll)
 	}
 
-	ll.Append([]interface{}{x.value, x.height})
+	ll.PushBack([]interface{}{x.value, x.height})
 }
 
 func (x *Node) recomputeHeight() {
