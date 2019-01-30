@@ -18,13 +18,13 @@ func (x *Node) Value() interface{} {
 }
 
 func (x *Node) inOrder(ll *linkedlist.LinkedList) {
-	if x.left != nil {
+	if hasLeft(x) {
 		x.left.inOrder(ll)
 	}
 
 	ll.PushBack(fmt.Sprintf("%v(%v, %v)", x.value, x.color, x.height))
 
-	if x.right != nil {
+	if hasRight(x) {
 		x.right.inOrder(ll)
 	}
 }
@@ -32,21 +32,21 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 func (x *Node) preOrder(ll *linkedlist.LinkedList) {
 	ll.PushBack([]interface{}{x.value, x.height})
 
-	if x.left != nil {
+	if hasLeft(x) {
 		x.left.preOrder(ll)
 	}
 
-	if x.right != nil {
+	if hasRight(x) {
 		x.right.preOrder(ll)
 	}
 }
 
 func (x *Node) postOrder(ll *linkedlist.LinkedList) {
-	if x.left != nil {
+	if hasLeft(x) {
 		x.left.postOrder(ll)
 	}
 
-	if x.right != nil {
+	if hasRight(x) {
 		x.right.postOrder(ll)
 	}
 
@@ -54,23 +54,15 @@ func (x *Node) postOrder(ll *linkedlist.LinkedList) {
 }
 
 func (x *Node) recomputeHeight() {
-	if x.left == nil && x.right == nil {
+	if isLeaf(x) {
 		x.height = 1
-	} else if x.left == nil {
+	} else if !hasLeft(x) {
 		x.height = x.right.height + 1
-	} else if x.right == nil {
+	} else if !hasRight(x) {
 		x.height = x.left.height + 1
 	} else {
 		x.height = utils.MaxInt(x.left.height, x.right.height) + 1
 	}
-}
-
-func toRed(x *Node) {
-	x.color = red
-}
-
-func toBlack(x *Node) {
-	x.color = black
 }
 
 func hasLeft(x *Node) bool {
@@ -85,6 +77,22 @@ func hasRight(x *Node) bool {
 		return false
 	}
 	return true
+}
+
+func child(x *Node) *Node {
+	if x == nil {
+		return nil
+	}
+	c := x.left
+	if c == nil {
+		c = x.right
+	}
+
+	return c
+}
+
+func isLeaf(x *Node) bool {
+	return !hasLeft(x) && !hasRight(x)
 }
 
 func isLeft(x *Node) bool {
@@ -107,6 +115,13 @@ func isRight(x *Node) bool {
 	return true
 }
 
+func isRoot(x *Node) bool {
+	if x.parent == nil {
+		return true
+	}
+	return false
+}
+
 func sibling(x *Node) *Node {
 	if x.parent == nil {
 		return nil
@@ -117,6 +132,14 @@ func sibling(x *Node) *Node {
 	}
 
 	return s
+}
+
+func toRed(x *Node) {
+	x.color = red
+}
+
+func toBlack(x *Node) {
+	x.color = black
 }
 
 func isRed(x *Node) bool {
@@ -131,23 +154,4 @@ func isBlack(x *Node) bool {
 		return true
 	}
 	return false
-}
-
-func isRoot(x *Node) bool {
-	if x.parent == nil {
-		return true
-	}
-	return false
-}
-
-func child(x *Node) *Node {
-	if x == nil {
-		return nil
-	}
-	c := x.left
-	if c == nil {
-		c = x.right
-	}
-
-	return c
 }

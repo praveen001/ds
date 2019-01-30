@@ -35,6 +35,7 @@ func (rbt *RedBlackTree) add(value interface{}) bool {
 		}
 	}
 	rbt.size++
+
 	rbt.rebalance(newElem)
 	return true
 }
@@ -62,12 +63,10 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 			}
 
 			min := node.right
-			for {
-				if min.left == nil {
-					break
-				}
+			for hasLeft(min) {
 				min = min.left
 			}
+
 			node.value = min.value
 			value = min.value
 			node = node.right
@@ -85,32 +84,18 @@ func (rbt *RedBlackTree) height() int {
 	return rbt.root.height
 }
 
-func (rbt *RedBlackTree) min() (*Node, bool) {
-	if rbt.length() == 0 {
-		return nil, false
+func (rbt *RedBlackTree) min() (node *Node, ok bool) {
+	for node = rbt.root; hasLeft(node); node = node.left {
+		ok = true
 	}
-
-	node := rbt.root
-	for {
-		if node.left == nil {
-			return node, true
-		}
-		node = node.left
-	}
+	return
 }
 
-func (rbt *RedBlackTree) max() (*Node, bool) {
-	if rbt.length() == 0 {
-		return nil, false
+func (rbt *RedBlackTree) max() (node *Node, ok bool) {
+	for node = rbt.root; hasRight(node); node = node.right {
+		ok = true
 	}
-
-	node := rbt.root
-	for {
-		if node.right == nil {
-			return node, true
-		}
-		node = node.right
-	}
+	return
 }
 
 func (rbt *RedBlackTree) contains(value interface{}) bool {
@@ -316,6 +301,7 @@ func (rbt *RedBlackTree) deleteCase3(n *Node) {
 
 		n = p
 		// continue
+		rbt.deleteCase1(n)
 	} else {
 		rbt.deleteCase4(n)
 	}
@@ -400,7 +386,7 @@ func (rbt *RedBlackTree) rightRotate(x *Node) {
 	x.recomputeHeight()
 	y.recomputeHeight()
 
-	if y.parent == nil {
+	if isRoot(y) {
 		rbt.root = y
 	} else if y.parent.left == x {
 		y.parent.left = y
@@ -427,7 +413,7 @@ func (rbt *RedBlackTree) leftRotate(x *Node) {
 	x.recomputeHeight()
 	y.recomputeHeight()
 
-	if y.parent == nil {
+	if isRoot(y) {
 		rbt.root = y
 	} else if y.parent.left == x {
 		y.parent.left = y
