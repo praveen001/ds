@@ -201,17 +201,13 @@ func (rbt *RedBlackTree) rebalance(x *Node) {
 	for {
 		parent, grandParent, uncle := rbt.getNeigbours(x)
 
-		if parent == nil || grandParent == nil {
+		// Case 2 - Parent is black, then we have inserted a red node, so no need to rebalance the tree
+		if parent.isBlack() || grandParent == nil {
 			return
 		}
 
-		// Case 2
-		if parent.isBlack() {
-			return
-		}
-
-		// Case 3
-		if uncle != nil && uncle.isRed() { // Has a RED uncle?
+		// Case 3 - Uncle is red
+		if uncle.isRed() {
 			parent.toBlack()
 			uncle.toBlack()
 
@@ -226,14 +222,14 @@ func (rbt *RedBlackTree) rebalance(x *Node) {
 		// p = x
 		// var nr *Node
 		// Left-Left Case - Need Right Rotation
-		if grandParent.left == parent && parent.left == x {
+		if parent.isLeft() && x.isLeft() {
 			rbt.rightRotate(grandParent)
 			grandParent.color, parent.color = parent.color, grandParent.color
 			return
 		}
 
 		// Left-Right Case - Need Left Rotation, then Right Rotation
-		if grandParent.left == parent && parent.right == x {
+		if parent.isLeft() && x.isRight() {
 			rbt.leftRotate(grandParent.left)
 			rbt.rightRotate(grandParent)
 			parent = x
@@ -242,14 +238,14 @@ func (rbt *RedBlackTree) rebalance(x *Node) {
 		}
 
 		// Right-Right Case - Need Left Rotation
-		if grandParent.right == parent && parent.right == x {
+		if parent.isRight() && x.isRight() {
 			rbt.leftRotate(grandParent)
 			grandParent.color, parent.color = parent.color, grandParent.color
 			return
 		}
 
 		// Right-Left Case - Need right rotation, then left rotation
-		if grandParent.right == parent && parent.left == x {
+		if parent.isRight() && x.isLeft() {
 			rbt.rightRotate(grandParent.right)
 			rbt.leftRotate(grandParent)
 			parent = x
