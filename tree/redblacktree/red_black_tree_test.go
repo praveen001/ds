@@ -10,78 +10,78 @@ func TestRedBlackTree(t *testing.T) {
 	rbt := New(utils.IntComparator)
 
 	// Simple insert
-	rbt.Add(11)
-	if str := rbt.InOrder().String(); str != "[11(black)]" {
-		t.Errorf("Expected %v Got %v", "[11(black)]", str)
+	rbt.Set(11, "Eleven")
+	if str := rbt.InOrder().String(); str != "[Eleven(black)]" {
+		t.Errorf("Expected %v Got %v", "[Eleven(black)]", str)
 	}
 
 	// Simple insert
-	rbt.Add(2)
-	if str := rbt.InOrder().String(); str != "[2(red) 11(black)]" {
-		t.Errorf("Expected %v Got %v", "[2(red) 11(black)]", str)
+	rbt.Set(2, "Two")
+	if str := rbt.InOrder().String(); str != "[Two(red) Eleven(black)]" {
+		t.Errorf("Expected %v Got %v", "[Two(red) Eleven(black)]", str)
 	}
 
 	// Simple insert
-	rbt.Add(14)
-	if str := rbt.InOrder().String(); str != "[2(red) 11(black) 14(red)]" {
-		t.Errorf("Expected %v Got %v", "[2(red) 11(black) 14(red)]", str)
+	rbt.Set(14, "Fourteen")
+	if str := rbt.InOrder().String(); str != "[Two(red) Eleven(black) Fourteen(red)]" {
+		t.Errorf("Expected %v Got %v", "[Two(red) Eleven(black) Fourteen(red)]", str)
 	}
 
-	rbt.Add(1) // INSERT CASE 3
-	if str := rbt.InOrder().String(); str != "[1(red) 2(black) 11(black) 14(black)]" {
-		t.Errorf("Expected %v Got %v", "[1(red) 2(black) 11(black) 14(black)]", str)
+	rbt.Set(1, "One") // INSERT CASE 3
+	if str := rbt.InOrder().String(); str != "[One(red) Two(black) Eleven(black) Fourteen(black)]" {
+		t.Errorf("Expected %v Got %v", "[One(red) Two(black) Eleven(black) Fourteen(black)]", str)
 	}
 
-	rbt.Add(7) // INSERT CASE 2 // Simple
-	if str := rbt.InOrder().String(); str != "[1(red) 2(black) 7(red) 11(black) 14(black)]" {
-		t.Errorf("Expected %v Got %v", "[1(red) 2(black) 7(red) 11(black) 14(black)]", str)
+	rbt.Set(7, "Seven") // INSERT CASE 2 // Simple
+	if str := rbt.InOrder().String(); str != "[One(red) Two(black) Seven(red) Eleven(black) Fourteen(black)]" {
+		t.Errorf("Expected %v Got %v", "[One(red) Two(black) Seven(red) Eleven(black) Fourteen(black)]", str)
 	}
 
-	rbt.Add(15) // INSERT CASE 2
-	if str := rbt.InOrder().String(); str != "[1(red) 2(black) 7(red) 11(black) 14(black) 15(red)]" {
-		t.Errorf("Expected %v Got %v", "[1(red) 2(black) 7(red) 11(black) 14(black) 15(red)]", str)
+	rbt.Set(15, "Fifteen") // INSERT CASE 2
+	if str := rbt.InOrder().String(); str != "[One(red) Two(black) Seven(red) Eleven(black) Fourteen(black) Fifteen(red)]" {
+		t.Errorf("Expected %v Got %v", "[One(red) Two(black) Seven(red) Eleven(black) Fourteen(black) Fifteen(red)]", str)
 	}
 
-	rbt.Add(5) // INSERT CASE 3
-	if str := rbt.InOrder().String(); str != "[1(black) 2(red) 5(red) 7(black) 11(black) 14(black) 15(red)]" {
-		t.Errorf("Expected %v Got %v", "[1(black) 2(red) 5(red) 7(black) 11(black) 14(black) 15(red)]", str)
+	rbt.Set(5, "Five") // INSERT CASE 3
+	if str := rbt.InOrder().String(); str != "[One(black) Two(red) Five(red) Seven(black) Eleven(black) Fourteen(black) Fifteen(red)]" {
+		t.Errorf("Expected %v Got %v", "[One(black) Two(red) Five(red) Seven(black) Eleven(black) Fourteen(black) Fifteen(red)]", str)
 	}
 
-	rbt.Add(8) // INSERT CASE 2
-	rbt.Add(4) // INSERT CASE 3 ==> INSERT CASE 5
+	rbt.Set(8, "Eight") // INSERT CASE 2
+	rbt.Set(4, "Four")  // INSERT CASE 3 ==> INSERT CASE 5
 
-	if str := rbt.InOrder().String(); str != "[1(black) 2(red) 4(red) 5(black) 7(black) 8(black) 11(red) 14(black) 15(red)]" {
-		t.Errorf("Expected %v Got %v", "[1(black) 2(red) 4(red) 5(black) 7(black) 8(black) 11(red) 14(black) 15(red)]", str)
+	if str := rbt.InOrder().String(); str != "[One(black) Two(red) Four(red) Five(black) Seven(black) Eight(black) Eleven(red) Fourteen(black) Fifteen(red)]" {
+		t.Errorf("Expected %v Got %v", "[One(black) Two(red) Four(red) Five(black) Seven(black) Eight(black) Eleven(red) Fourteen(black) Fifteen(red)]", str)
 	}
 
 	// Simple red leaf delete
 	rbt.Remove(4)
-	if str := rbt.InOrder().String(); str != "[1(black) 2(red) 5(black) 7(black) 8(black) 11(red) 14(black) 15(red)]" {
-		t.Errorf("Expected %v Got %v", "[1(black) 2(red) 5(black) 7(black) 8(black) 11(red) 14(black) 15(red)]", str)
+	if str := rbt.InOrder().String(); str != "[One(black) Two(red) Five(black) Seven(black) Eight(black) Eleven(red) Fourteen(black) Fifteen(red)]" {
+		t.Errorf("Expected %v Got %v", "[One(black) Two(red) Five(black) Seven(black) Eight(black) Eleven(red) Fourteen(black) Fifteen(red)]", str)
 	}
 
 	// Case 4
 	rbt.Remove(5)
-	if str := rbt.InOrder().String(); str != "[1(red) 2(black) 7(black) 8(black) 11(red) 14(black) 15(red)]" {
-		t.Errorf("Expected %v Got %v", "[1(red) 2(black) 7(black) 8(black) 11(red) 14(black) 15(red)]", str)
+	if str := rbt.InOrder().String(); str != "[One(red) Two(black) Seven(black) Eight(black) Eleven(red) Fourteen(black) Fifteen(red)]" {
+		t.Errorf("Expected %v Got %v", "[One(red) Two(black) Seven(black) Eight(black) Eleven(red) Fourteen(black) Fifteen(red)]", str)
 	}
 
 	// Case 6
 	rbt.Remove(8)
-	if str := rbt.InOrder().String(); str != "[1(red) 2(black) 7(black) 11(black) 14(red) 15(black)]" {
-		t.Errorf("Expected %v Got %v", "[1(red) 2(black) 7(black) 11(black) 14(red) 15(black)]", str)
+	if str := rbt.InOrder().String(); str != "[One(red) Two(black) Seven(black) Eleven(black) Fourteen(red) Fifteen(black)]" {
+		t.Errorf("Expected %v Got %v", "[One(red) Two(black) Seven(black) Eleven(black) Fourteen(red) Fifteen(black)]", str)
 	}
 
 	// Simple red leaf delete
 	rbt.Remove(1)
-	if str := rbt.InOrder().String(); str != "[2(black) 7(black) 11(black) 14(red) 15(black)]" {
-		t.Errorf("Expected %v Got %v", "[2(black) 7(black) 11(black) 14(red) 15(black)]", str)
+	if str := rbt.InOrder().String(); str != "[Two(black) Seven(black) Eleven(black) Fourteen(red) Fifteen(black)]" {
+		t.Errorf("Expected %v Got %v", "[Two(black) Seven(black) Eleven(black) Fourteen(red) Fifteen(black)]", str)
 	}
 
 	// Case 2 => Case 4
 	rbt.Remove(2)
-	if str := rbt.InOrder().String(); str != "[7(black) 11(red) 14(black) 15(black)]" {
-		t.Errorf("Expected %v Got %v", "[7(black) 11(red) 14(black) 15(black)]", str)
+	if str := rbt.InOrder().String(); str != "[Seven(black) Eleven(red) Fourteen(black) Fifteen(black)]" {
+		t.Errorf("Expected %v Got %v", "[Seven(black) Eleven(red) Fourteen(black) Fifteen(black)]", str)
 	}
 
 	if ok := rbt.Contains(10); ok {
@@ -89,9 +89,9 @@ func TestRedBlackTree(t *testing.T) {
 	}
 
 	// Insert Right-Left Rotation Case
-	rbt.Add(10)
-	if str := rbt.InOrder().String(); str != "[7(red) 10(black) 11(red) 14(black) 15(black)]" {
-		t.Errorf("Expected %v Got %v", "[7(red) 10(black) 11(red) 14(black) 15(black)]", str)
+	rbt.Set(10, "Ten")
+	if str := rbt.InOrder().String(); str != "[Seven(red) Ten(black) Eleven(red) Fourteen(black) Fifteen(black)]" {
+		t.Errorf("Expected %v Got %v", "[Seven(red) Ten(black) Eleven(red) Fourteen(black) Fifteen(black)]", str)
 	}
 
 	if ok := rbt.Contains(10); !ok {

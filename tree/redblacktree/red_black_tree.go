@@ -40,32 +40,43 @@ func New(c utils.CompareFunc) *RedBlackTree {
 }
 
 // NewNode returns a new red-black tree node with given value
-func newNode(value interface{}, parent *Node, color string) *Node {
+func newNode(key, value interface{}, parent *Node, color string) *Node {
 	return &Node{
+		key:    key,
 		value:  value,
 		parent: parent,
 		color:  color,
 	}
 }
 
-// Add a value into the tree
+// Set a value into the tree
 //
 // Returns false is value already exists in tree, otherwise true
-func (rbt *RedBlackTree) Add(value interface{}) bool {
+func (rbt *RedBlackTree) Set(key, value interface{}) bool {
 	rbt.lock()
 	defer rbt.unlock()
 
-	return rbt.add(value)
+	return rbt.set(key, value)
 }
 
-// Remove a value from the tree
+// Get a value by key from tree
 //
-// Returns true if value was removed, otherwise false.
-func (rbt *RedBlackTree) Remove(value interface{}) bool {
+// Returns value if key exists, otherwise it returns nil, false
+func (rbt *RedBlackTree) Get(key interface{}) (interface{}, bool) {
 	rbt.lock()
 	defer rbt.unlock()
 
-	return rbt.remove(value)
+	return rbt.get(key)
+}
+
+// Remove a key from the tree
+//
+// Returns true if key was removed, otherwise false.
+func (rbt *RedBlackTree) Remove(key interface{}) bool {
+	rbt.lock()
+	defer rbt.unlock()
+
+	return rbt.remove(key)
 }
 
 // Min returns the minimum value present in the tree
@@ -88,12 +99,12 @@ func (rbt *RedBlackTree) Max() (ds.Node, bool) {
 	return rbt.max()
 }
 
-// Contains return true if value exists in tree, otherwise false
-func (rbt *RedBlackTree) Contains(value interface{}) bool {
+// Contains return true if key exists in tree, otherwise false
+func (rbt *RedBlackTree) Contains(key interface{}) bool {
 	rbt.rlock()
 	defer rbt.runlock()
 
-	return rbt.contains(value)
+	return rbt.contains(key)
 }
 
 // Len returns the total number of nodes in tree
