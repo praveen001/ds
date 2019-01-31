@@ -23,7 +23,6 @@ type RedBlackTree struct {
 
 // Node represents a node in red-black tree
 type Node struct {
-	height int
 	key    interface{}
 	value  interface{}
 	parent *Node
@@ -43,7 +42,6 @@ func New(c utils.CompareFunc) *RedBlackTree {
 // NewNode returns a new red-black tree node with given value
 func newNode(value interface{}, parent *Node, color string) *Node {
 	return &Node{
-		height: 1,
 		value:  value,
 		parent: parent,
 		color:  color,
@@ -68,14 +66,6 @@ func (rbt *RedBlackTree) Remove(value interface{}) bool {
 	defer rbt.unlock()
 
 	return rbt.remove(value)
-}
-
-// Height returns the height of the tree (node/level count) in O(1) Time Complexity.
-func (rbt *RedBlackTree) Height() int {
-	rbt.rlock()
-	defer rbt.runlock()
-
-	return rbt.height()
 }
 
 // Min returns the minimum value present in the tree

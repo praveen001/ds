@@ -2,7 +2,6 @@ package binarytree
 
 import (
 	"github.com/praveen001/ds/list/linkedlist"
-	"github.com/praveen001/ds/utils"
 )
 
 // Key of the node
@@ -49,18 +48,6 @@ func (x *Node) postOrder(ll *linkedlist.LinkedList) {
 	}
 
 	ll.PushBack(x.value)
-}
-
-func (x *Node) recomputeHeight() {
-	if isLeaf(x) {
-		x.height = 1
-	} else if !hasLeft(x) {
-		x.height = x.right.height + 1
-	} else if !hasRight(x) {
-		x.height = x.left.height + 1
-	} else {
-		x.height = utils.MaxInt(x.left.height, x.right.height) + 1
-	}
 }
 
 func hasLeft(x *Node) bool {

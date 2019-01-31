@@ -127,13 +127,6 @@ func (at *AvlTree) remove(key interface{}) bool {
 	return false
 }
 
-func (at *AvlTree) height() int {
-	if at.Len() == 0 {
-		return 0
-	}
-	return at.root.height
-}
-
 func (at *AvlTree) min() (node *Node, ok bool) {
 	for node = at.root; hasLeft(node); node = node.left {
 		ok = true
@@ -262,4 +255,11 @@ func (at *AvlTree) rebalance(s *stack.Stack) {
 	if prev != nil {
 		at.root = prev
 	}
+}
+
+func (at *AvlTree) height() int {
+	if at.Len() == 0 {
+		return 0
+	}
+	return at.root.height
 }

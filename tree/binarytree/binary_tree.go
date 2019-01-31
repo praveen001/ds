@@ -19,11 +19,10 @@ type BinaryTree struct {
 
 // Node represents a node in a binary tree
 type Node struct {
-	height int
-	key    interface{}
-	value  interface{}
-	left   *Node
-	right  *Node
+	key   interface{}
+	value interface{}
+	left  *Node
+	right *Node
 }
 
 // New creates a new instance of binary tree and returns it
@@ -36,7 +35,7 @@ func New(c utils.CompareFunc) *BinaryTree {
 
 // NewNode returns a new binary tree node with given value
 func newNode(key, value interface{}) *Node {
-	return &Node{1, key, value, nil, nil}
+	return &Node{key, value, nil, nil}
 }
 
 // Set a value into the tree
@@ -67,14 +66,6 @@ func (bt *BinaryTree) Remove(value interface{}) bool {
 	defer bt.unlock()
 
 	return bt.remove(value)
-}
-
-// Height returns the height of the tree (node/level count) in O(1) Time Complexity.
-func (bt *BinaryTree) Height() int {
-	bt.rlock()
-	defer bt.runlock()
-
-	return bt.height()
 }
 
 // Min returns the minimum value present in the tree

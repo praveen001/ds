@@ -78,14 +78,6 @@ func (at *AvlTree) Remove(key interface{}) bool {
 	return at.remove(key)
 }
 
-// Height returns the height of the tree (node/level count) in O(1) Time Complexity.
-func (at *AvlTree) Height() int {
-	at.rlock()
-	defer at.runlock()
-
-	return at.height()
-}
-
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty

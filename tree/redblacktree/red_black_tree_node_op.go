@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/praveen001/ds/list/linkedlist"
-	"github.com/praveen001/ds/utils"
 )
 
 // Key of the node
@@ -22,7 +21,7 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 		x.left.inOrder(ll)
 	}
 
-	ll.PushBack(fmt.Sprintf("%v(%v, %v)", x.value, x.color, x.height))
+	ll.PushBack(fmt.Sprintf("%v(%v)", x.value, x.color))
 
 	if hasRight(x) {
 		x.right.inOrder(ll)
@@ -30,7 +29,7 @@ func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 }
 
 func (x *Node) preOrder(ll *linkedlist.LinkedList) {
-	ll.PushBack([]interface{}{x.value, x.height})
+	ll.PushBack(x.value)
 
 	if hasLeft(x) {
 		x.left.preOrder(ll)
@@ -50,19 +49,7 @@ func (x *Node) postOrder(ll *linkedlist.LinkedList) {
 		x.right.postOrder(ll)
 	}
 
-	ll.PushBack([]interface{}{x.value, x.height})
-}
-
-func (x *Node) recomputeHeight() {
-	if isLeaf(x) {
-		x.height = 1
-	} else if !hasLeft(x) {
-		x.height = x.right.height + 1
-	} else if !hasRight(x) {
-		x.height = x.left.height + 1
-	} else {
-		x.height = utils.MaxInt(x.left.height, x.right.height) + 1
-	}
+	ll.PushBack(x.value)
 }
 
 func hasLeft(x *Node) bool {

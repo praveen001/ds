@@ -76,14 +76,6 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 	return false
 }
 
-func (rbt *RedBlackTree) height() int {
-	if rbt.len() == 0 {
-		return 0
-	}
-
-	return rbt.root.height
-}
-
 func (rbt *RedBlackTree) min() (node *Node, ok bool) {
 	for node = rbt.root; hasLeft(node); node = node.left {
 		ok = true
@@ -178,12 +170,10 @@ func (rbt *RedBlackTree) rebalance(x *Node) {
 		if p == nil {
 			return
 		}
-		p.recomputeHeight()
 
 		if g == nil {
 			return
 		}
-		g.recomputeHeight()
 
 		// Case 2
 		if isBlack(p) {
@@ -383,9 +373,6 @@ func (rbt *RedBlackTree) rightRotate(x *Node) {
 		z.parent = x
 	}
 
-	x.recomputeHeight()
-	y.recomputeHeight()
-
 	if isRoot(y) {
 		rbt.root = y
 	} else if y.parent.left == x {
@@ -407,11 +394,7 @@ func (rbt *RedBlackTree) leftRotate(x *Node) {
 
 	if z != nil {
 		z.parent = x
-		z.recomputeHeight()
 	}
-
-	x.recomputeHeight()
-	y.recomputeHeight()
 
 	if isRoot(y) {
 		rbt.root = y

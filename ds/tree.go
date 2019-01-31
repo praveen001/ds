@@ -17,9 +17,6 @@ type Tree interface {
 	// Returns true if value was removed, otherwise false.
 	Remove(k interface{}) (ok bool)
 
-	// Height returns the height of the tree (node/level count) in O(1) Time Complexity.
-	Height() (h int)
-
 	// Min returns the minimum value present in the tree
 	//
 	// Returns false if tree is empty

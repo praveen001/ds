@@ -3,7 +3,6 @@ package binarytree
 import (
 	"github.com/praveen001/ds/ds"
 	"github.com/praveen001/ds/list/linkedlist"
-	"github.com/praveen001/ds/stack"
 )
 
 func (bt *BinaryTree) set(key, value interface{}) bool {
@@ -13,11 +12,8 @@ func (bt *BinaryTree) set(key, value interface{}) bool {
 		return true
 	}
 
-	s := stack.New()
-
 	node := bt.root
 	for {
-		s.Push(node)
 		if comp := bt.compare(node.key, key); comp == -1 {
 			if !hasRight(node) {
 				node.right = newNode(key, value)
@@ -36,7 +32,6 @@ func (bt *BinaryTree) set(key, value interface{}) bool {
 	}
 	bt.size++
 
-	bt.readjust(s)
 	return true
 }
 
@@ -57,10 +52,8 @@ func (bt *BinaryTree) get(key interface{}) (interface{}, bool) {
 
 func (bt *BinaryTree) remove(key interface{}) bool {
 	var parent *Node
-	s := stack.New()
 	node := bt.root
 	for node != nil {
-		s.Push(node)
 		if comp := bt.compare(node.key, key); comp == 1 {
 			parent = node
 			node = node.left
@@ -93,14 +86,6 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 	}
 
 	return false
-}
-
-func (bt *BinaryTree) height() int {
-	if bt.len() == 0 {
-		return 0
-	}
-
-	return bt.root.height
 }
 
 func (bt *BinaryTree) min() (node *Node, ok bool) {
@@ -168,16 +153,4 @@ func (bt *BinaryTree) postOrder() ds.List {
 	}
 
 	return ll
-}
-
-func (bt *BinaryTree) readjust(s *stack.Stack) {
-	var node *Node
-	for {
-		p, ok := s.Pop()
-		if !ok {
-			break
-		}
-		node = p.(*Node)
-		node.recomputeHeight()
-	}
 }

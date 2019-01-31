@@ -60,22 +60,6 @@ func TestRemove(t *testing.T) {
 	}
 }
 
-func TestHeight(t *testing.T) {
-	bt := New(utils.IntComparator)
-
-	if h := bt.Height(); h != 0 {
-		t.Errorf("Expected %v Got %v", 0, h)
-	}
-
-	bt.Set(1, 10)
-	bt.Set(2, 20)
-	bt.Set(3, 30)
-
-	if h := bt.Height(); h != 3 {
-		t.Errorf("Expected %v Got %v", 3, h)
-	}
-}
-
 func TestMin(t *testing.T) {
 	bt := New(utils.IntComparator)
 
