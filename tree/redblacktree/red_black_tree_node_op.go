@@ -17,56 +17,47 @@ func (x *Node) Value() interface{} {
 }
 
 func (x *Node) inOrder(ll *linkedlist.LinkedList) {
-	if hasLeft(x) {
-		x.left.inOrder(ll)
+	if x == nil {
+		return
 	}
-
+	x.left.inOrder(ll)
 	ll.PushBack(fmt.Sprintf("%v(%v)", x.value, x.color))
-
-	if hasRight(x) {
-		x.right.inOrder(ll)
-	}
+	x.right.inOrder(ll)
 }
 
 func (x *Node) preOrder(ll *linkedlist.LinkedList) {
+	if x == nil {
+		return
+	}
 	ll.PushBack(x.value)
-
-	if hasLeft(x) {
-		x.left.preOrder(ll)
-	}
-
-	if hasRight(x) {
-		x.right.preOrder(ll)
-	}
+	x.left.preOrder(ll)
+	x.right.preOrder(ll)
 }
 
 func (x *Node) postOrder(ll *linkedlist.LinkedList) {
-	if hasLeft(x) {
-		x.left.postOrder(ll)
+	if x == nil {
+		return
 	}
-
-	if hasRight(x) {
-		x.right.postOrder(ll)
-	}
-
+	x.left.postOrder(ll)
+	x.right.postOrder(ll)
 	ll.PushBack(x.value)
 }
 
-func hasLeft(x *Node) bool {
+func (x *Node) hasLeft() bool {
 	if x == nil || x.left == nil {
 		return false
 	}
 	return true
 }
 
-func hasRight(x *Node) bool {
+func (x *Node) hasRight() bool {
 	if x == nil || x.right == nil {
 		return false
 	}
 	return true
 }
 
-func child(x *Node) *Node {
+func (x *Node) child() *Node {
 	if x == nil {
 		return nil
 	}
@@ -78,12 +69,12 @@ func child(x *Node) *Node {
 	return c
 }
 
-func isLeaf(x *Node) bool {
-	return !hasLeft(x) && !hasRight(x)
+func (x *Node) isLeaf() bool {
+	return !x.hasLeft() && !x.hasRight()
 }
 
-func isLeft(x *Node) bool {
-	if x.parent == nil {
+func (x *Node) isLeft() bool {
+	if x == nil || x.parent == nil {
 		return false
 	}
 	if x.parent.right == x {
@@ -92,8 +83,8 @@ func isLeft(x *Node) bool {
 	return true
 }
 
-func isRight(x *Node) bool {
-	if x.parent == nil {
+func (x *Node) isRight() bool {
+	if x == nil || x.parent == nil {
 		return false
 	}
 	if x.parent.left == x {
@@ -102,15 +93,18 @@ func isRight(x *Node) bool {
 	return true
 }
 
-func isRoot(x *Node) bool {
+func (x *Node) isRoot() bool {
+	if x == nil {
+		return false
+	}
 	if x.parent == nil {
 		return true
 	}
 	return false
 }
 
-func sibling(x *Node) *Node {
-	if x.parent == nil {
+func (x *Node) sibling() *Node {
+	if x == nil || x.parent == nil {
 		return nil
 	}
 	s := x.parent.left
@@ -121,22 +115,28 @@ func sibling(x *Node) *Node {
 	return s
 }
 
-func toRed(x *Node) {
+func (x *Node) toRed() {
+	if x == nil {
+		return
+	}
 	x.color = red
 }
 
-func toBlack(x *Node) {
+func (x *Node) toBlack() {
+	if x == nil {
+		return
+	}
 	x.color = black
 }
 
-func isRed(x *Node) bool {
-	if x != nil && x.color == red {
-		return true
+func (x *Node) isRed() bool {
+	if x == nil || x.color != red {
+		return false
 	}
-	return false
+	return true
 }
 
-func isBlack(x *Node) bool {
+func (x *Node) isBlack() bool {
 	if x == nil || x.color == black {
 		return true
 	}

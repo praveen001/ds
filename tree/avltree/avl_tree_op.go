@@ -20,13 +20,13 @@ func (at *AvlTree) set(key, value interface{}) bool {
 	for {
 		s.Push(node)
 		if comp := at.compare(node.key, key); comp == 1 {
-			if !hasLeft(node) {
+			if !node.hasLeft() {
 				node.left = newNode(key, value)
 				break
 			}
 			node = node.left
 		} else if comp == -1 {
-			if !hasRight(node) {
+			if !node.hasRight() {
 				node.right = newNode(key, value)
 				break
 			}
@@ -99,8 +99,8 @@ func (at *AvlTree) remove(key interface{}) bool {
 			parent = node
 			node = node.right
 		} else {
-			if !hasLeft(node) || !hasRight(node) {
-				if ch := child(node); parent == nil {
+			if !node.hasLeft() || !node.hasRight() {
+				if ch := node.child(); parent == nil {
 					at.root = ch
 				} else if at.compare(parent.key, key) == 1 {
 					parent.left = ch
@@ -113,7 +113,7 @@ func (at *AvlTree) remove(key interface{}) bool {
 			}
 
 			min := node.right
-			for hasLeft(min) {
+			for min.hasLeft() {
 				min = min.left
 			}
 
@@ -128,14 +128,14 @@ func (at *AvlTree) remove(key interface{}) bool {
 }
 
 func (at *AvlTree) min() (node *Node, ok bool) {
-	for node = at.root; hasLeft(node); node = node.left {
+	for node = at.root; node.hasLeft(); node = node.left {
 		ok = true
 	}
 	return
 }
 
 func (at *AvlTree) max() (node *Node, ok bool) {
-	for node = at.root; hasRight(node); node = node.right {
+	for node = at.root; node.hasRight(); node = node.right {
 		ok = true
 	}
 	return
@@ -166,31 +166,19 @@ func (at *AvlTree) clear() {
 
 func (at *AvlTree) inOrder() ds.List {
 	ll := linkedlist.New()
-
-	if at.len() != 0 {
-		at.root.inOrder(ll)
-	}
-
+	at.root.inOrder(ll)
 	return ll
 }
 
 func (at *AvlTree) preOrder() ds.List {
 	ll := linkedlist.New()
-
-	if at.Len() != 0 {
-		at.root.preOrder(ll)
-	}
-
+	at.root.preOrder(ll)
 	return ll
 }
 
 func (at *AvlTree) postOrder() ds.List {
 	ll := linkedlist.New()
-
-	if at.Len() != 0 {
-		at.root.postOrder(ll)
-	}
-
+	at.root.postOrder(ll)
 	return ll
 }
 

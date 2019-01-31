@@ -16,49 +16,40 @@ func (x *Node) Value() interface{} {
 }
 
 func (x *Node) inOrder(ll *linkedlist.LinkedList) {
-	if hasLeft(x) {
-		x.left.inOrder(ll)
+	if x == nil {
+		return
 	}
-
+	x.left.inOrder(ll)
 	ll.PushBack(x.value)
-
-	if hasRight(x) {
-		x.right.inOrder(ll)
-	}
+	x.right.inOrder(ll)
 }
 
 func (x *Node) preOrder(ll *linkedlist.LinkedList) {
+	if x == nil {
+		return
+	}
 	ll.PushBack(x.value)
-
-	if hasLeft(x) {
-		x.left.preOrder(ll)
-	}
-
-	if hasRight(x) {
-		x.right.preOrder(ll)
-	}
+	x.left.preOrder(ll)
+	x.right.preOrder(ll)
 }
 
 func (x *Node) postOrder(ll *linkedlist.LinkedList) {
-	if hasLeft(x) {
-		x.left.postOrder(ll)
+	if x == nil {
+		return
 	}
-
-	if hasRight(x) {
-		x.right.postOrder(ll)
-	}
-
+	x.left.postOrder(ll)
+	x.right.postOrder(ll)
 	ll.PushBack(x.value)
 }
 
 func (x *Node) recomputeHeight() {
-	if isLeaf(x) {
+	if x.isLeaf() {
 		x.height = 1
 		x.bFactor = 0
-	} else if !hasLeft(x) {
+	} else if !x.hasLeft() {
 		x.height = x.right.height + 1
 		x.bFactor = 0 - x.right.height
-	} else if !hasRight(x) {
+	} else if !x.hasRight() {
 		x.height = x.left.height + 1
 		x.bFactor = x.left.height
 	} else {
@@ -67,21 +58,21 @@ func (x *Node) recomputeHeight() {
 	}
 }
 
-func hasLeft(x *Node) bool {
+func (x *Node) hasLeft() bool {
 	if x == nil || x.left == nil {
 		return false
 	}
 	return true
 }
 
-func hasRight(x *Node) bool {
+func (x *Node) hasRight() bool {
 	if x == nil || x.right == nil {
 		return false
 	}
 	return true
 }
 
-func child(x *Node) *Node {
+func (x *Node) child() *Node {
 	if x == nil {
 		return nil
 	}
@@ -93,6 +84,6 @@ func child(x *Node) *Node {
 	return c
 }
 
-func isLeaf(x *Node) bool {
-	return !hasLeft(x) && !hasRight(x)
+func (x *Node) isLeaf() bool {
+	return !x.hasLeft() && !x.hasRight()
 }

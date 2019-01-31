@@ -15,13 +15,13 @@ func (bt *BinaryTree) set(key, value interface{}) bool {
 	node := bt.root
 	for {
 		if comp := bt.compare(node.key, key); comp == -1 {
-			if !hasRight(node) {
+			if !node.hasRight() {
 				node.right = newNode(key, value)
 				break
 			}
 			node = node.right
 		} else if comp == 1 {
-			if !hasLeft(node) {
+			if !node.hasLeft() {
 				node.left = newNode(key, value)
 				break
 			}
@@ -61,8 +61,8 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 			parent = node
 			node = node.right
 		} else {
-			if !hasLeft(node) || !hasRight(node) {
-				if ch := child(node); parent == nil {
+			if !node.hasLeft() || !node.hasRight() {
+				if ch := node.child(); parent == nil {
 					bt.root = ch
 				} else if bt.compare(parent.key, key) == 1 {
 					parent.left = ch
@@ -74,7 +74,7 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 			}
 
 			min := node.right
-			for hasLeft(min) {
+			for min.hasLeft() {
 				min = min.left
 			}
 
@@ -89,14 +89,14 @@ func (bt *BinaryTree) remove(key interface{}) bool {
 }
 
 func (bt *BinaryTree) min() (node *Node, ok bool) {
-	for node = bt.root; hasLeft(node); node = node.left {
+	for node = bt.root; node.hasLeft(); node = node.left {
 		ok = true
 	}
 	return
 }
 
 func (bt *BinaryTree) max() (node *Node, ok bool) {
-	for node = bt.root; hasRight(node); node = node.right {
+	for node = bt.root; node.hasRight(); node = node.right {
 		ok = true
 	}
 	return
@@ -127,30 +127,18 @@ func (bt *BinaryTree) clear() {
 
 func (bt *BinaryTree) inOrder() ds.List {
 	ll := linkedlist.New()
-
-	if bt.len() != 0 {
-		bt.root.inOrder(ll)
-	}
-
+	bt.root.inOrder(ll)
 	return ll
 }
 
 func (bt *BinaryTree) preOrder() ds.List {
 	ll := linkedlist.New()
-
-	if bt.len() != 0 {
-		bt.root.preOrder(ll)
-	}
-
+	bt.root.preOrder(ll)
 	return ll
 }
 
 func (bt *BinaryTree) postOrder() ds.List {
 	ll := linkedlist.New()
-
-	if bt.len() != 0 {
-		bt.root.postOrder(ll)
-	}
-
+	bt.root.postOrder(ll)
 	return ll
 }
