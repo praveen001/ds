@@ -17,7 +17,8 @@ type RedBlackTree struct {
 	root    *Node
 	size    int
 	compare utils.CompareFunc
-	sync.RWMutex
+	mtx     sync.RWMutex
+	sync    bool
 }
 
 // Node represents a node in red-black tree
@@ -35,6 +36,7 @@ type Node struct {
 func New(c utils.CompareFunc) *RedBlackTree {
 	return &RedBlackTree{
 		compare: c,
+		sync:    true,
 	}
 }
 
@@ -52,8 +54,8 @@ func newNode(value interface{}, parent *Node, color string) *Node {
 //
 // Returns false is value already exists in tree, otherwise true
 func (rbt *RedBlackTree) Add(value interface{}) bool {
-	rbt.Lock()
-	defer rbt.Unlock()
+	rbt.lock()
+	defer rbt.unlock()
 
 	return rbt.add(value)
 }
@@ -62,16 +64,16 @@ func (rbt *RedBlackTree) Add(value interface{}) bool {
 //
 // Returns true if value was removed, otherwise false.
 func (rbt *RedBlackTree) Remove(value interface{}) bool {
-	rbt.Lock()
-	defer rbt.Unlock()
+	rbt.lock()
+	defer rbt.unlock()
 
 	return rbt.remove(value)
 }
 
 // Height returns the height of the tree (node/level count) in O(1) Time Complexity.
 func (rbt *RedBlackTree) Height() int {
-	rbt.RLock()
-	defer rbt.RUnlock()
+	rbt.rlock()
+	defer rbt.runlock()
 
 	return rbt.height()
 }
@@ -80,8 +82,8 @@ func (rbt *RedBlackTree) Height() int {
 //
 // Returns false if tree is empty
 func (rbt *RedBlackTree) Min() (ds.Node, bool) {
-	rbt.RLock()
-	defer rbt.RUnlock()
+	rbt.rlock()
+	defer rbt.runlock()
 
 	return rbt.min()
 }
@@ -90,56 +92,80 @@ func (rbt *RedBlackTree) Min() (ds.Node, bool) {
 //
 // Returns false if tree is empty
 func (rbt *RedBlackTree) Max() (ds.Node, bool) {
-	rbt.RLock()
-	defer rbt.RUnlock()
+	rbt.rlock()
+	defer rbt.runlock()
 
 	return rbt.max()
 }
 
 // Contains return true if value exists in tree, otherwise false
 func (rbt *RedBlackTree) Contains(value interface{}) bool {
-	rbt.RLock()
-	defer rbt.RUnlock()
+	rbt.rlock()
+	defer rbt.runlock()
 
 	return rbt.contains(value)
 }
 
 // Len returns the total number of nodes in tree
 func (rbt *RedBlackTree) Len() int {
-	rbt.RLock()
-	defer rbt.RUnlock()
+	rbt.rlock()
+	defer rbt.runlock()
 
 	return rbt.len()
 }
 
 // Clear all the nodes from tree
 func (rbt *RedBlackTree) Clear() {
-	rbt.Lock()
-	defer rbt.Unlock()
+	rbt.lock()
+	defer rbt.unlock()
 
 	rbt.clear()
 }
 
 // InOrder returns a ds.List with all values in-order
 func (rbt *RedBlackTree) InOrder() ds.List {
-	rbt.RLock()
-	defer rbt.RUnlock()
+	rbt.rlock()
+	defer rbt.runlock()
 
 	return rbt.inOrder()
 }
 
 // PreOrder returns a ds.List with all values in pre order
 func (rbt *RedBlackTree) PreOrder() ds.List {
-	rbt.RLock()
-	defer rbt.RUnlock()
+	rbt.rlock()
+	defer rbt.runlock()
 
 	return rbt.preOrder()
 }
 
 // PostOrder returns a ds.List with all values in post order
 func (rbt *RedBlackTree) PostOrder() ds.List {
-	rbt.RLock()
-	defer rbt.RUnlock()
+	rbt.rlock()
+	defer rbt.runlock()
 
 	return rbt.postOrder()
+}
+
+func (rbt *RedBlackTree) lock() {
+	if rbt.sync {
+		rbt.mtx.Lock()
+	}
+}
+
+func (rbt *RedBlackTree) unlock() {
+	if rbt.sync {
+		rbt.mtx.Unlock()
+	}
+}
+
+func (rbt *RedBlackTree) rlock() {
+	if rbt.sync {
+		rbt.mtx.RLock()
+	}
+}
+
+func (rbt *RedBlackTree) runlock() {
+	if rbt.sync {
+		rbt.mtx.RUnlock()
+	}
 }

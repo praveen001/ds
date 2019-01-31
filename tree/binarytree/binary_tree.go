@@ -13,7 +13,8 @@ type BinaryTree struct {
 	root    *Node
 	size    int
 	compare utils.CompareFunc
-	sync.RWMutex
+	mtx     sync.RWMutex
+	sync    bool
 }
 
 // Node represents a node in a binary tree
@@ -29,6 +30,7 @@ type Node struct {
 func New(c utils.CompareFunc) *BinaryTree {
 	return &BinaryTree{
 		compare: c,
+		sync:    true,
 	}
 }
 
@@ -41,8 +43,8 @@ func newNode(key, value interface{}) *Node {
 //
 // Returns false is value already exists in tree, otherwise true
 func (bt *BinaryTree) Set(key, value interface{}) bool {
-	bt.Lock()
-	defer bt.Unlock()
+	bt.lock()
+	defer bt.unlock()
 
 	return bt.set(key, value)
 }
@@ -51,8 +53,8 @@ func (bt *BinaryTree) Set(key, value interface{}) bool {
 //
 // Returns value if key exists, otherwise it returns nil, false
 func (bt *BinaryTree) Get(key interface{}) (interface{}, bool) {
-	bt.Lock()
-	defer bt.Unlock()
+	bt.lock()
+	defer bt.unlock()
 
 	return bt.get(key)
 }
@@ -61,16 +63,16 @@ func (bt *BinaryTree) Get(key interface{}) (interface{}, bool) {
 //
 // Returns true if value was removed, otherwise false.
 func (bt *BinaryTree) Remove(value interface{}) bool {
-	bt.Lock()
-	defer bt.Unlock()
+	bt.lock()
+	defer bt.unlock()
 
 	return bt.remove(value)
 }
 
 // Height returns the height of the tree (node/level count) in O(1) Time Complexity.
 func (bt *BinaryTree) Height() int {
-	bt.RLock()
-	defer bt.RUnlock()
+	bt.rlock()
+	defer bt.runlock()
 
 	return bt.height()
 }
@@ -79,8 +81,8 @@ func (bt *BinaryTree) Height() int {
 //
 // Returns false if tree is empty
 func (bt *BinaryTree) Min() (ds.Node, bool) {
-	bt.RLock()
-	defer bt.RUnlock()
+	bt.rlock()
+	defer bt.runlock()
 
 	return bt.min()
 }
@@ -89,56 +91,80 @@ func (bt *BinaryTree) Min() (ds.Node, bool) {
 //
 // Returns false if tree is empty
 func (bt *BinaryTree) Max() (ds.Node, bool) {
-	bt.RLock()
-	defer bt.RUnlock()
+	bt.rlock()
+	defer bt.runlock()
 
 	return bt.max()
 }
 
 // Contains return true if value exists in tree, otherwise false
 func (bt *BinaryTree) Contains(value interface{}) bool {
-	bt.RLock()
-	defer bt.RUnlock()
+	bt.rlock()
+	defer bt.runlock()
 
 	return bt.contains(value)
 }
 
 // Len returns the total number of nodes in tree
 func (bt *BinaryTree) Len() int {
-	bt.RLock()
-	defer bt.RUnlock()
+	bt.rlock()
+	defer bt.runlock()
 
 	return bt.len()
 }
 
 // Clear all the nodes from tree
 func (bt *BinaryTree) Clear() {
-	bt.Lock()
-	defer bt.Unlock()
+	bt.lock()
+	defer bt.unlock()
 
 	bt.clear()
 }
 
 // InOrder returns a ds.List with all values in-order
 func (bt *BinaryTree) InOrder() ds.List {
-	bt.RLock()
-	defer bt.RUnlock()
+	bt.rlock()
+	defer bt.runlock()
 
 	return bt.inOrder()
 }
 
 // PreOrder returns a ds.List with all values in pre order
 func (bt *BinaryTree) PreOrder() ds.List {
-	bt.RLock()
-	defer bt.RUnlock()
+	bt.rlock()
+	defer bt.runlock()
 
 	return bt.preOrder()
 }
 
 // PostOrder returns a ds.List with all values in post order
 func (bt *BinaryTree) PostOrder() ds.List {
-	bt.RLock()
-	defer bt.RUnlock()
+	bt.rlock()
+	defer bt.runlock()
 
 	return bt.postOrder()
+}
+
+func (bt *BinaryTree) lock() {
+	if bt.sync {
+		bt.mtx.Lock()
+	}
+}
+
+func (bt *BinaryTree) unlock() {
+	if bt.sync {
+		bt.mtx.Unlock()
+	}
+}
+
+func (bt *BinaryTree) rlock() {
+	if bt.sync {
+		bt.mtx.RLock()
+	}
+}
+
+func (bt *BinaryTree) runlock() {
+	if bt.sync {
+		bt.mtx.RUnlock()
+	}
 }

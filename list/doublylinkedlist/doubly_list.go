@@ -27,7 +27,7 @@ type element struct {
 
 // New creates a new empty list and return it's reference.
 func New() *DoublyLinkedList {
-	return &DoublyLinkedList{}
+	return &DoublyLinkedList{sync: true}
 }
 
 // Len returns the number of elements in list
@@ -82,7 +82,7 @@ func (dl *DoublyLinkedList) Set(i int, v interface{}) (ok bool) {
 // Get ..
 func (dl *DoublyLinkedList) Get(i int) (v interface{}, ok bool) {
 	dl.rlock()
-	defer dl.unlock()
+	defer dl.runlock()
 
 	return dl.get(i)
 }

@@ -26,7 +26,7 @@ type element struct {
 
 // New creates a new empty list and return it's reference.
 func New() *LinkedList {
-	return &LinkedList{}
+	return &LinkedList{sync: true}
 }
 
 // Len returns the number of elements in list
@@ -81,7 +81,7 @@ func (ll *LinkedList) Set(i int, v interface{}) (ok bool) {
 // Get ..
 func (ll *LinkedList) Get(i int) (v interface{}, ok bool) {
 	ll.rlock()
-	defer ll.unlock()
+	defer ll.runlock()
 
 	return ll.get(i)
 }

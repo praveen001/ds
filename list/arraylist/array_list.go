@@ -20,7 +20,7 @@ type ArrayList struct {
 
 // New creates a new empty list and return it's reference.
 func New() *ArrayList {
-	return &ArrayList{}
+	return &ArrayList{sync: true}
 }
 
 // Len returns the number of elements in list
@@ -75,7 +75,7 @@ func (al *ArrayList) Set(i int, v interface{}) (ok bool) {
 // Get ..
 func (al *ArrayList) Get(i int) (v interface{}, ok bool) {
 	al.rlock()
-	defer al.unlock()
+	defer al.runlock()
 
 	return al.get(i)
 }
