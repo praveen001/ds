@@ -30,9 +30,8 @@ func NewWithConfig(c *Config) *Stack {
 }
 
 // Push the value to the top of stack
-func (s *Stack) Push(value interface{}) *Stack {
+func (s *Stack) Push(value interface{}) {
 	s.list.PushBack(value)
-	return s
 }
 
 // Pop removes the element from the top of the stack, and returns it
@@ -50,10 +49,9 @@ func (s *Stack) Len() int {
 	return s.list.Len()
 }
 
-// Clear clears the stack
-func (s *Stack) Clear() *Stack {
+// Clear the stack
+func (s *Stack) Clear() {
 	s.list.Clear()
-	return s
 }
 
 // Values returns all the values in the stack as a slice

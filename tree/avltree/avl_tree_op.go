@@ -220,7 +220,7 @@ func (at *AvlTree) rightRotate(x *Node) *Node {
 	return y
 }
 
-func (at *AvlTree) rebalance(s *stack.Stack) {
+func (at *AvlTree) rebalance(s ds.Stack) {
 	var prev, node *Node
 	for {
 		p, ok := s.Pop()

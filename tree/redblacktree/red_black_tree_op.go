@@ -143,6 +143,52 @@ func (rbt *RedBlackTree) postOrder() ds.List {
 	return ll
 }
 
+func (rbt *RedBlackTree) leftRotate(x *Node) {
+	y := x.right
+	z := y.left
+
+	y.left = x
+	y.parent = x.parent
+
+	x.right = z
+	x.parent = y
+
+	if z != nil {
+		z.parent = x
+	}
+
+	if isRoot(y) {
+		rbt.root = y
+	} else if y.parent.left == x {
+		y.parent.left = y
+	} else {
+		y.parent.right = y
+	}
+}
+
+func (rbt *RedBlackTree) rightRotate(x *Node) {
+	y := x.left
+	z := y.right
+
+	y.right = x
+	y.parent = x.parent
+
+	x.left = z
+	x.parent = y
+
+	if z != nil {
+		z.parent = x
+	}
+
+	if isRoot(y) {
+		rbt.root = y
+	} else if y.parent.left == x {
+		y.parent.left = y
+	} else {
+		y.parent.right = y
+	}
+}
+
 func (rbt *RedBlackTree) getNeigbours(x *Node) (p, g, u *Node) {
 	// Parent
 	p = x.parent
@@ -356,51 +402,5 @@ func (rbt *RedBlackTree) deleteCase6(n *Node) {
 		toBlack(p)
 
 		// Terminal Case
-	}
-}
-
-func (rbt *RedBlackTree) rightRotate(x *Node) {
-	y := x.left
-	z := y.right
-
-	y.right = x
-	y.parent = x.parent
-
-	x.left = z
-	x.parent = y
-
-	if z != nil {
-		z.parent = x
-	}
-
-	if isRoot(y) {
-		rbt.root = y
-	} else if y.parent.left == x {
-		y.parent.left = y
-	} else {
-		y.parent.right = y
-	}
-}
-
-func (rbt *RedBlackTree) leftRotate(x *Node) {
-	y := x.right
-	z := y.left
-
-	y.left = x
-	y.parent = x.parent
-
-	x.right = z
-	x.parent = y
-
-	if z != nil {
-		z.parent = x
-	}
-
-	if isRoot(y) {
-		rbt.root = y
-	} else if y.parent.left == x {
-		y.parent.left = y
-	} else {
-		y.parent.right = y
 	}
 }
