@@ -18,11 +18,11 @@ func New() *HashMap {
 }
 
 // Set a value in hashmap
-func (hm *HashMap) Set(key, val interface{}) {
+func (hm *HashMap) Set(key, val interface{}) bool {
 	hm.lock()
 	defer hm.unlock()
 
-	hm.set(key, val)
+	return hm.set(key, val)
 }
 
 // Get finds value by key and returns it, if found, otherwise it returns nil
@@ -34,7 +34,7 @@ func (hm *HashMap) Get(key interface{}) (interface{}, bool) {
 }
 
 // Remove a value from hashmap
-func (hm *HashMap) Remove(key interface{}) bool {
+func (hm *HashMap) Remove(key interface{}) (interface{}, bool) {
 	hm.lock()
 	defer hm.unlock()
 

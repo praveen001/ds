@@ -3,13 +3,13 @@ package ds
 // List interface is implemented by all list data structures.
 type List interface {
 	// Len returns the number of elements in list
-	Len() int
+	Len() (l int)
 
 	// Front returns the first element of list or nil if the list is empty
-	Front() (interface{}, bool)
+	Front() (v interface{}, ok bool)
 
 	// Back returns the last element of the list or nil if the list is empty
-	Back() (interface{}, bool)
+	Back() (v interface{}, ok bool)
 
 	// PushFront inserts a new element with value v at the front of the list
 	PushFront(v interface{})
@@ -39,20 +39,20 @@ type List interface {
 	PushFrontList(l List)
 
 	// Contains returns true if the given value exists in the list, otherwise false
-	Contains(value interface{}) bool
+	Contains(v interface{}) (ok bool)
 
 	// IndexOf returns the index of the given value if it exists, otherwise it returns -1
-	IndexOf(value interface{}) int
+	IndexOf(v interface{}) (i int)
 
 	// Values returns all the values in the list as a slice
-	Values() []interface{}
+	Values() (vs []interface{})
 
 	// Clone creates a shallow copy and returns the reference
-	Clone() List
+	Clone() (l List)
 
 	// Swap two values at two given indexes
-	Swap(a, b int) bool
+	Swap(a, b int) (ok bool)
 
 	// String ..
-	String() string
+	String() (s string)
 }

@@ -11,24 +11,24 @@ type Heap interface {
 	// Push a given values into the tree.
 	//
 	// Returns true if push succeeds.
-	Push(values ...interface{}) bool
+	Push(vs ...interface{}) (ok bool)
 
 	// Pop removes first value from tree, and returns it.
 	//
 	// Second return value will be false if tree is empty.
-	Pop() (interface{}, bool)
+	Pop() (v interface{}, ok bool)
 
 	// Peek returns the first value in heap without removing it
 	//
 	// Second return value will be false if tree is empty.
-	Peek() (interface{}, bool)
+	Peek() (v interface{}, ok bool)
 
 	// Clear removes all the values from heap
 	Clear()
 
 	// Len gives the number of values in heap
-	Len() int
+	Len() (l int)
 
 	// String returns the string representation of the heap
-	String() string
+	String() (s string)
 }

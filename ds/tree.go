@@ -5,52 +5,52 @@ type Tree interface {
 	// Set a value into the tree
 	//
 	// Returns false if key already exists in tree, otherwise true
-	Set(key, value interface{}) bool
+	Set(k, v interface{}) (ok bool)
 
 	// Get a value by key
 	//
 	// Returns value if key exists, otherwise it returns nil, false
-	Get(key interface{}) (interface{}, bool)
+	Get(k interface{}) (v interface{}, ok bool)
 
 	// Remove a value from the tree
 	//
 	// Returns true if value was removed, otherwise false.
-	Remove(value interface{}) bool
+	Remove(k interface{}) (ok bool)
 
 	// Height returns the height of the tree (node/level count) in O(1) Time Complexity.
-	Height() int
+	Height() (h int)
 
 	// Min returns the minimum value present in the tree
 	//
 	// Returns false if tree is empty
-	Min() (Node, bool)
+	Min() (n Node, ok bool)
 
 	// Max returns the maximum value present in the tree
 	//
 	// Returns false if tree is empty
-	Max() (Node, bool)
+	Max() (n Node, ok bool)
 
 	// Contains return true if key exists in tree, otherwise false
-	Contains(key interface{}) bool
+	Contains(key interface{}) (ok bool)
 
 	// Len returns the total number of nodes in tree
-	Len() int
+	Len() (l int)
 
 	// Clear all the nodes from tree
 	Clear()
 
 	// InOrder returns a ds.List with all values in-order
-	InOrder() List
+	InOrder() (l List)
 
 	// PreOrder returns a ds.List with all values in pre order
-	PreOrder() List
+	PreOrder() (l List)
 
 	// PostOrder returns a ds.List with all values in post order
-	PostOrder() List
+	PostOrder() (l List)
 }
 
 // Node ..
 type Node interface {
-	Key() interface{}
-	Value() interface{}
+	Key() (k interface{})
+	Value() (k interface{})
 }

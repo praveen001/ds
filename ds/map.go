@@ -3,25 +3,25 @@ package ds
 // Map ..
 type Map interface {
 	// Set a value in map
-	Set(key, val interface{})
+	Set(k, v interface{}) (ok bool)
 
 	// Get finds value by key and returns it, if found, otherwise it returns nil
-	Get(key interface{}) (interface{}, bool)
+	Get(k interface{}) (v interface{}, ok bool)
 
 	// Remove a value from map
-	Remove(key interface{}) bool
+	Remove(k interface{}) (v interface{}, ok bool)
 
 	// Keys returns list of keys present in map
-	Keys() []interface{}
+	Keys() (ks []interface{})
 
 	// Values returns list of values present in map
-	Values() []interface{}
+	Values() (ks []interface{})
 
 	// Contains return whether given key exists in map
-	Contains(key interface{}) bool
+	Contains(k interface{}) (ok bool)
 
 	// Len returns total number of entries in map
-	Len() int
+	Len() (l int)
 
 	// Clear removes all the entries from map
 	Clear()

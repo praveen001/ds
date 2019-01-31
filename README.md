@@ -22,15 +22,16 @@ All data structure implementations are safe for concurrent access (through mutex
 # List Interface
 
 ```go
+// List interface is implemented by all list data structures.
 type List interface {
 	// Len returns the number of elements in list
-	Len() int
+	Len() (l int)
 
 	// Front returns the first element of list or nil if the list is empty
-	Front() (interface{}, bool)
+	Front() (v interface{}, ok bool)
 
 	// Back returns the last element of the list or nil if the list is empty
-	Back() (interface{}, bool)
+	Back() (v interface{}, ok bool)
 
 	// PushFront inserts a new element with value v at the front of the list
 	PushFront(v interface{})
@@ -60,24 +61,23 @@ type List interface {
 	PushFrontList(l List)
 
 	// Contains returns true if the given value exists in the list, otherwise false
-	Contains(value interface{}) bool
+	Contains(v interface{}) (ok bool)
 
 	// IndexOf returns the index of the given value if it exists, otherwise it returns -1
-	IndexOf(value interface{}) int
+	IndexOf(v interface{}) (i int)
 
 	// Values returns all the values in the list as a slice
-	Values() []interface{}
+	Values() (vs []interface{})
 
 	// Clone creates a shallow copy and returns the reference
-	Clone() List
+	Clone() (l List)
 
 	// Swap two values at two given indexes
-	Swap(a, b int) bool
+	Swap(a, b int) (ok bool)
 
 	// String ..
-	String() string
+	String() (s string)
 }
-
 ```
 
 ## Array List
@@ -160,48 +160,48 @@ type Tree interface {
 	// Set a value into the tree
 	//
 	// Returns false if key already exists in tree, otherwise true
-	Set(key, value interface{}) bool
+	Set(k, v interface{}) (ok bool)
 
 	// Get a value by key
 	//
 	// Returns value if key exists, otherwise it returns nil, false
-	Get(key interface{}) (interface{}, bool)
+	Get(k interface{}) (v interface{}, ok bool)
 
 	// Remove a value from the tree
 	//
 	// Returns true if value was removed, otherwise false.
-	Remove(value interface{}) bool
+	Remove(k interface{}) (ok bool)
 
 	// Height returns the height of the tree (node/level count) in O(1) Time Complexity.
-	Height() int
+	Height() (h int)
 
 	// Min returns the minimum value present in the tree
 	//
 	// Returns false if tree is empty
-	Min() (Node, bool)
+	Min() (n Node, ok bool)
 
 	// Max returns the maximum value present in the tree
 	//
 	// Returns false if tree is empty
-	Max() (Node, bool)
+	Max() (n Node, ok bool)
 
 	// Contains return true if key exists in tree, otherwise false
-	Contains(key interface{}) bool
+	Contains(key interface{}) (ok bool)
 
 	// Len returns the total number of nodes in tree
-	Len() int
+	Len() (l int)
 
 	// Clear all the nodes from tree
 	Clear()
 
 	// InOrder returns a ds.List with all values in-order
-	InOrder() List
+	InOrder() (l List)
 
 	// PreOrder returns a ds.List with all values in pre order
-	PreOrder() List
+	PreOrder() (l List)
 
 	// PostOrder returns a ds.List with all values in post order
-	PostOrder() List
+	PostOrder() (l List)
 }
 ```
 
@@ -222,30 +222,31 @@ type Tree interface {
 # Heap Interface
 
 ```go
+// Heap interface has to be implemented by all heap variants.
 type Heap interface {
 	// Push a given values into the tree.
 	//
 	// Returns true if push succeeds.
-	Push(values ...interface{}) bool
+	Push(vs ...interface{}) (ok bool)
 
 	// Pop removes first value from tree, and returns it.
 	//
 	// Second return value will be false if tree is empty.
-	Pop() (interface{}, bool)
+	Pop() (v interface{}, ok bool)
 
 	// Peek returns the first value in heap without removing it
 	//
 	// Second return value will be false if tree is empty.
-	Peek() (interface{}, bool)
+	Peek() (v interface{}, ok bool)
 
 	// Clear removes all the values from heap
 	Clear()
 
 	// Len gives the number of values in heap
-	Len() int
+	Len() (l int)
 
 	// String returns the string representation of the heap
-	String() string
+	String() (s string)
 }
 ```
 
@@ -267,25 +268,25 @@ type Heap interface {
 // Map ..
 type Map interface {
 	// Set a value in map
-	Set(key, val interface{})
+	Set(k, v interface{}) (ok bool)
 
 	// Get finds value by key and returns it, if found, otherwise it returns nil
-	Get(key interface{}) (interface{}, bool)
+	Get(k interface{}) (v interface{}, ok bool)
 
 	// Remove a value from map
-	Remove(key interface{}) bool
+	Remove(k interface{}) (v interface{}, ok bool)
 
 	// Keys returns list of keys present in map
-	Keys() []interface{}
+	Keys() (ks []interface{})
 
 	// Values returns list of values present in map
-	Values() []interface{}
+	Values() (ks []interface{})
 
 	// Contains return whether given key exists in map
-	Contains(key interface{}) bool
+	Contains(k interface{}) (ok bool)
 
 	// Len returns total number of entries in map
-	Len() int
+	Len() (l int)
 
 	// Clear removes all the entries from map
 	Clear()
