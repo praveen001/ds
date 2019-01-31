@@ -117,7 +117,7 @@ func (at *AvlTree) Len() int {
 	at.RLock()
 	defer at.RUnlock()
 
-	return at.length()
+	return at.len()
 }
 
 // Clear all the nodes from tree

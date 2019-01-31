@@ -8,7 +8,7 @@ import (
 )
 
 func (at *AvlTree) set(key, value interface{}) bool {
-	if at.length() == 0 {
+	if at.len() == 0 {
 		at.root = newNode(key, value)
 		at.size++
 		return true
@@ -162,7 +162,7 @@ func (at *AvlTree) contains(key interface{}) bool {
 	return false
 }
 
-func (at *AvlTree) length() int {
+func (at *AvlTree) len() int {
 	return at.size
 }
 
@@ -174,7 +174,7 @@ func (at *AvlTree) clear() {
 func (at *AvlTree) inOrder() ds.List {
 	ll := linkedlist.New()
 
-	if at.length() != 0 {
+	if at.len() != 0 {
 		at.root.inOrder(ll)
 	}
 

@@ -109,7 +109,7 @@ func (rbt *RedBlackTree) Len() int {
 	rbt.RLock()
 	defer rbt.RUnlock()
 
-	return rbt.length()
+	return rbt.len()
 }
 
 // Clear all the nodes from tree

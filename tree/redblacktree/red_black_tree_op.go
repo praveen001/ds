@@ -77,7 +77,7 @@ func (rbt *RedBlackTree) remove(value interface{}) bool {
 }
 
 func (rbt *RedBlackTree) height() int {
-	if rbt.length() == 0 {
+	if rbt.len() == 0 {
 		return 0
 	}
 
@@ -112,7 +112,7 @@ func (rbt *RedBlackTree) contains(value interface{}) bool {
 	return false
 }
 
-func (rbt *RedBlackTree) length() int {
+func (rbt *RedBlackTree) len() int {
 	return rbt.size
 }
 
@@ -124,7 +124,7 @@ func (rbt *RedBlackTree) clear() {
 func (rbt *RedBlackTree) inOrder() ds.List {
 	ll := linkedlist.New()
 
-	if rbt.length() != 0 {
+	if rbt.len() != 0 {
 		rbt.root.inOrder(ll)
 	}
 
