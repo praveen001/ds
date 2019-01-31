@@ -13,6 +13,7 @@ All data structure implementations are safe for concurrent access (through mutex
 -   [Tree](#tree-interface)
     -   [Binary Tree](#binary-tree)
     -   [AVL Tree](#avl-tree)
+    -   [Red-Black Tree](#red-black-tree)
 -   [Heap](#heap-interface)
     -   [Binary Heap](#binary-heap)
     -   [D-ary Heap](#d-ary-heap)
@@ -205,14 +206,21 @@ type Tree interface {
 ## Binary Tree
 
 -   Insertions and deletions are iterative.
--   Node in tree stores - value, left child, right child, and height.
+-   Node in tree stores - value, left child, and right child.
 
 **Usage**
 
 ## AVL Tree
 
 -   Insertions, deletions, balancing are all iterative.
--   Node in tree stores - value, left child, right child, height and balance factor.
+-   Node in tree stores - value, left child, right child and balance factor.
+
+**Usage**
+
+## Red-Black Tree
+
+-   Insertions, deletions, balancing are all iterative.
+-   Node in tree stores - value, left child, right child, parent and color of node.
 
 **Usage**
 
