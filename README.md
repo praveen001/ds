@@ -19,6 +19,7 @@ All data structure implementations are safe for concurrent access (through mutex
     -   [D-ary Heap](#d-ary-heap)
 -   [Hash]()
     -   [HashMap](#hash-map)
+    -   [TreeMap](#tree-map)
 
 # List Interface
 
@@ -279,7 +280,7 @@ type Map interface {
 	Get(k interface{}) (v interface{}, ok bool)
 
 	// Remove a value from map
-	Remove(k interface{}) (v interface{}, ok bool)
+	Remove(k interface{}) (ok bool)
 
 	// Keys returns list of keys present in map
 	Keys() (ks []interface{})
@@ -299,5 +300,9 @@ type Map interface {
 ```
 
 ## Hash Map
+
+**Usage**
+
+## Tree Map
 
 **Usage**

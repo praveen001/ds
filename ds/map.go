@@ -9,7 +9,7 @@ type Map interface {
 	Get(k interface{}) (v interface{}, ok bool)
 
 	// Remove a value from map
-	Remove(k interface{}) (v interface{}, ok bool)
+	Remove(k interface{}) (ok bool)
 
 	// Keys returns list of keys present in map
 	Keys() (ks []interface{})

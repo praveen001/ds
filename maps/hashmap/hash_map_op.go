@@ -11,11 +11,11 @@ func (hm *HashMap) get(key interface{}) (interface{}, bool) {
 	return val, ok
 }
 
-func (hm *HashMap) remove(key interface{}) (interface{}, bool) {
-	v, ok := hm.m[key]
+func (hm *HashMap) remove(key interface{}) bool {
+	_, ok := hm.m[key]
 	delete(hm.m, key)
 
-	return v, ok
+	return ok
 }
 
 func (hm *HashMap) keys() []interface{} {

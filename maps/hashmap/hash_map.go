@@ -34,7 +34,7 @@ func (hm *HashMap) Get(key interface{}) (interface{}, bool) {
 }
 
 // Remove a value from hashmap
-func (hm *HashMap) Remove(key interface{}) (interface{}, bool) {
+func (hm *HashMap) Remove(key interface{}) bool {
 	hm.lock()
 	defer hm.unlock()
 
