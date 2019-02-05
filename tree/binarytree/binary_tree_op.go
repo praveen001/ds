@@ -125,6 +125,18 @@ func (bt *BinaryTree) clear() {
 	bt.size = 0
 }
 
+func (bt *BinaryTree) keys() ds.List {
+	ll := linkedlist.New()
+	bt.root.inOrderKeys(ll)
+	return ll
+}
+
+func (bt *BinaryTree) values() ds.List {
+	ll := linkedlist.New()
+	bt.root.inOrder(ll)
+	return ll
+}
+
 func (bt *BinaryTree) inOrder() ds.List {
 	ll := linkedlist.New()
 	bt.root.inOrder(ll)

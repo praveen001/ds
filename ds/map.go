@@ -12,10 +12,10 @@ type Map interface {
 	Remove(k interface{}) (ok bool)
 
 	// Keys returns list of keys present in map
-	Keys() (ks []interface{})
+	Keys() (ks List)
 
 	// Values returns list of values present in map
-	Values() (ks []interface{})
+	Values() (vals List)
 
 	// Contains return whether given key exists in map
 	Contains(k interface{}) (ok bool)

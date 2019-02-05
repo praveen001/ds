@@ -128,6 +128,18 @@ func (rbt *RedBlackTree) clear() {
 	rbt.size = 0
 }
 
+func (rbt *RedBlackTree) keys() ds.List {
+	ll := linkedlist.New()
+	rbt.root.inOrderKeys(ll)
+	return ll
+}
+
+func (rbt *RedBlackTree) values() ds.List {
+	ll := linkedlist.New()
+	rbt.root.inOrder(ll)
+	return ll
+}
+
 func (rbt *RedBlackTree) inOrder() ds.List {
 	ll := linkedlist.New()
 	rbt.root.inOrder(ll)

@@ -1,6 +1,10 @@
 package hashmap
 
-import "sync"
+import (
+	"sync"
+
+	"github.com/praveen001/ds/ds"
+)
 
 // HashMap ..
 type HashMap struct {
@@ -42,7 +46,7 @@ func (hm *HashMap) Remove(key interface{}) bool {
 }
 
 // Keys returns list of keys present in hashmap
-func (hm *HashMap) Keys() []interface{} {
+func (hm *HashMap) Keys() ds.List {
 	hm.rlock()
 	defer hm.runlock()
 
@@ -50,7 +54,7 @@ func (hm *HashMap) Keys() []interface{} {
 }
 
 // Values returns list of values present in hashmap
-func (hm *HashMap) Values() []interface{} {
+func (hm *HashMap) Values() ds.List {
 	hm.rlock()
 	defer hm.runlock()
 

@@ -164,6 +164,18 @@ func (at *AvlTree) clear() {
 	at.size = 0
 }
 
+func (at *AvlTree) keys() ds.List {
+	ll := linkedlist.New()
+	at.root.inOrderKeys(ll)
+	return ll
+}
+
+func (at *AvlTree) values() ds.List {
+	ll := linkedlist.New()
+	at.root.inOrder(ll)
+	return ll
+}
+
 func (at *AvlTree) inOrder() ds.List {
 	ll := linkedlist.New()
 	at.root.inOrder(ll)

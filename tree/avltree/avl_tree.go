@@ -122,6 +122,22 @@ func (at *AvlTree) Clear() {
 	at.clear()
 }
 
+// Keys returns a ds.List with all keys
+func (at *AvlTree) Keys() ds.List {
+	at.rlock()
+	defer at.runlock()
+
+	return at.keys()
+}
+
+// Values returns a ds.List with all values
+func (at *AvlTree) Values() ds.List {
+	at.rlock()
+	defer at.runlock()
+
+	return at.values()
+}
+
 // InOrder returns a ds.List with all values in-order
 func (at *AvlTree) InOrder() ds.List {
 	at.rlock()

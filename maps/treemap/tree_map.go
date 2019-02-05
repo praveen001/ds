@@ -50,7 +50,7 @@ func (tm *TreeMap) Remove(key interface{}) bool {
 }
 
 // Keys returns list of keys present in hashmap
-func (tm *TreeMap) Keys() []interface{} {
+func (tm *TreeMap) Keys() ds.List {
 	tm.rlock()
 	defer tm.runlock()
 
@@ -58,7 +58,7 @@ func (tm *TreeMap) Keys() []interface{} {
 }
 
 // Values returns list of values present in hashmap
-func (tm *TreeMap) Values() []interface{} {
+func (tm *TreeMap) Values() ds.List {
 	tm.rlock()
 	defer tm.runlock()
 

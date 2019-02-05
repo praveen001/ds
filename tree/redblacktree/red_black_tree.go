@@ -123,6 +123,22 @@ func (rbt *RedBlackTree) Clear() {
 	rbt.clear()
 }
 
+// Keys returns a ds.List with all keys
+func (rbt *RedBlackTree) Keys() ds.List {
+	rbt.rlock()
+	defer rbt.runlock()
+
+	return rbt.keys()
+}
+
+// Values returns a ds.List with all values
+func (rbt *RedBlackTree) Values() ds.List {
+	rbt.rlock()
+	defer rbt.runlock()
+
+	return rbt.values()
+}
+
 // InOrder returns a ds.List with all values in-order
 func (rbt *RedBlackTree) InOrder() ds.List {
 	rbt.rlock()

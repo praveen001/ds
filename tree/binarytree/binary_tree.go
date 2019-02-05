@@ -112,6 +112,22 @@ func (bt *BinaryTree) Clear() {
 	bt.clear()
 }
 
+// Keys returns a ds.List with all keys
+func (bt *BinaryTree) Keys() ds.List {
+	bt.rlock()
+	defer bt.runlock()
+
+	return bt.keys()
+}
+
+// Values returns a ds.List with all values
+func (bt *BinaryTree) Values() ds.List {
+	bt.rlock()
+	defer bt.runlock()
+
+	return bt.values()
+}
+
 // InOrder returns a ds.List with all values in-order
 func (bt *BinaryTree) InOrder() ds.List {
 	bt.rlock()

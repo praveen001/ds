@@ -36,6 +36,12 @@ type Tree interface {
 	// Clear all the nodes from tree
 	Clear()
 
+	// Keys returns a ds.List with all keys in-order
+	Keys() (l List)
+
+	// Values returns a ds.List with all values in-order (same as Tree.InOrder())
+	Values() (l List)
+
 	// InOrder returns a ds.List with all values in-order
 	InOrder() (l List)
 

@@ -14,6 +14,14 @@ func (x *Node) Key() interface{} {
 func (x *Node) Value() interface{} {
 	return x.value
 }
+func (x *Node) inOrderKeys(ll *linkedlist.LinkedList) {
+	if x == nil {
+		return
+	}
+	x.left.inOrderKeys(ll)
+	ll.PushBack(x.key)
+	x.right.inOrderKeys(ll)
+}
 
 func (x *Node) inOrder(ll *linkedlist.LinkedList) {
 	if x == nil {

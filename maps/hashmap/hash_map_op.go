@@ -1,5 +1,10 @@
 package hashmap
 
+import (
+	"github.com/praveen001/ds/ds"
+	"github.com/praveen001/ds/list/linkedlist"
+)
+
 func (hm *HashMap) set(key, val interface{}) bool {
 	hm.m[key] = val
 	return true
@@ -18,25 +23,21 @@ func (hm *HashMap) remove(key interface{}) bool {
 	return ok
 }
 
-func (hm *HashMap) keys() []interface{} {
-	ks := make([]interface{}, hm.len())
+func (hm *HashMap) keys() ds.List {
+	ks := linkedlist.New()
 
-	i := 0
 	for k := range hm.m {
-		ks[i] = k
-		i++
+		ks.PushBack(k)
 	}
 
 	return ks
 }
 
-func (hm *HashMap) values() []interface{} {
-	vals := make([]interface{}, hm.len())
+func (hm *HashMap) values() ds.List {
+	vals := linkedlist.New()
 
-	i := 0
 	for _, v := range hm.m {
-		vals[i] = v
-		i++
+		vals.PushBack(v)
 	}
 
 	return vals

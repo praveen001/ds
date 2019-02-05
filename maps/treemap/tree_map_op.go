@@ -1,5 +1,9 @@
 package treemap
 
+import (
+	"github.com/praveen001/ds/ds"
+)
+
 func (tm *TreeMap) set(key, val interface{}) bool {
 	return tm.m.Set(key, val)
 }
@@ -12,13 +16,12 @@ func (tm *TreeMap) remove(key interface{}) bool {
 	return tm.m.Remove(key)
 }
 
-// TODO
-func (tm *TreeMap) keys() []interface{} {
-	return []interface{}{}
+func (tm *TreeMap) keys() ds.List {
+	return tm.m.Keys()
 }
 
-func (tm *TreeMap) values() []interface{} {
-	return tm.m.InOrder().Values()
+func (tm *TreeMap) values() ds.List {
+	return tm.m.Values()
 }
 
 func (tm *TreeMap) contains(key interface{}) bool {
