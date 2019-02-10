@@ -71,8 +71,6 @@ func (bt *BTree) remove(key interface{}) bool {
 	idx := 0
 NodeSearch:
 	for n != nil {
-		fmt.Print("Push ")
-		n.print()
 		s.Push(n)
 
 		for i, e := range n.entries {
@@ -97,7 +95,10 @@ NodeSearch:
 
 	n.deleteEntry(idx)
 	bt.size--
-	bt.deletionRebalance(s)
+
+	if n.isLeaf() {
+		bt.deletionRebalance(s)
+	}
 
 	return true
 }
@@ -262,7 +263,6 @@ func (bt *BTree) deletionRebalance(s ds.Stack) {
 		}
 
 		n := v.(*Node)
-		fmt.Println("length = ", len(n.entries))
 		if len(n.entries) >= bt.order/2 {
 			fmt.Println("No need rebalance")
 			break
