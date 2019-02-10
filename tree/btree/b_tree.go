@@ -29,10 +29,10 @@ type entry struct {
 }
 
 // New creates a new instance of b-tree and returns it
-func New(c utils.CompareFunc) *BTree {
+func New(c utils.CompareFunc, order int) *BTree {
 	return &BTree{
 		compare: c,
-		order:   3,
+		order:   order,
 		sync:    true,
 	}
 }

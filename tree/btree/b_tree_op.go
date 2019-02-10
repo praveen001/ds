@@ -231,10 +231,12 @@ func (bt *BTree) rebalance(s ds.Stack) {
 		medIdx := (bt.order) / 2
 
 		left := newNode()
-		left.entries = n.entries[:medIdx]
+		left.entries = make([]*entry, medIdx)
+		copy(left.entries, n.entries[:medIdx])
 
 		right := newNode()
-		right.entries = n.entries[medIdx+1:]
+		right.entries = make([]*entry, len(n.entries[medIdx+1:]))
+		copy(right.entries, n.entries[medIdx+1:])
 
 		if !n.isLeaf() {
 			left.children = n.children[:medIdx+1]
@@ -273,14 +275,26 @@ func (bt *BTree) deletionRebalance(s ds.Stack) {
 
 			// Left sibling
 			fmt.Println("Parent", parent.entries)
-			left := n.leftSibling(parent)
+			left, leftChildIdx := n.leftSibling(parent)
+			fmt.Println("left child idx ", leftChildIdx)
 			if left != nil && len(left.children) > bt.order/2 {
 				fmt.Println("left", left.entries[0].key)
 			}
 
-			right := n.rightSibling(parent)
+			right, rightChildIdx := n.rightSibling(parent)
+			fmt.Println("right child idx ", rightChildIdx)
 			if right != nil && len(right.children) > bt.order/2 {
 				fmt.Println("right", right.entries[0].key)
+			}
+
+			if right != nil {
+
+			} else if left != nil {
+				left.entries = append(left.entries, parent.entries[leftChildIdx])
+				left.entries = append(left.entries, n.entries...)
+				left.children = append(left.children, n.children...)
+				parent.deleteEntry(leftChildIdx)
+				parent.deleteChild(leftChildIdx + 1)
 			}
 		}
 

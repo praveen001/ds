@@ -35,7 +35,13 @@ func (n *Node) deleteEntry(i int) {
 	n.entries = n.entries[:len(n.entries)-1]
 }
 
-func (n *Node) leftSibling(p *Node) *Node {
+func (n *Node) deleteChild(i int) {
+	copy(n.children[i:], n.children[i+1:])
+	n.children[len(n.children)-1] = nil
+	n.children = n.children[:len(n.children)-1]
+}
+
+func (n *Node) leftSibling(p *Node) (*Node, int) {
 	childIdx := -1
 	fmt.Println("Children length - ", len(p.children))
 	for i, c := range p.children {
@@ -46,13 +52,13 @@ func (n *Node) leftSibling(p *Node) *Node {
 	}
 
 	if childIdx < 1 {
-		return nil
+		return nil, -1
 	}
 
-	return p.children[childIdx-1]
+	return p.children[childIdx-1], childIdx - 1
 }
 
-func (n *Node) rightSibling(p *Node) *Node {
+func (n *Node) rightSibling(p *Node) (*Node, int) {
 	childIdx := -1
 	for i, c := range p.children {
 		if n == c {
@@ -62,10 +68,10 @@ func (n *Node) rightSibling(p *Node) *Node {
 	}
 
 	if childIdx == len(p.children)-1 {
-		return nil
+		return nil, -1
 	}
 
-	return p.children[childIdx+1]
+	return p.children[childIdx+1], childIdx + 1
 }
 
 func (n *Node) inOrderKeys(ll *linkedlist.LinkedList) {
@@ -137,7 +143,9 @@ func (n *Node) postOrder(ll *linkedlist.LinkedList) {
 
 func (n *Node) print() {
 	for _, e := range n.entries {
-		fmt.Printf("%v ", e.key)
+		if e != nil {
+			fmt.Printf("%v ", e.key)
+		}
 	}
 	fmt.Println("")
 }
