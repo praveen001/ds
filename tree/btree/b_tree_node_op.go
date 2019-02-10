@@ -1,6 +1,8 @@
 package btree
 
 import (
+	"fmt"
+
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
@@ -25,6 +27,45 @@ func (n *Node) insertEntryAt(i int, e *entry) {
 	n.entries = append(n.entries, nil)
 	copy(n.entries[i+1:], n.entries[i:])
 	n.entries[i] = e
+}
+
+func (n *Node) deleteEntry(i int) {
+	copy(n.entries[i:], n.entries[i+1:])
+	n.entries[len(n.entries)-1] = nil
+	n.entries = n.entries[:len(n.entries)-1]
+}
+
+func (n *Node) leftSibling(p *Node) *Node {
+	childIdx := -1
+	fmt.Println("Children length - ", len(p.children))
+	for i, c := range p.children {
+		if n == c {
+			childIdx = i
+			break
+		}
+	}
+
+	if childIdx < 1 {
+		return nil
+	}
+
+	return p.children[childIdx-1]
+}
+
+func (n *Node) rightSibling(p *Node) *Node {
+	childIdx := -1
+	for i, c := range p.children {
+		if n == c {
+			childIdx = i
+			break
+		}
+	}
+
+	if childIdx == len(p.children)-1 {
+		return nil
+	}
+
+	return p.children[childIdx+1]
 }
 
 func (n *Node) inOrderKeys(ll *linkedlist.LinkedList) {
@@ -92,4 +133,11 @@ func (n *Node) postOrder(ll *linkedlist.LinkedList) {
 	for _, e := range n.entries {
 		ll.PushBack(e.value)
 	}
+}
+
+func (n *Node) print() {
+	for _, e := range n.entries {
+		fmt.Printf("%v ", e.key)
+	}
+	fmt.Println("")
 }

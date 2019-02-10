@@ -1,6 +1,8 @@
 package btree
 
 import (
+	"fmt"
+
 	"github.com/praveen001/ds/list/linkedlist"
 	"github.com/praveen001/ds/stack"
 
@@ -62,6 +64,41 @@ func (bt *BTree) get(key interface{}) (interface{}, bool) {
 }
 
 func (bt *BTree) remove(key interface{}) bool {
+	s := stack.New()
+	n := bt.root
+
+	exists := false
+	idx := 0
+NodeSearch:
+	for n != nil {
+		fmt.Print("Push ")
+		n.print()
+		s.Push(n)
+
+		for i, e := range n.entries {
+			if comp := bt.compare(e.key, key); comp == 1 {
+				n = n.children[i]
+				continue NodeSearch
+			} else if comp == 0 {
+				exists = true
+				idx = i
+				break NodeSearch
+			}
+		}
+		if n.isLeaf() {
+			return false
+		}
+		n = n.children[len(n.children)-1]
+	}
+
+	if !exists {
+		return false
+	}
+
+	n.deleteEntry(idx)
+	bt.size--
+	bt.deletionRebalance(s)
+
 	return true
 }
 
@@ -211,6 +248,44 @@ func (bt *BTree) rebalance(s ds.Stack) {
 
 	if nr != nil {
 		bt.root = nr
+	}
+}
+
+func (bt *BTree) deletionRebalance(s ds.Stack) {
+	fmt.Println("Stack Length = ", s.Len())
+	for {
+		v, ok := s.Pop()
+		if !ok {
+			break
+		}
+
+		n := v.(*Node)
+		fmt.Println("length = ", len(n.entries))
+		if len(n.entries) >= bt.order/2 {
+			fmt.Println("No need rebalance")
+			break
+		}
+
+		fmt.Println("Need to rebalance")
+		v, ok = s.Peek()
+		if ok {
+			parent := v.(*Node)
+
+			// Left sibling
+			fmt.Println("Parent", parent.entries)
+			left := n.leftSibling(parent)
+			if left != nil && len(left.children) > bt.order/2 {
+				fmt.Println("left", left.entries[0].key)
+			}
+
+			right := n.rightSibling(parent)
+			if right != nil && len(right.children) > bt.order/2 {
+				fmt.Println("right", right.entries[0].key)
+			}
+		}
+
+		break
+
 	}
 }
 
