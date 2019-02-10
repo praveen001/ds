@@ -61,6 +61,10 @@ func (bt *BTree) get(key interface{}) (interface{}, bool) {
 	return nil, false
 }
 
+func (bt *BTree) remove(key interface{}) bool {
+	return true
+}
+
 func (bt *BTree) min() (*entry, bool) {
 	if bt.size == 0 {
 		return nil, false
@@ -129,13 +133,15 @@ func (bt *BTree) postOrder() ds.List {
 
 func (bt *BTree) insert(n *Node, e *entry) bool {
 	s := stack.New()
+
+NodeSearch:
 	for !n.isLeaf() {
 		s.Push(n)
 
 		for i, en := range n.entries {
 			if comp := bt.compare(en.key, e.key); comp == 1 {
 				n = n.children[i]
-				continue
+				continue NodeSearch
 			} else if comp == 0 {
 				return false
 			}
@@ -144,7 +150,12 @@ func (bt *BTree) insert(n *Node, e *entry) bool {
 	}
 	s.Push(n)
 
-	pos := bt.getInsertPos(n, e)
+	pos, exists := bt.getInsertPos(n, e)
+	if exists {
+		n.entries[pos] = e
+		return false
+	}
+
 	n.insertEntryAt(pos, e)
 
 	if len(n.entries) == bt.order {
@@ -165,7 +176,7 @@ func (bt *BTree) rebalance(s ds.Stack) {
 
 		n := v.(*Node)
 		if nr != nil {
-			pos := bt.getInsertPos(n, nr.entries[0])
+			pos, _ := bt.getInsertPos(n, nr.entries[0])
 			n.insertEntryAt(pos, nr.entries[0])
 
 			n.children[pos] = nr.children[0]
@@ -203,12 +214,14 @@ func (bt *BTree) rebalance(s ds.Stack) {
 	}
 }
 
-func (bt *BTree) getInsertPos(n *Node, e *entry) int {
+func (bt *BTree) getInsertPos(n *Node, e *entry) (int, bool) {
 	for i, v := range n.entries {
-		if bt.compare(v.key, e.key) == 1 {
-			return i
+		if comp := bt.compare(v.key, e.key); comp == 1 {
+			return i, false
+		} else if comp == 0 {
+			return i, true
 		}
 	}
 
-	return len(n.entries)
+	return len(n.entries), false
 }

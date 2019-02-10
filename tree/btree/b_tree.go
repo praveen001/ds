@@ -62,6 +62,16 @@ func (bt *BTree) Get(key interface{}) (interface{}, bool) {
 	return bt.get(key)
 }
 
+// Remove a key from the tree
+//
+// Returns true if key was removed, otherwise false.
+func (bt *BTree) Remove(key interface{}) bool {
+	bt.lock()
+	defer bt.unlock()
+
+	return bt.remove(key)
+}
+
 // Min returns the minimum value present in the tree
 //
 // Returns false if tree is empty
