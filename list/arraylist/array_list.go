@@ -80,6 +80,14 @@ func (al *ArrayList) Get(i int) (v interface{}, ok bool) {
 	return al.get(i)
 }
 
+// Insert value v at index i
+func (al *ArrayList) Insert(i int, v interface{}) (ok bool) {
+	al.lock()
+	defer al.unlock()
+
+	return al.insert(i, v)
+}
+
 // Remove the element at given index i. Returns true if element was removed otherwise false.
 func (al *ArrayList) Remove(i int) (v interface{}, ok bool) {
 	al.lock()

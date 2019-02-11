@@ -46,6 +46,19 @@ func (al *ArrayList) get(i int) (interface{}, bool) {
 	return nil, false
 }
 
+func (al *ArrayList) insert(i int, v interface{}) bool {
+	if i >= 0 && i <= al.len() {
+		al.elements = append(al.elements, v)
+		copy(al.elements[i+1:], al.elements[i:])
+		al.elements[i] = v
+		al.size++
+
+		return true
+	}
+
+	return false
+}
+
 func (al *ArrayList) remove(index int) (interface{}, bool) {
 	if al.withInRange(index) {
 		value := al.elements[index]
