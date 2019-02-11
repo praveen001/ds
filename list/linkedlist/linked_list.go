@@ -86,6 +86,14 @@ func (ll *LinkedList) Get(i int) (v interface{}, ok bool) {
 	return ll.get(i)
 }
 
+// Insert value v at index i
+func (ll *LinkedList) Insert(i int, v interface{}) (ok bool) {
+	ll.lock()
+	defer ll.unlock()
+
+	return ll.insert(i, v)
+}
+
 // Remove the element at given index i. Returns true if element was removed otherwise false.
 func (ll *LinkedList) Remove(i int) (v interface{}, ok bool) {
 	ll.lock()

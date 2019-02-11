@@ -81,6 +81,29 @@ func TestSet(t *testing.T) {
 	}
 }
 
+func TestInsert(t *testing.T) {
+	ll := New()
+
+	ll.Insert(0, 10)
+	if v, _ := ll.Get(0); v != 10 {
+		t.Errorf("Expected value to be %v, but got %v", 10, v)
+	}
+
+	ll.Insert(1, 20)
+	if v, _ := ll.Get(1); v != 20 {
+		t.Errorf("Expected value to be %v, but got %v", 20, v)
+	}
+
+	ll.Insert(1, 200)
+	if v, _ := ll.Get(1); v != 200 {
+		t.Errorf("Expected value to be %v, but got %v", 200, v)
+	}
+
+	if ok := ll.Insert(4, 30); ok {
+		t.Errorf("Expected %v, but got %v", false, ok)
+	}
+}
+
 func TestRemove(t *testing.T) {
 	ll := New()
 

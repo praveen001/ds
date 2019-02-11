@@ -63,6 +63,36 @@ func (dl *DoublyLinkedList) get(index int) (interface{}, bool) {
 	return nil, false
 }
 
+func (dl *DoublyLinkedList) insert(i int, v interface{}) bool {
+	if i >= 0 && i <= dl.len() {
+		if i == 0 {
+			dl.pushFront(v)
+		} else if i == dl.len() {
+			dl.pushBack(v)
+		} else {
+			var n *element
+			idx := 0
+			for n = dl.head; idx < i-1; n = n.next {
+				idx++
+			}
+			elem := &element{v, nil, nil}
+
+			elem.next = n.next
+			if elem.next != nil {
+				elem.next.prev = elem
+			}
+			n.next = elem
+			elem.prev = n
+
+			dl.size++
+		}
+
+		return true
+	}
+
+	return false
+}
+
 func (dl *DoublyLinkedList) remove(i int) (interface{}, bool) {
 	if dl.withInRange(i) {
 		var value interface{}

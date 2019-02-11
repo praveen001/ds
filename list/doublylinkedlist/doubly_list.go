@@ -87,6 +87,14 @@ func (dl *DoublyLinkedList) Get(i int) (v interface{}, ok bool) {
 	return dl.get(i)
 }
 
+// Insert value v at index i
+func (dl *DoublyLinkedList) Insert(i int, v interface{}) (ok bool) {
+	dl.lock()
+	defer dl.unlock()
+
+	return dl.insert(i, v)
+}
+
 // Remove the element at given index i. Returns true if element was removed otherwise false.
 func (dl *DoublyLinkedList) Remove(i int) (v interface{}, ok bool) {
 	dl.lock()

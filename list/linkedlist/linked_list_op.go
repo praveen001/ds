@@ -60,6 +60,30 @@ func (ll *LinkedList) get(index int) (interface{}, bool) {
 	return nil, false
 }
 
+func (ll *LinkedList) insert(i int, v interface{}) bool {
+	if i >= 0 && i <= ll.len() {
+		if i == 0 {
+			ll.pushFront(v)
+		} else if i == ll.len() {
+			ll.pushBack(v)
+		} else {
+			var n *element
+			idx := 0
+			for n = ll.head; idx < i-1; n = n.next {
+				idx++
+			}
+			elem := &element{v, n.next}
+			n.next = elem
+
+			ll.size++
+		}
+
+		return true
+	}
+
+	return false
+}
+
 func (ll *LinkedList) remove(i int) (interface{}, bool) {
 	if ll.withInRange(i) {
 		var value interface{}
