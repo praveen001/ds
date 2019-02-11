@@ -49,6 +49,9 @@ type List interface {
 	// Get ..
 	Get(i int) (v interface{}, ok bool)
 
+	// Insert value v at index i
+	Insert(i int, v interface{}) (ok bool)
+
 	// Remove the element at given index i. Returns true if element was removed otherwise false.
 	Remove(i int) (v interface{}, ok bool)
 
