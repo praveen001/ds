@@ -1,8 +1,6 @@
 package btree
 
 import (
-	"fmt"
-
 	"github.com/praveen001/ds/list/linkedlist"
 	"github.com/praveen001/ds/stack"
 
@@ -80,7 +78,13 @@ NodeSearch:
 			} else if comp == 0 {
 				exists = true
 				idx = i
-				break NodeSearch
+				if n.isLeaf() {
+					break NodeSearch
+				}
+				n.entries[i] = n.children[i+1].entries[0]
+				key = n.entries[i].key
+				n = n.children[i+1]
+				continue NodeSearch
 			}
 		}
 		if n.isLeaf() {
@@ -255,7 +259,7 @@ func (bt *BTree) rebalance(s ds.Stack) {
 }
 
 func (bt *BTree) deletionRebalance(s ds.Stack) {
-	fmt.Println("Stack Length = ", s.Len())
+	var prev *Node
 	for {
 		v, ok := s.Pop()
 		if !ok {
@@ -264,42 +268,96 @@ func (bt *BTree) deletionRebalance(s ds.Stack) {
 
 		n := v.(*Node)
 		if len(n.entries) >= bt.order/2 {
-			fmt.Println("No need rebalance")
 			break
 		}
 
-		fmt.Println("Need to rebalance")
 		v, ok = s.Peek()
+		if !ok {
+			// If empty and is root, use prev node as new root
+			if len(n.entries) == 0 {
+				bt.root = prev
+			}
+			return
+		}
+
 		if ok {
 			parent := v.(*Node)
 
 			// Left sibling
-			fmt.Println("Parent", parent.entries)
 			left, leftChildIdx := n.leftSibling(parent)
-			fmt.Println("left child idx ", leftChildIdx)
-			if left != nil && len(left.children) > bt.order/2 {
-				fmt.Println("left", left.entries[0].key)
+			if left != nil && len(left.entries) > bt.order/2 {
+				// Move key down from parent
+				n.entries = append([]*entry{parent.entries[leftChildIdx]}, n.entries...)
+
+				// Move key from left sibling to parent
+				parent.entries[leftChildIdx] = left.entries[len(left.entries)-1]
+
+				// Delete from left sibling
+				left.deleteEntry(len(left.entries) - 1)
+
+				// Have to move a child?
+				if !left.isLeaf() {
+					n.children = append([]*Node{left.children[len(left.children)-1]}, n.children...)
+					left.deleteChild(len(left.children) - 1)
+				}
+
+				return
 			}
 
 			right, rightChildIdx := n.rightSibling(parent)
-			fmt.Println("right child idx ", rightChildIdx)
-			if right != nil && len(right.children) > bt.order/2 {
-				fmt.Println("right", right.entries[0].key)
+			if right != nil && len(right.entries) > bt.order/2 {
+				// Move key down from parent
+				n.entries = append(n.entries, parent.entries[rightChildIdx-1])
+
+				// Move key from right sibling to parent
+				parent.entries[rightChildIdx-1] = right.entries[0]
+
+				// Delete from right sibling
+				right.deleteEntry(0)
+
+				// Have to move a child
+				if !right.isLeaf() {
+					n.children = append(n.children, right.children[0])
+					right.deleteChild(0)
+				}
+
+				return
 			}
 
-			if right != nil {
-
-			} else if left != nil {
+			if left != nil {
+				// Append separator key
 				left.entries = append(left.entries, parent.entries[leftChildIdx])
+
+				// Append all keys from current node to left sibling
 				left.entries = append(left.entries, n.entries...)
+
+				// Append all children from current to node to left sibling
 				left.children = append(left.children, n.children...)
+
+				// Delete separator from parent
 				parent.deleteEntry(leftChildIdx)
+
+				// Delete child, cause parent lost a node
 				parent.deleteChild(leftChildIdx + 1)
+			} else if right != nil {
+				// Append separator key
+				n.entries = append(n.entries, parent.entries[rightChildIdx-1])
+
+				// Append all keys from right sibling to current node
+				n.entries = append(n.entries, right.entries...)
+
+				// Append all children from right sibling to current node
+				n.children = append(n.children, parent.children[rightChildIdx].children...)
+
+				// Delete separator from parent
+				parent.deleteEntry(rightChildIdx - 1)
+
+				// Delete child, cause parent lost a node
+				parent.deleteChild(rightChildIdx)
 			}
 		}
 
-		break
-
+		prev = n
 	}
 }
 

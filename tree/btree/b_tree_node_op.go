@@ -1,8 +1,6 @@
 package btree
 
 import (
-	"fmt"
-
 	"github.com/praveen001/ds/list/linkedlist"
 )
 
@@ -43,7 +41,6 @@ func (n *Node) deleteChild(i int) {
 
 func (n *Node) leftSibling(p *Node) (*Node, int) {
 	childIdx := -1
-	fmt.Println("Children length - ", len(p.children))
 	for i, c := range p.children {
 		if n == c {
 			childIdx = i
@@ -139,13 +136,4 @@ func (n *Node) postOrder(ll *linkedlist.LinkedList) {
 	for _, e := range n.entries {
 		ll.PushBack(e.value)
 	}
-}
-
-func (n *Node) print() {
-	for _, e := range n.entries {
-		if e != nil {
-			fmt.Printf("%v ", e.key)
-		}
-	}
-	fmt.Println("")
 }
