@@ -2,17 +2,17 @@ package ds
 
 // Iterator allows to iterator through the data structures
 type Iterator interface {
-	// Previous moves the iterator to previous element
-	Previous()
-
-	// Next moves the iterator to next element
-	Next()
-
 	// HasNext returns true if the iteration has more elements
 	HasNext() bool
 
 	// HasPrevious returns true if the iteration has a previous element
 	HasPrevious() bool
+
+	// Previous moves the iterator to previous element
+	Previous() bool
+
+	// Next moves the iterator to next element
+	Next() bool
 
 	// Index returns current index
 	Index() int
@@ -20,12 +20,12 @@ type Iterator interface {
 	// Value returns value at current index
 	Value() interface{}
 
-	// First moves iterator to first element
-	First()
+	// Set value at current index
+	Set(interface{}) bool
 
-	// Last moves iterator to last element
-	Last()
+	// Add value at current index
+	Add(interface{}) bool
 
-	// MoveTo moves iterator to the given index i, returns false if index i is out of bound
-	MoveTo(i int) bool
+	// Remove value at current index
+	Remove() bool
 }
