@@ -14,20 +14,20 @@ func (al *ArrayList) Iterator() *Iterator {
 	}
 }
 
-// Previous ..
-func (i *Iterator) Previous() (interface{}, bool) {
-	if i.curIndex != -1 {
-		i.curIndex--
-	}
-	return i.Value(), i.curIndex != -1
-}
-
 // Next ..
 func (i *Iterator) Next() (interface{}, bool) {
-	if i.curIndex != i.list.Len() {
+	if i.curIndex < i.list.Len() {
 		i.curIndex++
 	}
-	return i.Value(), i.curIndex != i.list.Len()
+	return i.Value(), i.list.withInRange(i.curIndex)
+}
+
+// Previous ..
+func (i *Iterator) Previous() (interface{}, bool) {
+	if i.curIndex > -1 {
+		i.curIndex--
+	}
+	return i.Value(), i.list.withInRange(i.curIndex)
 }
 
 // Index ..

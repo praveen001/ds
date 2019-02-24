@@ -161,7 +161,7 @@ func (ll *LinkedList) values() []interface{} {
 
 func (ll *LinkedList) clone() *LinkedList {
 	nal := New()
-	nal.pushFrontList(ll)
+	nal.PushBackList(ll)
 
 	return nal
 }
