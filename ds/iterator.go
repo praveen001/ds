@@ -2,12 +2,6 @@ package ds
 
 // Iterator allows to iterator through the data structures
 type Iterator interface {
-	// HasNext returns true if the iteration has more elements
-	HasNext() bool
-
-	// HasPrevious returns true if the iteration has a previous element
-	HasPrevious() bool
-
 	// Previous moves the iterator to previous element
 	Previous() bool
 

@@ -9,25 +9,9 @@ type Iterator struct {
 // Iterator ..
 func (al *ArrayList) Iterator() *Iterator {
 	return &Iterator{
-		list:     al,
+		list:     al.Clone().(*ArrayList),
 		curIndex: -1,
 	}
-}
-
-// HasPrevious ..
-func (i *Iterator) HasPrevious() bool {
-	if i.curIndex < 1 {
-		return false
-	}
-	return true
-}
-
-// HasNext ..
-func (i *Iterator) HasNext() bool {
-	if i.curIndex == i.list.Len() {
-		return false
-	}
-	return true
 }
 
 // Previous ..
