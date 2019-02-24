@@ -31,19 +31,19 @@ func (i *Iterator) HasNext() bool {
 }
 
 // Previous ..
-func (i *Iterator) Previous() bool {
+func (i *Iterator) Previous() (interface{}, bool) {
 	if i.curIndex != -1 {
 		i.curIndex--
 	}
-	return i.HasPrevious()
+	return i.Value(), i.curIndex != -1
 }
 
 // Next ..
-func (i *Iterator) Next() bool {
-	if i.HasNext() {
+func (i *Iterator) Next() (interface{}, bool) {
+	if i.curIndex != i.list.Len() {
 		i.curIndex++
 	}
-	return i.HasNext()
+	return i.Value(), i.curIndex != i.list.Len()
 }
 
 // Index ..
@@ -55,20 +55,4 @@ func (i *Iterator) Index() int {
 func (i *Iterator) Value() interface{} {
 	v, _ := i.list.Get(i.curIndex)
 	return v
-}
-
-// Set ..
-func (i *Iterator) Set(v interface{}) bool {
-	return i.list.Set(i.curIndex, v)
-}
-
-// Add .
-func (i *Iterator) Add(v interface{}) bool {
-	return i.list.Insert(i.curIndex, v)
-}
-
-// Remove ..
-func (i *Iterator) Remove() bool {
-	_, ok := i.list.Remove(i.curIndex)
-	return ok
 }

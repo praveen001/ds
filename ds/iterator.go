@@ -19,13 +19,4 @@ type Iterator interface {
 
 	// Value returns value at current index
 	Value() interface{}
-
-	// Set value at current index
-	Set(interface{}) bool
-
-	// Add value at current index
-	Add(interface{}) bool
-
-	// Remove value at current index
-	Remove() bool
 }
